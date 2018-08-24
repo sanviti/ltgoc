@@ -1,0 +1,109 @@
+<include file="public/header"/>
+	<body class="spinner-hide"  style="background: #f1f1f2;">
+		<?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <include file="public/top"/>
+        <?php
+           }else{
+        ?>
+            <style type="text/css">
+            .service_banner{margin-top: 0}
+            .service_introduce{
+            	top:1.8rem;
+            }
+            </style>
+        <?php
+            }
+        ?>
+		<div class="service_banner">
+			<img src="__PUBLIC__/Wap/img/s<php>echo rand(1,2)</php>.jpg"/>
+			<div class="service_introduce">
+				<h3>温馨提示：</h3>
+				<p>客服工作时间：09:30——21:00;</p>
+				<p>因在线会员太多，客服会尽快给您回复，尽请谅解；</p>
+			</div>
+		</div>
+		<div style="width: 100%; background: #fff">
+			<div class="service_title fixed-contb">
+				<h3>问题类型</h3>
+				<form action="" method="post" name="form_sup" id="form_sup">
+				<select name="problem_type" id="problem_type">
+				  <option value="" selected>问题类型</option>
+                  <option value="2222">关于注册认证问题</option>
+                  <option value="2222">关于PEC交易问题</option>
+                  <option value="2222">关于商城兑换问题</option>
+                  <option value="2222">关于封号处理问题</option>
+                  <option value="2222">关于商家申请的问题</option>
+				  <option value="2222">关于其他类问题</option>
+	            </select>
+				<h3>问题描述</h3>
+				<textarea name="content" rows="" cols="" id="content"></textarea>
+				<h3>相关截图</h3>
+				<div class="service_img">
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+				</div>
+	            </form>
+				<button id="btn_submit">提交</button>
+			</div>
+		</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	//图片上传
+	bind_uploadOne({
+		uploadUrl : '{:U("Api/Upload/uploadScreen")}',
+		bind : '.uploadOne',
+		dataType : 'JSON',
+		callback : function(data,el){
+			if(data.status == 1){
+				$(el).siblings('img').attr('src',data.url);
+				$(el).siblings('input').val(data.url);
+			}else{
+				alertMsg(data.info);
+			}
+		}
+	});
+  	$('#btn_submit').click(function(){
+		if($('select[name="problem_type"]').val() == ''){
+			alertMsg('请选择问题类型');
+			return false;
+		}
+		if($('textarea[name="content"]').val() == ''){
+			alertMsg('请填写问题描述');
+			return false;
+		}
+		AjaxPost('{:U("Api/Members/getproblem")}','form_sup','#btn_submit',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg, function(){
+					location.href = "{:U('Wap/Members/index')}";
+				});
+			} else {
+				alertMsg(data.returnMsg);
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

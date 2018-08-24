@@ -1,0 +1,107 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+                    <h4>用户充值</h4>            	     
+	            	</div>
+	            </div>
+
+                <div class="clearfix"></div>
+                <div class="content-list">
+                   
+                <!--内容开始-->
+					<form class="form-horizontal" method="post" action="" name="basic_validate" id="form">
+                       <!--  <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th colspan="2">客户问题</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th class="text-right w10">客户名称</th>
+                              <td>{$detail.true_name}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">手机号</th>
+                              <td>{$detail.mobile}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">邮箱</th>
+                              <td>{$detail.email}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">地址</th>
+                              <td>{$detail.area}{$detail.address}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">问题内容</th>
+                              <td>{$detail.content}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">提交时间</th>
+                              <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                            </tr>
+                          </tbody>
+                          <input type="hidden" name="id" value="{$detail.id}"/>
+                        </table> -->
+
+                        
+                        
+                        <table class="table table-bordered table-striped data-table">
+                          <thead>
+                            <tr>
+                              <th colspan="2">充值信息</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th class="text-right w10">用户ID</th>
+                              <td><input type="text" name="user_id" value="{:I('id')}" class="form-control" datatype="s"></td>
+                            </tr>   
+                            <tr>
+                              <th class="text-right w10">充值金额</th>
+                              <td><input type="text" name="money" value="" class="form-control" datatype="amount"></td>
+                            </tr>                        
+                            
+                          </tbody>
+                        </table>
+                           
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="Jun-TiJiao" type="submit">确认充值</button>
+                                    <a class="btn btn-white" href="javascript:history.go(-1)">取消</a>
+                                </div>
+                            </div>
+                        </form>
+					
+				<!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('.form-horizontal', {
+          datatype:{
+            "amount" :/^[0-9]+([.]{1}[0-9]{1,2})?$/,
+          },
+	        msgCallback:function(){
+	            location.reload();
+	        }
+	    });
+	})	
+</script>
+<include file="Public/footer"/>

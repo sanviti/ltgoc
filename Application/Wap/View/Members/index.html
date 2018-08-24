@@ -1,0 +1,210 @@
+<include file="public/header"/>
+	</head>
+	<body>
+		<div class="per_box">
+		<?php
+		    $agent = $_SERVER['HTTP_USER_AGENT'];
+		    if(strpos($agent,"Html5Plus") === false){
+		?>
+			<div class="per_top">个人中心<a href="{:U('Wap/Members/myMail')}" class="uh_msg" style="z-index:1000;"></a></div>
+		<?php
+		    }else{
+
+		?>
+			<script type="text/javascript">
+				function openMail(){
+					window.open('{:U('Wap/Members/myMail')}');
+				}
+			</script>
+		<?php
+		    }
+		?>
+		
+			<!-- <div class="per_head">
+				<div class="per_head_one">
+					<a href="{:U('Wap/Members/myMail')}" class="mail">1</a>
+					<span id="rname"></span>
+					<img src="__PUBLIC__/Wap/img/xin2.png" />
+				</div>
+				<div class="per_head_two">
+					<p>昵称：</p>
+					<span id="nickname"></span>
+					<p>ID：</p>
+					<span id="userid"></span>
+				</div>
+				<p class="per_head_three" id="member_tag"></p>
+				<p class="per_head_xiang">
+					<img src="__PUBLIC__/Wap/img/headimg_default.jpg" id="headimg" />
+				</p>
+				<div class="per_head_four">
+					<p>
+						<span>0</span>
+						<span>交易</span>
+					</p>
+					<p>
+						<span>0</span>
+						<span>关注</span>
+					</p>
+					<p>
+						<span>0</span>
+						<span>粉丝</span>
+					</p>
+					<p>
+						<span>0</span>
+						<span>评价</span>
+					</p>
+				</div>
+			</div> -->
+
+			<style>
+				
+			</style>
+			<div class="uh_head">
+				
+				<div class="headimg">
+					<img src="__PUBLIC__/Wap/img/headimg_default.jpg" id="headimg" style="width: 5rem; height: 5rem;" />
+				</div>
+
+				<div class="infos" style="position: relative;">
+					<div id="level" style="position: absolute; width:1rem; height: .6rem; background: #333; color: #fff; line-height: .6rem; border-radius: .2rem; right: 4.8rem; bottom: 0rem;">
+						<span>v</span><em style="font-weight: bold;" id="vip_level">0</em>
+					</div>
+					<div id="nickname">---</div>
+					<div id="userid">ID:0000000</div>
+				</div>
+				
+				<div class="per_head_four">
+					<p>
+						<span>0</span>
+						<span>交易</span>
+					</p>
+					<p>
+						<span>0</span>
+						<span>关注</span>
+					</p>
+					<p>
+						<span>0</span>
+						<span>粉丝</span>
+					</p>
+					<p>
+						<span>0</span>
+						<span>评价</span>
+					</p>
+				</div>
+				<div class="infos">
+					<div id="member_tag">###</div>
+				</div>
+			</div>
+			<ul class="per_lie">
+				<li class="per_lie_one">
+					<a href="{:U('Wap/Members/photoelectric')}">
+                    <img src="__PUBLIC__/Wap/img/lie.png" />
+					<span>PEC光电链</span>
+					<p></p>
+                    </a>
+				</li>
+				<li class="per_lie_two">
+					<a href="{:U('Wap/Members/memberInfo')}">
+                    <img src="__PUBLIC__/Wap/img/lie2.png" />
+					<span>个人信息</span>
+					<p></p>
+                    </a>
+				</li>
+				<li class="per_lie_one">
+					<a href="{:U('Wap/Members/laborUnion')}">
+                    <img src="__PUBLIC__/Wap/img/lie6.png" />
+					<span>我的工会</span>
+					<p></p>
+                    </a>
+				</li>
+				<li class="per_lie_two">
+					<a href="{:U('Wap/Members/Unionrecruit')}">
+                    <img src="__PUBLIC__/Wap/img/lie7.png" />
+					<span>工会招募</span>
+					<p></p>
+                    </a>
+				</li>
+				<li class="per_lie_one">
+					<a href="{:U('Wap/Members/ranking')}">
+                    <img src="__PUBLIC__/Wap/img/lie8.png" />
+					<span>排行榜</span>
+					<p></p>
+                    </a>
+				</li>
+				<li class="per_lie_two" onClick="waitOpen()">
+					<img src="__PUBLIC__/Wap/img/lie3.png" />
+					<span>抵押贷款</span>
+					<p></p>
+				</li>
+				<!-- <li class="per_lie_one" onClick="waitOpen()">
+					<img src="__PUBLIC__/Wap/img/lie4.png" />
+					<span>申请商户</span>
+					<p></p>
+				</li>
+				<li class="per_lie_two" onClick="waitOpen()">
+					<img src="__PUBLIC__/Wap/img/lie5.png" />
+					<span>申请区域</span>
+					<p></p>
+				</li> -->
+				<li class="per_lie_one">
+                	<a href="{:U('Wap/Members/newGuide')}">
+					<img src="__PUBLIC__/Wap/img/lie9.png" />
+					<span>新手入门</span>
+					<p></p>
+                    </a>
+				</li>
+
+				<li class="per_lie_two">
+					<a href="{:U('Wap/Members/support')}">
+                    <img src="__PUBLIC__/Wap/img/lie10.png" />
+					<span>客服中心</span>
+					<p></p>
+                    </a>
+				</li>
+
+				<li class="per_lie_one">
+					<a href="{:U('Wap/Members/system')}">
+                    <img src="__PUBLIC__/Wap/img/lie11.png" />
+					<span>系统设置</span>
+					<p></p>
+                    </a>
+				</li>
+			</ul>
+			<include file="public/nav"/>
+		</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Members/account')}", {}, function(data){
+		if(data.returnCode == 1){
+			$('#userid').html(data.result.userid + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+			$('#rname').html(data.result.rname);
+			$('#vip_level').html(data.result.vip_level);
+			$('#nickname').html(data.result.nickname);
+			$('#member_tag').html(data.result.member_tag);
+			$('#headimg').attr('src', data.result.headimg);
+			$('.spinner').remove();
+		}
+	});
+	//图片上传
+	bind_uploadOne({
+		uploadUrl : '{:U("Api/Upload/uploadHead")}',
+		bind : '#headimg',
+		dataType : 'JSON',
+		callback : function(data,el){
+			if(data.status == 1){
+				$(el).siblings('img').attr('src',data.url);
+				PostApi("{:U('Api/Members/editInfo')}", {headimg:data.url}, function(info){
+					if(info.returnCode == 1){
+						alertMsg('修改成功！');
+					}
+				});
+			}else{
+				alertMsg(data.info);
+			}
+		}
+	});
+});
+</script>
+	</body>
+</html>

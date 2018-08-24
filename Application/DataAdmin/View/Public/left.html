@@ -1,0 +1,65 @@
+<?php
+  function subnav_icon($controller_name){
+    if(strtoupper(CONTROLLER_NAME) == strtoupper($controller_name)){
+      echo 'sublist-down';
+    }else{
+      echo 'sublist-up';
+    }
+  }
+
+  function subnav_title_icon($controller_name){
+    if(strtoupper(CONTROLLER_NAME) == strtoupper($controller_name)){
+      echo 'glyphicon-chevron-down';
+    }else{
+      echo 'glyphicon-chevron-up';
+    }
+  }
+
+
+  function subnav_is_open($controller_name){
+    if(strtoupper(CONTROLLER_NAME) == strtoupper($controller_name)){
+      echo 'style="display:block"';
+    }else{
+      echo 'style="display:none;"';
+    }
+  }
+
+  function action_is_active($controller_name,$action_name){
+    if(strtoupper(ACTION_NAME) == strtoupper($action_name) && strtoupper(CONTROLLER_NAME) == strtoupper($controller_name)){
+      echo 'class="active"';
+    }else{
+      echo '';
+    }
+  }
+
+?>
+
+<div class="left-main left-full">
+    <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
+        <div class="subNavBox">
+            <volist name="menu" id="vo">
+                <div class="sBox">
+                    <if condition="$vo['pid'] eq 1">
+                        <if condition="$vo['menuflag'] eq 0">
+                            <div class="subNav {:subnav_icon($vo['c'])}"><span class="title-icon glyphicon {:subnav_title_icon($vo['c'])}"></span><span class="sublist-title">{$vo.title}</span>
+                            </div>
+                        <else/>
+                            <div class="subNav {:subnav_icon($vo['c'])}"><span class="title-icon glyphicon {:subnav_title_icon($vo['c'])}"></span><span class="sublist-title">{$vo.title}</span></div>
+                            <ul class="navContent" {:subnav_is_open($vo['c'])}>
+                            <volist name="menu" id="subnode">
+                                <if condition="$subnode['pid'] eq $vo['id']">
+                                <li {:action_is_active($subnode['c'],$subnode['a'])}>
+                                    <a href="{:U($subnode['c'].'/'.$subnode['a'])}"><span class="sublist-icon glyphicon {$subnode['icon']} "></span><span class="sub-title">{$subnode['title']}</span></a>
+                                </li>
+                                </if>
+                            </volist>
+                            </ul>
+                        </if>
+                    </if>
+                </div>
+            </volist>
+        </div>
+
+</div>
+
+

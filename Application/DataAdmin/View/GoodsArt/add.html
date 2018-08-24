@@ -1,0 +1,160 @@
+<include file="Public/header"/>
+<body>
+<style>
+	.imgDiv{
+		margin-left:150px;
+	}
+	.imgDiv li{
+		float:left;
+		width:150px;
+		margin-right:10px;
+		position:relative;
+	}
+	.imgDiv li span{
+		position:absolute;
+		padding:10px;
+		font-size:20px;
+		right:0;
+		top:0;
+		background-color:#ccc;
+		opacity:0.5;
+	}
+</style>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent-->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>商品管理</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+					<!--内容开始-->
+					<form class="form-horizontal" method="post" action="{:U('save')}" name="basic_validate" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-1 control-label">类型<i style="color:red;">*</i></label>
+								<div class="col-sm-6">
+									<select name="type" class="form-control">
+										<option value="" <if condition="$list.type heq ''"> selected="selected"</if>>请选择类型</option>
+										<option value="1" <if condition="$list.type heq '1'"> selected="selected"</if>>商学院</option>
+										<option value="2" <if condition="$list.type heq '2'"> selected="selected"</if>>好文</option>
+										<option value="3" <if condition="$list.type heq '3'"> selected="selected"</if>>精选</option>
+									</select>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">标题<i style="color:red;">*</i></label>
+								<div class="col-sm-6">
+									<input type="text" id="title" name="title" value="{$list.title}" dataType="*" placeholder="标题" class="form-control" >
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">标签<i style="color:red;">*</i></label>
+								<div class="col-sm-6">
+									<input type="text" id="tag" name="tag" value="{$list.tag}" dataType="*" placeholder="标签" class="form-control" >
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">作者<i style="color:red;">*</i></label>
+								<div class="col-sm-6">
+									<input type="text" id="author" name="author" value="{$list.author}" dataType="*" placeholder="作者" class="form-control" >
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">链接<i style="color:red;">*</i></label>
+								<div class="col-sm-6">
+									<input type="text" id="video" name="video" value="{$list.video}" dataType="*" placeholder="视频链接" class="form-control" >
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">缩略图<i style="color:red;">*</i> </label>
+								<div class="col-sm-6">
+										<img id="upload_img" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+										<input type="hidden" name="img" id="userimg"/>
+								</div>
+							</div>
+							<!-- <div class="form-group">
+								<label class="col-sm-1 control-label">排序<i style="color:red;">*</i></label>
+								<div class="col-sm-6">
+									<input type="text" id="sort" name="sort" value="{$list.sort}" dataType="*" placeholder="填写数字" class="form-control" >
+								</div>
+							</div> -->
+							<div class="form-group">
+								<div class="col-sm-4 col-sm-offset-2">
+									<button class="btn btn-success" id="btn" style="background:#5a98de;">保存内容</button>
+									<a class="btn btn-white" href="{:U('index')}">取消</a>
+								</div>
+							</div>
+					</form>
+					<!--内容结束-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/jquery-1.11.1.min.js"></script>
+<script src="__PUBLIC__/newMerchant/js/layer/layer.js"></script>
+<script type="text/javascript">
+	var ue = UE.getEditor('editor');
+    <notempty name="act">
+            ue.addListener("ready", function () {
+                // editor准备好之后才可以使用
+                ue.setContent('{:htmlspecialchars_decode($act["content"])}');
+            });
+    </notempty>
+
+	$(function(){
+		//上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadImg/")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			if(data.status == 1){
+					if ($('#userimg').val()=='')
+					{
+						$('#userimg').val(data.url);
+					}else{
+						$('#userimg').val($('#userimg').val()+'||'+data.url);
+					}					
+	   				$('.imgDiv').append('<li><img src="'+data.url+'" width="150" height="150" /><span>X</span></li>');
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+		function getImg(){
+			var pic ='';
+			var comm='';
+			var m = $('.imgDiv li').length;
+			for(var i=0;i<m;i++){
+			
+				pic +=comm+$('.imgDiv li').eq(i).find('img').attr('src');
+				comm='||';
+			}
+			$('#userimg').val(pic);
+		}
+
+		$(document).on("click" ,'.imgDiv li span',function(){
+			//var id = $(this).parent('li').attr('data');
+			$(this).parent('li').remove();
+			getImg();
+		})
+	})
+</script>
+<include file="Public/footer"/>

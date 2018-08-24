@@ -1,0 +1,76 @@
+<include file="public/header"/>
+	<body class="spinner-hide" style="background: #f1f1f2;">
+	<?php
+	    $agent = $_SERVER['HTTP_USER_AGENT'];
+	    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<include file="public/top"/>
+	<?php
+	    }else{
+	?>
+		<style type="text/css">.c_content{margin-top: 0}</style>
+	<?php
+	    }
+	?>
+		
+		<div class="c_content mt22">
+			<form action="" method="post" name="cert_form" id="cert_form">
+            <ul>
+				<li style="height:auto;">
+					<span>留言</span>
+					<textarea name="message" id="message" cols="45" rows="5" style="border:1px solid #f0f0f0; width: 100%"></textarea>
+				</li>
+			</ul>
+            <div class="uploading_img">
+				<div>
+                <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne" id="upload_img">
+                <input type="hidden" name="photo" id="photo">
+                </div>
+				<p>上传交易记录截图</p>
+			</div>
+            <input type="hidden" name="ordersn" id="ordersn">
+            </form>
+			<button id="btn_submit">提交</button>
+		</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Orders/buy_order')}", {id:{$id}}, function(data){
+		if(data.returnCode == 1){
+			$('#ordersn').val(data.result.order_sn);
+			$('.spinner').remove();
+		}
+	});
+	//图片上传
+	bind_uploadOne({
+		uploadUrl : '{:U("Api/Upload/uploadImg")}',
+		bind : '#upload_img',
+		dataType : 'JSON',
+		callback : function(data,el){
+			if(data.status == 1){
+				$(el).siblings('img').attr('src',data.url);
+				$(el).siblings('input').val(data.url);
+			}else{
+				alertMsg(data.info);
+			}
+		}
+	});
+  	$('#btn_submit').click(function(){
+		if($('input[name="photo"]').val() == ''){
+			alertMsg('请上传交易凭证');
+			return false;
+		}
+		AjaxPost('{:U("Api/Orders/confirm_pay")}','cert_form','#btn_submit',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg, function(){
+					location.href = "{:U('Wap/Wallet/buy_order/id/' . $id)}";
+				});
+			} else {
+				alertMsg(data.returnMsg);
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

@@ -1,0 +1,95 @@
+<include file="public/header"/>
+	<body class="spinner-hide"  style="background: #f1f1f2;">
+		<?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <include file="public/top"/>
+        <?php
+           }else{
+        ?>
+            <style type="text/css">
+            .service_banner{margin-top: 0}
+            .service_introduce{
+            	top:1.8rem;
+            }
+            </style>
+        <?php
+            }
+        ?>
+		<div style="width: 100%; background: #fff">
+			<div class="service_title fixed-contb">
+				<h3>问题类型</h3>
+				<form action="" method="post" name="form_sup" id="form_sup">
+				<h3>标题</h3>
+				<input type="text" name="title" id="title">
+				<h3>问题描述</h3>
+				<textarea name="content" rows="" cols="" id="content"></textarea>
+				<h3>相关截图</h3>
+				<div class="service_img">
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+					<div>
+                    <img src="__PUBLIC__/Wap/img/upload_img.png" class="uploadOne">
+                    <input type="hidden" name="photo[]">
+                    </div>
+				</div>
+                <input name="order_sn" type="hidden" value="{$order_sn}">
+	            </form>
+				<button id="btn_submit">提交</button>
+			</div>
+		</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	//图片上传
+	bind_uploadOne({
+		uploadUrl : '{:U("Api/Upload/uploadScreen")}',
+		bind : '.uploadOne',
+		dataType : 'JSON',
+		callback : function(data,el){
+			if(data.status == 1){
+				$(el).siblings('img').attr('src',data.url);
+				$(el).siblings('input').val(data.url);
+			}else{
+				alertMsg(data.info);
+			}
+		}
+	});
+  	$('#btn_submit').click(function(){
+		if($('input[name="title"]').val() == ''){
+			alertMsg('请填写标题！');
+			return false;
+		}
+		if($('textarea[name="content"]').val() == ''){
+			alertMsg('请填写问题描述');
+			return false;
+		}
+		AjaxPost('{:U("Api/Orders/appeal")}','form_sup','#btn_submit',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg, '', function(){
+					history.back();
+				});
+			} else {
+				alertMsg(data.returnMsg);
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

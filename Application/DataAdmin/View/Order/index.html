@@ -1,0 +1,348 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>订单管理</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                	<!--搜索开始-->
+                	<form name="search" action="{:U('index')}"  method="get">
+					<div class="search-box row">
+						<div class="col-md-9" style="width:90%">
+							<div class="form-group">
+								<span class="pull-left form-span">订单号</span>
+								<input type="text" name="ordersn" value="{:I('ordersn')}" class="form-control" placeholder="" style="width:160px;">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">店铺对外ID</span>
+								<input type="text" name="shop_id" value="{:I('shop_id')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">消费者对外ID</span>
+								<input type="text" name="userid" value="{:I('userid')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">收货人</span>
+								<input type="text" name="rname" value="{:I('rname')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">订单状态</span>
+								<select name="status" class="form-control">
+									<option value="" <if condition="$Think.request.state heq ''"> selected="selected"</if>>请选择状态</option>
+									<option value="0" <if condition="$Think.request.state heq '0'"> selected="selected"</if>>待付款</option>
+									<option value="1" <if condition="$Think.request.state heq '1'"> selected="selected"</if>>待发货</option>
+									<option value="2" <if condition="$Think.request.state heq '2'"> selected="selected"</if>>待收货</option>
+									<option value="3" <if condition="$Think.request.state heq '4'"> selected="selected"</if>>待评价</option>
+									<option value="4" <if condition="$Think.request.state heq '3'"> selected="selected"</if>>已完成</option>
+									<option value="-12" <if condition="$Think.request.state heq '-12'"> selected="selected"</if>>已退款</option>
+									<option value="-1" <if condition="$Think.request.state heq '-1'"> selected="selected"</if>>已取消</option>
+									<option value="-3" <if condition="$Think.request.state heq '-3'"> selected="selected"</if>>已删除</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn" type="submit"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+							</div>
+						</div>
+
+						<div class="col-md-5"  style="width:35%">
+						<!-- <div class="btn-group pull-right" role="group" aria-label="...">
+							<button type="submit" class="btn btn-default batchdel"><span class="glyphicon glyphicon-edit"></span> 退款</button>
+							<button type="submit" class="btn btn-default batchdel"><span class="sublist-icon glyphicon glyphicon-list"></span> 取消订单</button>
+							<button type="submit" class="btn btn-default batchdel"><span class="glyphicon glyphicon-trash"></span> 删除</button>
+						</div> -->
+						</div>
+                    </div>
+                    </form>
+                    <form name="search" action=""  method="post" id="serche">
+					<div class="search-box row">
+						<div class="col-md-7" style="width:65%">
+							<div class="form-group">
+								<span class="pull-left form-span">开始时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="st" name="btime" onclick="return Calendar('st');" value=""  placeholder="请选择开始时间" class="form-control" style="width:125px;"/>
+								</div>&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="pull-left form-span">结束时间:</span>
+								<div class="col-sm-4" style="width: 32%" >
+									<input type="text" id="et" onclick="return Calendar('et');" placeholder="请选择开始时间" value="" name="etime" class="form-control" style="width:125px;"/>
+								</div>&nbsp;&nbsp;&nbsp;&nbsp;
+							</div>
+							<div class="form-group">
+								<a href="javascript:;" id="ordersss" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 导出</a>
+							</div>
+							<div class="form-group">
+							<a href="javascript:;" id="orderbill" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 对账订单</a>
+							</div>
+						</div>
+						<div class="col-md-5"  style="width:35%">
+						</div>  
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5 text-center"><input type="checkbox" class="selectAll" /></th>
+									<th class="w10" style="text-align:center;">订单号</th>
+									<th class="w15" style="text-align:center;">商品名称</th>
+									<th class="w5"  style="text-align:center;">联系人</th>
+									<th class="w10" style="text-align:center;">联系电话</th>
+									<th class="w10" style="text-align:center;">支付金额</th>
+									<th class="w5" style="text-align:center;">运费</th>
+									<th class="w10" style="text-align:center;">下单时间</th>
+									<th class="w10" style="text-align:center;">订单状态</th>
+									<th style="text-align:center;">操作</th>
+								</tr>
+							</thead>
+
+						<notempty name="data">
+							<tbody>
+								<volist name="data" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center"><input type="checkbox" name="ids[]" value="{$vo.id}" class="selectAll-item" /></td>
+										<td class="text-center">{$vo.ordersn}</td>
+										<td class="text-center">{$vo.goods_name}</td>
+										<td class="text-center">{$vo.rname}</td>
+										<td class="text-center">{$vo.mobile}</td>
+										<td class="text-center">{$vo.amount}</td>
+										<td class="text-center">{$vo.express_fee}</td>
+										<td class="text-center">{$vo.ctime|date='Y-m-d H:i:s',###}</td>
+										<td class="text-center">{$vo.status}</td>
+										<td class="text-center">
+											<a href="javascript:;" data="{$vo.orderid}" class="orderprocess">详细</a>
+											<!-- <a href="javascript:;" data="{$vo.id}" class="del">退款</a>
+											<span class="text-explode">|</span> -->
+											<if condition="$vo['status'] eq '待付款'">
+											<span class="text-explode">|</span>
+											<a href="javascript:;" data="{$vo.orderid}" class="cancel">取消订单</a>
+											</if>
+											<!-- <span class="text-explode">|</span>
+											<a href="javascript:;" data="{$vo.orderid}" class="del">删除</a> -->
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="10">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="10" class="text-center">
+										没有数据啦！
+									</td>
+								</tr>
+						</notempty>
+
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script src="__PUBLIC__/Admin/layer/layer.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(document).on("click" ,'.del',function(){
+			var tt=$(this);
+            var id = $(this).attr('data');
+            layer.confirm('确定删除？', {
+				  btn: ['确定','取消'] //按钮
+				}, function(){
+					$.ajax({
+						url:"{:U('delGoods')}",
+						data:{
+							"id"     :id
+						},
+						type:"post",
+						dataType:"json",
+						success:function(data){
+							layer.closeAll();
+								if (data.code=='S')
+								{
+									tt.parents('tr').remove();
+									layer.msg('删除成功');
+
+								}else{
+									layer.msg('删除失败');
+								}
+
+
+							}
+						});
+				}
+			);
+        });
+		$('.batchchage').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			});
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+
+			$.ajax({
+				url:"{:U('setGoodsStatus')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+
+
+				}
+			});
+		})
+		$('.hotchage').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			});
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+
+			$.ajax({
+				url:"{:U('setGoodsHot')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+
+
+				}
+			});
+		})
+		$('.recommendchage').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			});
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+
+			$.ajax({
+				url:"{:U('setGoodsRecommed')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+
+
+				}
+			});
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(function(){
+	    var url = "{:U("orderprocess",'','')}";
+	    $(".orderprocess").click(function(){
+            var orderid = $(this).attr('data');
+	        url += "/orderid/"+orderid;
+	        var index = layer.open({
+	            type: 2,
+	            title:"订单详情",
+	            content: url,
+	            area: ['800px', '650px'],
+	            skin: 'layui-layer-rim',
+	            maxmin: true,
+	            scrollbar: true,
+	        });
+	        layer.full(index);
+	    });
+	});
+	$(function(){
+		$(document).on("click" ,'.cancel',function(){
+			var tt=$(this);
+            var orderid = $(this).attr('data');
+            layer.confirm('确定取消？', {
+				  btn: ['确定','取消'] //按钮
+				}, function(){
+					$.ajax({
+						url:"{:U('cancel')}",
+						data:{
+							"orderid"     :orderid
+						},
+						type:"post",
+						dataType:"json",
+						success:function(data){
+							layer.closeAll();
+							if (data.returnCode=='SUCCESS')
+							{
+								tt.parents('tr').remove();
+								layer.msg('取消成功');
+
+							}else{
+								layer.msg('取消失败');
+							}
+						}
+					});
+				}
+			);
+        });
+	})
+	
+	
+	
+	 $('#ordersss').click(function(){
+        $('#serche').attr('action','{:U('DataAdmin/Exp/Orders')}');
+        $('#serche').submit();
+    });
+	$('#orderbill').click(function(){
+		$('#serche').attr('action','{:U('DataAdmin/Exp/OrderBill')}');
+		$('#serche').submit();
+	});
+
+</script>
+<include file="Public/footer"/>

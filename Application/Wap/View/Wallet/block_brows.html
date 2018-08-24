@@ -1,0 +1,46 @@
+<include file="public/header"/>
+<body style="background: #f1f1f2;">
+	<?php
+	    $agent = $_SERVER['HTTP_USER_AGENT'];
+	    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<div class="header">
+			<div class="goback" onClick="goBack()"></div>
+			<div class="title">{$page_title}</div>
+		</div>
+	<?php
+	    }else{
+	?>
+		<style type="text/css">.copy_top{display: none}</style>
+	<?php
+	    }
+	?>
+	
+	<div class="copy_top"></div>
+	<div class="block_main">
+		<div><h1>最新</h1></div>
+	</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Wallet/blockBrowse')}", {}, function(data){
+		if(data.returnCode == 1){
+			var html = '';
+			$.each(data.result.list,function(idx,block){
+				html +=   '<div class="new_block"><div><p>Block</p><p>#' + block.block_id + '</p><p>' + block.add_time + '</p></div>'
+						+ '<ul>'
+						+ '<li><span>当前区块 Hash:</span><span>' + block.block_hash + '</span></li>'
+						+ '<li><span>上一区块 Hash:</span><span>' + block.pre_hash + '</span></li>'
+						
+						+ '<li><span>区块大小</span><span>' + block.block_size + '</span></li>'
+						+ '<li><span>加密签名</span><span>' + block.sign + '</span></li>'
+						+ '</ul></div>';
+			});
+			$('.block_main').html(html);
+			$('.spinner').remove();
+		}
+	});
+});
+</script>
+</body>
+</html>

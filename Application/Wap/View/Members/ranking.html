@@ -1,0 +1,52 @@
+<include file="public/header"/>
+	<body style="background: #f1f1f2;">
+	<?php
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+        if(strpos($agent,"Html5Plus") === false){
+    ?>
+		<div class="header" style="position:relative;">
+			 <div class="goback" onclick="goBack();"></div>
+            <div class="title">{$page_title}</div>
+		</div>
+    <?php
+       }else{
+    ?>
+        <style type="text/css">.top_main{margin-top: 0}</style>
+    <?php
+        }
+    ?>
+		
+		<ul class="top_main">
+		</ul>
+		<include file="public/nav"/>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Members/ranking')}", {}, function(data){
+		if(data.returnCode == 1){
+			var html = '';
+			if(data.result == undefined){
+				html += '<li style="text-align:center;">暂无数据！</li>';
+			}
+			$.each(data.result,function(idx,member){
+				html += '<li>';
+				html += '<div class="head_img">';
+				html += '<img src="' + member.headimg + '"/>';
+				html += '</div>';
+				html += '<h4>' + member.nickname + '</h4>';
+				html += '<div class="top_img">';
+				if(idx < 3){
+					html += '<img src="__PUBLIC__/Wap/img/top_' + (idx+1) + '.png"/>';
+				}
+				html += '</div>';
+				html += '<p>直推<span>' + member.num + '</span>人</p>';
+				html += '</li>';
+			});
+			$('.top_main').html(html);
+			$('.spinner').remove();
+		}
+	});
+});
+</script>
+	</body>
+</html>

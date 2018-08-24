@@ -1,0 +1,98 @@
+<include file="public/header"/>
+<style type="text/css">
+	footer i {
+	    position: absolute;
+	    top: 1px;
+	}
+</style>
+	<body>
+		<div class="fpga_box">
+			<div class="mall_top">
+				<span class="hover tab_millshop">机组商城</span>
+				<span class="tab_shop">消费商城</span>
+			</div>
+			
+			<div class="swiper-container" style="margin: 1rem 0 0 0;">
+			    <div class="swiper-wrapper">
+			       	<div class="fpga_present swiper-slide">
+						<p class="show">
+							<img src="__PUBLIC__/Wap/img/fpga.png" />
+							<a href="{:U('Wap/Shop/mill', array('type' => 1))}"></a>
+						</p>
+				    </div>
+				    <div class="fpga_present swiper-slide">
+						<p class="show">
+							<img src="__PUBLIC__/Wap/img/fpga2.png" />
+							<a href="{:U('Wap/Shop/mill', array('type' => 2))}"></a>
+						</p>
+				    </div>
+				    <div class="fpga_present swiper-slide">
+						<p class="show">
+							<img src="__PUBLIC__/Wap/img/fpga3.png" />
+							<a href="{:U('Wap/Shop/mill', array('type' => 3))}"></a>
+						</p>
+				    </div>
+				    <div class="fpga_present swiper-slide">
+						<p class="show">
+							<img src="__PUBLIC__/Wap/img/fpga4.png" />
+							<a href="{:U('Wap/Shop/mill', array('type' => 4))}"></a>
+						</p>
+				    </div>
+				    <div class="fpga_present swiper-slide">
+						<p class="show">
+							<img src="__PUBLIC__/Wap/img/fpga5.png" />
+							<a href="{:U('Wap/Shop/mill', array('type' => 5))}"></a>
+						</p>
+				    </div>
+			    <!-- 如果需要分页器 -->
+			   
+				</div>
+			 <div class="swiper-pagination" style="margin-bottom: 0rem;"></div>
+		</div>
+		<div class="fpga_wenzi" style="margin-bottom: 1.8rem;">
+			<p>生活中产生的光电能量通过您的手机传输到云端，云端通过光电机组性能自动开采出光电链，开采光电链过程中不会消耗手机任何性能及损伤您手机设备，我们通过光和电再生能源产生区块链用于节能环保，环保再生，减少能源开采及浪费。</p>
+		</div>
+		<div>.</div>
+		<include file="public/nav"/>
+		<script src="__PUBLIC__/Wap/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>	
+		<script>
+
+			$(function(){
+				pageInit();
+				var mySwiper = new Swiper ('.swiper-container', {
+				direction: 'horizontal',
+				loop: true,
+
+				// 如果需要分页器
+				pagination: {
+				  el: '.swiper-pagination',
+				},
+			});
+			})
+
+
+			function pageInit(){
+				tabBindEvent();
+			}
+
+			function tabBindEvent(){
+				//切换选项卡
+				$('.tab_millshop, .tab_shop').click(function(){
+					
+					if($(this).hasClass('tab_millshop')){
+						$('.tab_shop').removeClass('hover');
+						$('#sellform').show();
+						$('#buyform').hide();
+					}else{
+						alertMsg('即将开放');
+						return;
+						$('.tab_millshop').removeClass('hover');
+						$('#sellform').hide();
+						$('#buyform').show();
+					}
+					$(this).addClass('hover');
+				})
+			}
+		</script>
+	</body>
+</html>

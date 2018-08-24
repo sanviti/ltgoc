@@ -1,0 +1,126 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<link href="__PUBLIC__/DataAdmin/css/uploadfile.css" rel="stylesheet">
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>价格管理</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+		             <div class="col-sm-10">
+						<form action="{:U('savePrice')}" class="form-inline" method="post" id="serche" class="form-inline">
+						<div class="form-group"style="margin-top: 3px;">
+							<label for="title" class="sr-only">今日价格设置</label>&nbsp;&nbsp;&nbsp;&nbsp;
+							<strong  style="font-size:16px;">今日价格设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+							<input type="text" class="form-control input-sm" id="rname" placeholder="输入KEY今日价格" name="coinPrice" size="20"style="font-size:14px;"></br>
+						</div>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button button type="submit" class="btn btn-success btn-sm" style="font-size:14px;background-color:rgba(0,120,254,1);height:30px;width:90px;text-align:center;padding:0px;vertical-align:middle ;margin-right:-5px;">添加</button>
+						</form>
+					 </div>
+					 <br>
+					<div class="col-sm-10">
+						<form action="{:U('save_next_price')}" class="form-inline" method="post" id="serche" class="form-inline">
+						<div class="form-group"style="margin-top: 3px;">
+							<label for="title" class="sr-only">今日价格设置</label>&nbsp;&nbsp;&nbsp;&nbsp;
+							  <strong  style="font-size:16px;">明日价格设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+							  <input type="text" class="form-control input-sm" id="rname" placeholder="输入KEY明日价格" name="coinPrice"  size="20"style="font-size:14px;"></br>
+						</div>						
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button button type="submit" class="btn btn-success btn-sm" style="font-size:14px;background-color:rgba(0,120,254,1);height:30px;width:90px;text-align:center;padding:0px;vertical-align:middle ;margin-right:-5px;">添加</button>
+						</form>
+					</div>	
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th style="text-align:center;">#</th>
+									<th style="text-align:center;">KEY价格</th>
+									<th style="text-align:center;">记录时间</th>
+									<th style="text-align:center;">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center">{$vo.id}</td>	
+										<td class="text-center">
+											{$vo.price}
+										</td>
+										<td class="text-center">
+											{$vo.ctime|date='Y-m-d H:i:s',###}
+										</td>										
+										<td class="text-center">
+											<if condition="$vo.editable eq 1 ">
+												 <input name="priceid" value="{$vo.id}" id="priceid" type="hidden" />
+												 <input name="editprice" value="{$vo.price}" id="editprice" />
+												 <p class="btn btn-success btn-sm editprice" style="font-size:14px;background-color:rgba(0,120,254,1);height:23px;width:60px;text-align:center;padding:0px;vertical-align:middle ;margin-right:-5px;">修改</p>
+												 <else/>
+												  ----
+											</if>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="11">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="11" class="text-center">
+										没有数据啦！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script src="__PUBLIC__/DataAdmin/js/layer/layer.js"></script>
+<script type="text/javascript">
+$(".editprice").click(function(){
+	var editprice = $('#editprice').val();
+	var priceid = $('#priceid').val();
+	$.post("{:U('editprice')}",{'editprice':editprice,'priceid':priceid},function(d){
+		if(d.returnCode=="SUCCESS"){
+			layer.msg(d.returnMsg);
+		}else{
+			layer.msg(d.returnMsg);
+		}
+		setTimeout("location.href = '__ACTION__'",2000);
+	},"json");
+})
+</script>
+<include file="Public/footer"/>

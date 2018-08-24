@@ -1,0 +1,117 @@
+<include file="public/header"/>
+<body>
+
+	<div class="purse_nav">
+
+	<?php
+	    $agent = $_SERVER['HTTP_USER_AGENT'];
+	    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<h1>{$page_title}</h1>
+	<?php
+	    }else{
+	?>
+		<h1></h1>
+	<?php
+	    }
+	?>
+
+		<img src="__PUBLIC__/Wap/img/logo.png" alt=""/>
+		<div>
+			<span>总计PEC:</span>
+			<ul>
+				<li id="opc_total">0</li>
+				<li id="usd"></li>
+				<li id="cny"></li>
+			</ul>
+		</div>
+		<div style="border:1px solid #333333;">
+			<span style="margin-right: .2rem; color: #666">钱包地址:</span>
+			<span id="address" style="text-align: center;"></span>
+			<a href="javascript:;" class="js-copy">点击复制</a>
+		</div>
+	</div>
+	<div class="purse_mend">
+		<div>
+			<left>可用PEC:</left>
+			<right id="opc"></right>
+		</div>
+		<p></p>
+		<div>
+			<left>冻结PEC:</left>
+			<right id="opcl"></right>
+		</div>
+	</div>
+	<div class="purse_forms" style="margin-bottom: 2.8rem;">
+		<ul>
+			<li>
+				<img src="__PUBLIC__/Wap/img/purse_1.png"/>
+				<p>PEC账单</p>
+				<a href="{:U('Wap/Wallet/Bill')}">查看</a>
+				<p></p>
+			</li>
+			<li style="background: #f0f0ee;">
+				<img src="__PUBLIC__/Wap/img/purse_2.png"/>
+				<p>订单委托</p>
+				<a href="{:U('Wap/Wallet/myOrder')}">查看</a>
+				<p></p>
+			</li>
+			<li>
+				<img src="__PUBLIC__/Wap/img/purse_3.png"/>
+				<p>我的机组</p>
+				<a href="{:U('Wap/Wallet/millList')}">查看</a>
+				<p></p>
+			</li>
+			<li style="background: #f0f0ee;">
+				<img src="__PUBLIC__/Wap/img/purse_4.png"/>
+				<p>区块浏览</p>
+				<a href="{:U('Wap/Wallet/block_brows')}">查看</a>
+				<p></p>
+			</li>
+		</ul>
+	</div>
+	<include file="public/nav"/>
+<include file="public/footer"/>
+
+<script src="__PUBLIC__/Wap/js/clipboard.min.js"></script>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Wallet/index')}", {}, function(data){
+		if(data.returnCode == 1){
+			$('#opc_total').html(data.result.opc_total);
+			$('#usd').html('=' + data.result.usd + ' USD');
+			$('#cny').html('=' + data.result.cny + ' RMB');
+			$('#opc').html(data.result.opc);
+			$('#opcl').html(data.result.opcl);
+			$('#address').html(data.result.address);
+			$('.spinner').remove();
+
+			jsCopy(data.result.address);	
+		}
+	});
+});
+
+
+function jsCopy(adr){
+	var clipboard = new ClipboardJS('.js-copy',{
+		text: function() {
+	        return adr;
+	    },
+	});
+	clipboard.on('success', function(e) {
+	    // console.info('Action:', e.action);
+	    // console.info('Text:', e.text);
+	    // console.info('Trigger:', e.trigger);
+	    alertMsg('复制成功');
+	    e.clearSelection();
+	});
+
+	clipboard.on('error', function(e) {
+	    // console.error('Action:', e.action);
+	    // console.error('Trigger:', e.trigger);
+	});
+
+}
+</script>
+</body>
+</html>

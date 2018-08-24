@@ -1,0 +1,255 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+    <include file="Public/left"/>
+    <div class="right-product right-full">
+        <!---rightcontent---->
+        <div class="container-fluid">
+            <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                        <h4>分类管理</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+                    <form name="search" action="{:U('userlist')}" id="searchForm" method="post">
+                        <!--<div class="search-box row">-->
+                            <!--<div class="col-md-8">-->
+                                <!--<div class="form-group">-->
+                                    <!--<span class="pull-left form-span">姓名:</span>-->
+                                    <!--<input type="text" name="username" value="{:I('username')}" class="form-control" placeholder="">-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<span class="pull-left form-span">登陆账号</span>-->
+                                    <!--<input type="text" name="user" value="{:I('user')}" class="form-control" placeholder="">-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<span class="pull-left form-span">状态:</span>-->
+                                    <!--<select name="state" class="form-control">-->
+                                    <!--<option value="" <if condition="$Think.request.state heq ''"> selected="selected"</if>>请选择</option>-->
+                                    <!--<option value="0" <if condition="$Think.request.state heq '0'"> selected="selected"</if>>禁用</option>-->
+                                    <!--<option value="1" <if condition="$Think.request.state heq '1'"> selected="selected"</if>>正常</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+
+                                <!--<div class="form-group">-->
+                                    <!--<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="col-md-8" style="padding-left: 0px;">
+                                <div class="btn-group " style="float:left; margin-left: 0px;" role="group" aria-label="...">
+                                    <!--<a href="{:U('userAdd')}" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span>  更新消费者归属地</a>-->
+                                    <!--<a href="{:U('money')}" class="btn btn-default"><span class="glyphicon glyphicon-random"></span>  交易额折线图</a>-->
+
+                                    <!-- <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 编辑</button> -->
+                                    <a  href="{:U('catAdd')}" class="btn btn-default batchdel"><span class="glyphicon glyphicon-plus"></span> 添加分类</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--搜索结束-->
+                    <div class="clearfix"></div>
+                    <!--内容开始-->
+                    <form id="listForm" method="post">
+                        <div class="table-margin">
+                            <table class="table table-bordered table-header table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="w10">ID</th>
+                                    <th class="w10">分类名称</th>
+                                    <th class="w5">排序</th>
+                                    <th class="w15">操作</th>
+                                </tr>
+                                </thead>
+
+                                <notempty name="data">
+                                    <tbody>
+                                    <volist name="data" id="vo" key="val">
+                                        <tr class="long-td">
+                                            <td>{$vo.cat_id}</td>
+                                            <td>
+                                                    <for start="1" end="$vo.level" name="i">
+                                                       &nbsp;&nbsp;&nbsp;|_
+                                                    </for>
+                                                {$vo.cat_name}
+                                            </td>
+                                            <td class="text-center">
+												<input type="text" class="form-control sort" id="sort" name="sort" value="{$vo.sort}" data-id="{$vo.cat_id}">
+											</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                <a href="{:U('catAdd',array('parent_id'=>$vo['cat_id']))}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> 添加子分类</a>
+                                                <a href="{:U('catAdd',array('cat_id'=>$vo['cat_id']))}"  class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</a>
+                                                <a href="javascript:void(0);" class="btn btn-danger" id="{$vo.cat_id}"><span class="glyphicon glyphicon-trash"></span> 删除</a>
+                                                <a href="javascript:void(0);" class="btn btn-success recommend" id="{$vo.cat_id}"><span class="glyphicon glyphicon-edit" style="margin-right:5px;"></span><if condition="$vo['is_good'] eq 1">推荐<else/>取消推荐</if></a>
+                                               <!--  <a href="javascript:void(0);" class="btn btn-success default" id="{$vo.cat_id}"><span class="glyphicon glyphicon-edit" style="margin-right:5px;"></span><if condition="$vo['is_def'] eq 1">取消默认关键<else/>设置默认关键</if></a> -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="10">
+                                            <div class="pull-right">
+                                                <nav class="pagination">{$page}</nav>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <else/>
+
+                                    <tr>
+                                        <td colspan="10" class="text-center">
+                                            没有数据拉！
+                                        </td>
+                                    </tr>
+                                </notempty>
+
+                            </table>
+                        </div>
+                    </form>
+                    <!--内容结束-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $("#batchdel").click(function () {
+            location.reload()
+        })
+        $(".btn-danger").click(function(){
+            var catid=$(this).attr("id");
+            confirm('确定执行删除?',function(){
+	            	$.ajax({
+	                    url:"__ROOT__/index.php/DataAdmin/GoodsCategory/catDelet",
+	                    data:{cat_id:catid},
+	                    dataType:"json",
+	                    type:"post",
+	                    success:function(msg){
+	                        if(msg.returnCode=="SUCCESS"){
+	                            location.reload();
+	                        }
+	                        alert(msg.returnMsg);
+	                    }
+	                })
+                })
+        });
+      $(".recommend").click(function(){
+    	  var catid = $(this).attr("id");
+    	  var text = $(this).text();
+    	  if(text=="推荐"){
+    		  var is_good = 0;
+    	  }else if(text=="取消推荐"){
+    		  var is_good = 1; 
+    	  }
+    	  $.post("{:U('set_recommend')}",{'catid':catid,'is_good':is_good},function(d){
+    		  layer.msg(d.returnMsg);
+    		  window.location.reload();
+    	  },'json');
+      })
+      
+      //设置搜索栏关键词
+      /* $(".default").click(function(){
+    	  var catid = $(this).attr("id");
+    	  var text = $(this).text();
+    	  if(text=="取消默认关键"){
+    		  var is_def = 0;
+    	  }else if(text=="设置默认关键"){
+    		  var is_def = 1; 
+    	  }
+    	  $.post("{:U('set_default')}",{'catid':catid,'is_def':is_def},function(d){
+    		  layer.msg(d.returnMsg);
+    		  window.location.reload();
+    	  },'json');
+      }) */
+      
+	//修改排序
+	  $(document).on("blur" ,'#sort',function(){
+		   var id = $(this).data("id");
+		   var sort = $(this).val();
+		   $.post("{:U('sort')}",{'catid':id,'sort':sort},function(d){
+			   layer.msg(d.returnMsg);
+		   },"json");
+	  })
+        /*//表单验证
+         checkForm('#form-wizard', {
+         callback:function(){
+         location.reload();
+         }
+         });
+         $('#searchBtn').click(function(){
+         $('#searchForm').submit();
+         })
+         //删除
+         bind_delete_action('.del');
+         //批量删除
+         bind_batch_delete('.batchdel');
+         //批量更改状态
+         bind_batch_change('.batchchage');
+
+         function bind_batch_delete(selector){
+         $(selector).click(function(){
+         if(!betch_check()){
+         msg('请选择要删除的数据');
+         return false;
+         }
+         confirm('确定执行批量删除用户信息？操作不能撤回!',function(){
+         send('{:U("BatchDelUser")}', $('#listForm').serialize());
+         })
+
+         })
+         }
+
+         function bind_batch_change(selector){
+         $(selector).click(function(){
+         if(!betch_check()){
+         msg('请选择要修改的数据');
+         return false;
+         }
+         var data = $('#listForm').serialize();
+         data = data+'&state='+$(this).data('value');
+         confirm('确定执行批量修改用户信息？',function(){
+         send('{:U("batchChangeUser")}', data);
+         })
+
+         });
+         }
+
+         function send(url, data){
+         var params = {
+         url : url,
+         params : data,
+         callback : function(data){
+         var msgCallBack;
+         if(data.status == 1){
+         msgCallBack = function(){
+         window.location.reload();
+         }
+         }
+         msg(data.info,msgCallBack);
+         }
+         }
+         ajax(params);
+         }
+
+         function betch_check(){
+         if($('.selectAll-item:checkbox:checked').length > 0){
+         return true;
+         }else{
+         return false;
+         }
+         }*/
+
+    })
+</script>
+<include file="Public/footer"/>

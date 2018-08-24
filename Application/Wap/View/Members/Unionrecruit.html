@@ -1,0 +1,29 @@
+<include file="public/header"/>
+	<body>
+	 <?php
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+        if(strpos($agent,"Html5Plus") === false){
+    ?>
+		<include file="public/top"/>
+    <?php
+       }else{
+    ?>
+        <style type="text/css">.union-box{margin-top: 0}</style>
+    <?php
+        }
+    ?>
+		<div class="union-box">
+		</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Members/share')}", {}, function(data){
+		if(data.returnCode == 1){
+			$('.union-box').html('<img src="' + data.result.qrcode + '"/>');
+			$('.spinner').remove();
+		}
+	});
+});
+</script>
+	</body>
+</html>

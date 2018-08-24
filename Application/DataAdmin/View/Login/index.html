@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登录</title>
+<link href="__PUBLIC__/DataAdmin/css/body.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/DataAdmin/css/login.css" rel="stylesheet" type="text/css">
+<script>
+    if(window.top!==window.self){window.top.location=window.location};
+</script>
+</head>
+<body>
+<div class="top"></div>
+<div class="kuang">
+    <div class="txt-1">
+        <h1>后台管理系统</h1>
+    </div>  
+    <div class="txt-2">
+        不积跬步，无以至千里。不积小流，无以成海。
+    </div> 
+    <div class="nei">
+
+        <div class="nei-2 marign">
+            <form action="" method="post">
+                <input class="sy-1" name="username" id="username" type="text" value="" placeholder="用户名"/>
+                <input class="sy-1" name="password" id="password" placeholder="密码" type="password"><br/>
+                <input name="vcode" class="sy-1" id="vcode" type="text" nullmsg="请输入验证码" datatype="*" placeholder="验证码" maxlength="15"><br/>
+                <img src="{:U("vcode",'','','')}" class="vcodeimg"/><br/><br/>
+                <input class="sy-2" name="" id="btn_login" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录"><br/>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<js href="__PUBLIC__/DataAdmin/js/jquery-1.11.1.min.js" />
+<js href="__PUBLIC__/DataAdmin/js/plugins/layer/layer.min.js" />
+<script>
+    document.onkeydown=function(event){
+       e = event ? event :(window.event ? window.event : null);
+       if(e.keyCode==13){
+             $('#btn_login').click();
+       }
+    }
+    function resetVcode(){
+      $('.vcodeimg').attr('src','{:U("vcode",'','','')}/'+Math.random());
+    }
+    $(function () {
+       $('body').height($(window).height()); 
+       $(document).on('click','.vcodeimg',resetVcode);
+
+       $('#btn_login').click(function(){
+           var u=$('#username');
+           var p=$('#password');
+           var v=$('#vcode');
+           if (u.val() == "") {
+              layer.msg('请输入用户名', {offset: '10px'});
+              u.focus();
+              return false;
+           }
+           if (p.val() == "") {
+              layer.msg('请输入密码', {offset: '10px'})
+              p.focus();
+              return false;
+           }
+           if (v.val() == "") {
+              layer.msg('请输入验证码', {offset: '10px'})
+              v.focus();
+              return false;
+           }
+
+           $.ajax({
+              url: '{:U("dologin")}',
+              type: "post",
+              data:{
+                     'user':u.val(),
+                     'password':p.val(),
+                     'vcode':v.val(),
+                     'url' : '{:I("url")}'
+                     },
+              async: false,
+              dataType:'json',
+              error:function(){
+                layer.msg('无法访问数据库，请检查你的数据库配置',function(){})
+              },
+              success:function(data){
+                  if(data.status==1){
+                      location.href=data.url;
+                  }else{                 
+                      resetVcode();        
+                      layer.msg(data.info)
+                  }
+              }
+           });
+       });
+   });
+
+</script>
+</html>

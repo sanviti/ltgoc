@@ -1,0 +1,236 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/jedate/jedate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                    <h4>添加首页推荐</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                <!--内容开始-->
+                    <form class="form-horizontal" method="post" action="{:U('addRe_to')}"  id="signupForm">
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">推荐来源</label>
+	                            <div class="col-sm-6" style="width: 250px;">
+	                                <select name="type" class="form-control fromtype"  onchange="chose_type(this.value)">
+										<option value="" >请选择</option>
+										<option value="1">App商品ID</option>
+										<option value="2">页面</option>
+										<option value="3">分类列表</option>
+										<option value="4">好物列表</option>
+										<option value="6">品牌列表</option>
+									</select>
+	                            </div>
+	                        </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+	                            <label class="col-sm-2 control-label">所属栏位</label>
+	                            <div class="col-sm-6" style="width: 250px;">
+	                                <select name="lid" class="form-control fromtype" id="lid">
+										<option value="" >请选择</option>
+										<option value="1">1号栏位</option>
+										<option value="2">2号栏位</option>
+										<option value="3">3号栏位</option>
+										<option value="4">4号栏位</option>
+										<option value="5">5号栏位</option>
+										<option value="6">6号栏位</option>
+										<option value="7">7号栏位</option>
+										<option value="8">8号栏位</option>
+										<option value="9">9号栏位</option>
+										<option value="10">10号栏位</option>
+										<option value="11">11号栏位</option>
+										<option value="12">12号栏位</option>
+										<option value="13">13号栏位</option>
+										<option value="14">14号栏位</option>
+										<option value="15">15号栏位</option>
+										<option value="16">16号栏位</option>
+										<option value="17">17号栏位</option>
+										<option value="18">18号栏位</option>
+										<option value="19">19号栏位</option>
+										<option value="20">20号栏位</option>
+										<option value="21">21号栏位</option>
+										<option value="22">22号栏位</option>
+										<option value="23">23号栏位</option>
+										<option value="24">24号栏位</option>
+										<option value="25">25号栏位</option>
+										<option value="26">26号栏位</option>
+										<option value="27">27号栏位</option>
+										<option value="28">28号栏位</option>
+										<option value="29">29号栏位</option>
+										<option value="30">30号栏位</option>
+										<option value="31">80%激励位</option>
+										<option value="32">品牌专区位</option>
+										<option value="33">好物专区位</option>
+									</select>
+	                            </div>
+	                        </div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">品牌名称</label>
+							<div class="col-sm-2">
+								 <select name="brand_id" class="form-control fromtype" id="brand_id">
+								   <option value="">请选择</option>
+								   <volist name="brand" id="vv">
+								       <option value="{$vv.id}">{$vv.name}</option>
+								   </volist>
+								   <option></option>
+								 </select>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">好物名称</label>
+							<div class="col-sm-2">
+								 <select name="found_id" class="form-control fromtype" id="found_id">
+								   <option value="">请选择</option>
+								   <volist name="found" id="vv">
+								       <option value="{$vv.id}">{$vv.name}</option>
+								   </volist>
+								   <option></option>
+								 </select>
+							</div> 
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">推荐名称</label>
+							<div class="col-sm-1 one">
+								<input type="text"  name="title"  id="title" dataType="*" placeholder="名称" class="form-control" style="width:100px;" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">推荐描述</label>
+							<div class="col-sm-1 one">
+								<input type="text"  name="des"  id="des" dataType="*" placeholder="描述" class="form-control" style="width:100px;" >
+							</div>
+						</div>
+						<div class="form-group" id="type" style="display: none;;">
+							<label class="col-sm-2 control-label">分类ID</label>
+							<div class="col-sm-1 one" style="width: 250px;">
+									<select name="cid" class="form-control  fromtype" >
+									<option value="" >请选择</option>
+									<volist name="data"  key="k" id="v">
+										<option <if condition="$v.parent_id eq 0">value="0"<else/>value="{$v.cat_id}"</if>><if condition="$v.parent_id neq 0">__|</if>{$v.cat_name}</option>
+									</volist>
+									</select>
+
+								</select>
+							</div>
+						</div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品ID：</label>
+                                <div class="col-sm-1 one">
+									<input type="text"  name="goodsid"  id="goodsid" dataType="*" placeholder="商品ID" class="form-control" style="width:100px;" value="{$goodsid}" >
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">显示截止时间：</label>
+                                <!-- <div class="col-sm-2">
+									<input type="text" id="et" onclick="return Calendar('et');" placeholder="请选择下架时间" value="" name="etime" class="form-control"/>
+									<p class="datep"><input class="datainp" id="dateinfo" type="text" placeholder="请选择"  readonly></p>
+								</div> -->
+								<div class="col-sm-2">
+									<p class="datep" style="display:none;"><input class="datainp" id="indate" type="text" placeholder="只显示年月" value=""  readonly></p>
+									<p class="datep">
+									  <input class="form-control" id="dateinfo" type="text" name="etime" placeholder="请选择"  value="" readonly>
+									</p>
+									
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">让利比列：</label>
+                                <div class="col-sm-2">
+									<select name="showrate" class="form-control fromtype">
+										<option value="">请选择</option>
+										<option value="1">显示</option>
+										<option value="0">隐藏</option>
+									</select>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品链接：</label>
+                                <div class="col-sm-1 one">
+									<input type="text"  name="link" id="link" dataType="*" placeholder="商品链接" class="form-control" style="width:560px;">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">展示图片</label>
+                                <div class="col-sm-6">
+                                    <img id="upload_img" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+									<input type="hidden" name="pic" id="img"/>
+									<span id="picc"></span>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success" id="btn" >提交</button>
+                                    <a class="btn btn-danger" href="">取消</a>
+                                </div>
+                            </div>
+                        </form>
+                    
+                <!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+    	$('.submitButton').click(function(){
+    		$('#signupForm').submit();
+    	})
+      //上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadRecommend/")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			console.log(data);
+	   			if(data.status == 1){
+					$('#img').val(data.url);
+					var root= '__ROOT__';
+					var img='<img src="'+root+data.url+'" width="100" height="100">';
+					$("#picc").append(img);
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+	    jeDate({
+			dateCell:"#dateinfo",
+			format:"YYYY-MM-DD hh:mm:ss",
+			isinitVal:true,
+			isTime:true, //isClear:false,
+			minDate:"2014-09-19 00:00:00",
+			okfun:function(val){
+				$("#dateinfo").val(val);
+			}
+		})
+
+    })
+
+	function  chose_type(type){
+		if(type==3){
+			$("#type").show();
+		}else{
+			$("#type").hide();
+		}
+	}
+</script>
+<include file="Public/footer"/>

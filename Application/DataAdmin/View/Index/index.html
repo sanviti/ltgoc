@@ -1,0 +1,318 @@
+﻿<?php
+//检测PHP设置参数
+
+function show($varName)
+{
+
+    switch($result = get_cfg_var($varName))
+    {
+        case 0:
+            return '<font color="red">×</font>';
+
+        break;
+        case 1:
+            return '<font color="green">√</font>';
+        break;
+        default:
+            return $result;
+        break;
+    }
+
+}
+?>
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+        
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- title -->
+                <div class="info-title">
+                  <div class="pull-left">
+                    <h4><strong>{:session('dataAdmin.user')}，</strong></h4>
+                    <p>欢迎登录管理系统！</p>
+                  </div>
+                  <div class="time-title pull-right">
+                      <div class="year-month pull-left">
+                        <p id="week">---</p>
+                        <p id="date"><span>----</span>年--月--日</p>
+                      </div>
+                      <div class="hour-minute pull-right">
+                         <strong id="time">--:--:--</strong>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+
+                
+                <div class="content-list">
+                    
+                    <!--<div class="row">
+                      <div class="col-md-3">
+                        <div class="content">
+                           <div class="w30 left-icon pull-left">
+                              <span class="glyphicon glyphicon-file blue"></span>
+                           </div>
+                           <div class="w70 right-title pull-right">
+                           <div class="title-content">
+                               <p>待办事项</p>
+                               <h3 class="number">90</h3>
+                               <button class="btn btn-default">待我处理<span style="color:red;">12</span></button>
+                           </div>
+                           </div>
+                           <div class="clearfix"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="content">
+                           <div class="w30 left-icon pull-left">
+                              <span class="glyphicon glyphicon-file violet"></span>
+                           </div>
+                           <div class="w70 right-title pull-right">
+                           <div class="title-content">
+                               <p>待办事项</p>
+                               <h3 class="number">90</h3>
+                               <button class="btn btn-default">待我处理<span style="color:red;">12</span></button>
+                           </div>
+                           </div>
+                           <div class="clearfix"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="content">
+                           <div class="w30 left-icon pull-left">
+                              <span class="glyphicon glyphicon-file orange"></span>
+                           </div>
+                           <div class="w70 right-title pull-right">
+                           <div class="title-content">
+                               <p>待办事项</p>
+                               <h3 class="number">90</h3>
+                               <button class="btn btn-default">待我处理<span style="color:red;">12</span></button>
+                           </div>
+                           </div>
+                           <div class="clearfix"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="content">
+                           <div class="w30 left-icon pull-left">
+                              <span class="glyphicon glyphicon-file green"></span>
+                           </div>
+                           <div class="w70 right-title pull-right">
+                           <div class="title-content">
+                               <p>待办事项</p>
+                               <h3 class="number">90</h3>
+                               <button class="btn btn-default">待我处理<span style="color:red;">12</span></button>
+                           </div>
+                           </div>
+                           <div class="clearfix"></div>
+                        </div>
+                      </div>
+                      </div>-->
+
+                </div>
+                <!--服务器相关参数-->                                
+                        <table class="table table-bordered table-header">
+                        <thead>
+                          <th colspan="4">服务器信息</th>
+                        </thead>
+                        <tr>
+
+                        <td>服务器域名/IP地址</td>
+
+                        <td colspan="3"><?php echo @get_current_user();?> - <?php echo $_SERVER['SERVER_NAME'];?>(<?php if('/'==DIRECTORY_SEPARATOR){echo $_SERVER['SERVER_ADDR'];}else{echo @gethostbyname($_SERVER['SERVER_NAME']);} ?>)&nbsp;&nbsp;你的IP地址是：<?php echo @$_SERVER['REMOTE_ADDR'];?></td>
+
+                        </tr>
+
+                        <tr>
+
+                        <td>服务器标识</td>
+
+                        <td colspan="3"><?php if($sysInfo['win_n'] != ''){echo $sysInfo['win_n'];}else{echo @php_uname();};?></td>
+
+                        </tr>
+
+                        <tr>
+
+                        <td width="13%">服务器操作系统</td>
+
+                        <td width="37%"><?php $os = explode(" ", php_uname()); echo $os[0];?> &nbsp;内核版本：<?php if('/'==DIRECTORY_SEPARATOR){echo $os[2];}else{echo $os[1];} ?></td>
+
+                        <td width="13%">服务器解译引擎</td>
+
+                        <td width="37%"><?php echo $_SERVER['SERVER_SOFTWARE'];?></td>
+
+                        </tr>
+
+                        <tr>
+
+                        <td>服务器语言</td>
+
+                        <td><?php echo getenv("HTTP_ACCEPT_LANGUAGE");?></td>
+
+                        <td>服务器端口</td>
+
+                        <td><?php echo $_SERVER['SERVER_PORT'];?></td>
+
+                        </tr>
+
+                        <tr>
+
+                          <td>服务器主机名</td>
+
+                          <td><?php if('/'==DIRECTORY_SEPARATOR ){echo $os[1];}else{echo $os[2];} ?></td>
+
+                          <td>绝对路径</td>
+
+                          <td><?php echo $_SERVER['DOCUMENT_ROOT']?str_replace('\\','/',$_SERVER['DOCUMENT_ROOT']):str_replace('\\','/',dirname(__FILE__));?></td>
+
+                        </tr>
+
+                        <tr>
+
+                          <td>管理员邮箱</td>
+
+                          <td><?php echo $_SERVER['SERVER_ADMIN'];?></td>
+
+                            <td>探针路径</td>
+
+                            <td><?php echo str_replace('\\','/',__FILE__)?str_replace('\\','/',__FILE__):$_SERVER['SCRIPT_FILENAME'];?></td>
+
+                        </tr>   
+                        <tr>
+
+                            <td width="32%">PHP信息（phpinfo）：</td>
+
+                            <td width="18%">
+
+                                <?php
+
+                                $phpSelf = $_SERVER[PHP_SELF] ? $_SERVER[PHP_SELF] : $_SERVER[SCRIPT_NAME];
+
+                                $disFuns=get_cfg_var("disable_functions");
+
+                                ?>
+
+                            <?php echo (false!==eregi("phpinfo",$disFuns))? '<font color="red">×</font>' :"<a href='$phpSelf?act=phpinfo' target='_blank'>PHPINFO</a>";?>
+
+                            </td>
+
+                            <td width="32%">PHP版本（php_version）：</td>
+
+                            <td width="18%"><?php echo PHP_VERSION;?></td>
+
+                          </tr>
+
+                          <tr>
+
+                            <td>PHP运行方式：</td>
+
+                            <td><?php echo strtoupper(php_sapi_name());?></td>
+
+                            <td>脚本占用最大内存（memory_limit）：</td>
+
+                            <td><?php echo show("memory_limit");?></td>
+
+                          </tr>
+
+                          <tr>
+
+                            <td>PHP安全模式（safe_mode）：</td>
+
+                            <td><?php echo show("safe_mode");?></td>
+
+                            <td>POST方法提交最大限制（post_max_size）：</td>
+
+                            <td><?php echo show("post_max_size");?></td>
+
+                          </tr>
+
+                          <tr>
+
+                            <td>上传文件最大限制（upload_max_filesize）：</td>
+
+                            <td><?php echo show("upload_max_filesize");?></td>
+
+                            <td>浮点型数据显示的有效位数（precision）：</td>
+
+                            <td><?php echo show("precision");?></td>
+
+                          </tr>
+
+                          <tr>
+
+                            <td>脚本超时时间（max_execution_time）：</td>
+
+                            <td><?php echo show("max_execution_time");?>秒</td>
+
+                            <td>socket超时时间（default_socket_timeout）：</td>
+
+                            <td><?php echo show("default_socket_timeout");?>秒</td>
+
+                          </tr>
+
+                      
+                        </table>
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+<!--
+$(function(){
+  showLeftTime();
+
+  function PrefixInteger(num, length) {
+   return (Array(length).join('0') + num).slice(-length);
+  }
+  function showLeftTime()
+  {    
+    var now=new Date();
+    var year=now.getFullYear();
+    var month=now.getMonth();
+    var day=now.getDate();
+    var hours=now.getHours();
+    var minutes=now.getMinutes();
+    var seconds=now.getSeconds();
+    var date = '<span>'+ year +'</span>年'+ month +'月'+ day +'日';
+    var time = PrefixInteger(hours,2)+":"+PrefixInteger(minutes,2)+":"+PrefixInteger(seconds,2);
+    var week = '星期';    
+    switch(now.getDay()){
+      case 0:
+          week += '日';
+        break;
+      case 1:
+          week += '一';        
+        break;
+      case 2:
+          week += '二'; 
+        break;
+      case 3:
+          week += '三'; 
+        break;
+      case 4:
+          week += '四'; 
+        break;
+      case 5:
+          week += '五'; 
+        break;
+      case 6:
+          week += '六'; 
+        break;
+    }
+
+    $('#week').html(week);
+    $('#date').html(date);
+    $('#time').html(time);
+    //一秒刷新一次显示时间
+    var timeID=setTimeout(showLeftTime,1000);
+  }
+})
+//-->
+</script>
+<include file="Public/footer"/>

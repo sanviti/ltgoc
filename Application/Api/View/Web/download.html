@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Api/wap/css/common.css"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- Start of Baidu Transcode -->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <!-- End of Baidu Transcode -->
+
+    <!-- 禁止自动检测数字为电话号码 -->
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- theme-color in Chrome 39 for Android -->
+    <meta name="theme-color" content="#ea6f5a">
+      <title>APP下载 - 链通视界下载</title>
+
+      <meta name="description" content="">
+
+    <link rel="stylesheet" media="all" href="__PUBLIC__/Api/wap/css/style.css">
+
+
+</head>
+  <body style="margin:0;padding:0;">
+    
+
+  <div class="container" >
+    <!-- <img src="__PUBLIC__/Api/wap/images/bg2.jpg" style="width:100%; height:100%;"> -->
+    <div class="slide">
+        <div class="boximg">
+            <img src="__PUBLIC__/Api/wap/images/ht_png1.png?v=<?php echo rand(1,9999);?>">
+            <p>版本：1.0&emsp;大小：22MB</p>
+            <span>更新时间：2018-5-5</span>
+        </div>
+      	<footer class="footer1">
+      		<a href="https://fir.im/mfvr"><img src="__PUBLIC__/Api/wap/images/ios.png">立即下载</a>
+            <a href="{$baseurl}/Uploads/apk/app1.0.1.apk" download="{$baseurl}/Uploads/app1.0.1.apk" ><img src="__PUBLIC__/Api/wap/images/adro.png">立即下载</a>
+      	</footer>
+    </div>
+</div>
+
+
+
+
+
+  <div data-app-opener-weixin-helper="" class="open-in-app" id='dialog' style="display: none;">
+    <div class="modal">
+      <img src="https://www.pechain.org/Public/download/top-right-arrow-cd4cabac33996464fbd529f7500a0e7d.png" alt="Top right arrow">
+      <h3>请点击右上角的「···」按钮</h3>
+      <p>选择「在浏览器中打开」后再次尝试~</p>
+     </div>
+    <div class="mask"></div>
+  </div>
+</body>
+  <script>
+
+    function is_weixin(){ 
+      var ua = navigator.userAgent.toLowerCase(); 
+      if(ua.match(/MicroMessenger/i)=="micromessenger") { 
+        return true; 
+      } else { 
+        return false; 
+      } 
+    }
+    
+    if(is_weixin()){
+      document.getElementById('dialog').style.display = "block";
+    }
+
+    (function(){
+
+      // Really basic check for the ios platform
+      // https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+      var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      // Get the device pixel ratio
+      var ratio = window.devicePixelRatio || 1;
+      // Define the users device screen dimensions
+      var screen = {
+        width: window.screen.width * ratio,
+        height: window.screen.height * ratio
+      };
+
+      // iPhone X Detection
+      if (iOS && screen.width === 1125 && screen.height === 2436) {
+        document.querySelector('meta[name=viewport]').content = document.querySelector('meta[name=viewport]').content + ',viewport-fit=cover';
+      }
+    }());
+  </script>
+</html>

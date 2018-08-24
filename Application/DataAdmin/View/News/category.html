@@ -1,0 +1,87 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>文章分类</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list"> 
+                <!--工具栏-->
+                    <div class="search-box row margin-bottom">
+                        <div class="col-md-4 pull-right">
+                            <div class="btn-group pull-right" role="group" aria-label="...">
+                                <a href="{:U('categoryAdd')}" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新增分类</a>
+                            </div>
+                        </div>                        
+                    </div>
+                <!--工具栏-->
+
+                <!--内容开始-->
+					<table class="table table-bordered table-header table-hover">
+                            <input type="hidden" value="{$Think.request.role}" id="role">
+                            <thead>
+                                <tr>
+                                    <th width="5%" class="text-center">#</th>
+                                    <th width="20%">分类名称</th>
+                                    <th width="8%">排序</th>
+                                    <th width="20%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <volist name="list" id="vo">
+                                    <tr>
+                                        <td class="text-center">{$vo.cat_id}</td>
+                                        <td class="text-left"><strong>{$vo.cat_name}</strong></td>
+                                        <td>
+                                        {$vo.order}
+                                        </td>
+                                        <td>
+                                            <a href="{:U('News/categoryEdit',array('cat_id'=>$vo['cat_id']))}">编辑详细</a>
+                                            <span class="text-explode">|</span>
+                                            <a href="javascript:;" url="{:U('Home/News/categoryDel',array('cat_id'=>$vo['cat_id']))}" class="del">删除分类</a>
+                                        </td>
+                                    </tr>
+                                    <notempty name="vo['child']">
+                                        <volist name="vo['child']" id="c">
+                                            <tr>
+                                                <td  class="text-center">{$c.cat_id}</td>
+                                                <td class="text-left"><strong style="color:#ccc;">├─</strong> &nbsp;&nbsp;{$c.cat_name}</td>                                        
+                                                <td>
+                                                {$c.order}
+                                                </td>
+                                                <td>
+                                                    <a href="{:U('News/categoryEdit',array('cat_id'=>$c['cat_id']))}">编辑详细</a>
+                                                    <span class="text-explode">|</span>
+                                                    <a href="javascript:;" url="{:U('News/categoryDel',array('cat_id'=>$c['cat_id']))}" class="del">删除分类</a>
+                                                </td>
+                                            </tr>
+
+                                        </volist>
+                                    </notempty>                                
+                                </volist>
+                            </tbody>
+                        </table>					
+				<!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//删除
+        bind_delete_action('.del','url','删除分类将删除子分类以及该分类下所有文章,删除不可恢复！确定删除吗？');
+	})	
+</script>
+<include file="Public/footer"/>

@@ -1,0 +1,159 @@
+<include file="public/header"/>
+<body class="spinner-hide" style="height:auto;background: #f1f1f2;">
+	<?php
+	    $agent = $_SERVER['HTTP_USER_AGENT'];
+	    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<div class="header">
+			<div class="goback" onClick="goBack()"></div>
+			<div class="title">{$page_title}</div>
+		</div>
+	<?php
+	    }else{
+	?>
+		<style type="text/css">.copy_top{display: none}</style>
+	<?php
+	    }
+	?>
+	<div class="copy_top"></div>
+	<div class="bill_main">
+		<div class="nav-tabs">
+			<span data-type="runing" class="hover">运行中</span>
+			<span data-type="stop">已到期</span>
+		</div>
+		<div class="way">
+			<input name="begin" type="text" id="begin" placeholder="开始日期" readonly data-options="{'type':'YYYY-MM-DD','beginYear':2010,'endYear':2088}" style="float: left;">
+			<input name="end" type="text" id="end" placeholder="结束日期" readonly data-options="{'type':'YYYY-MM-DD','beginYear':2010,'endYear':2088}" style="float: right;">
+			<select name="subtype" id="subtype">
+				<option selected>查找方式</option>
+				<option value="1">微型光电机组</option>
+				<option value="2">小型光电机组</option>
+				<option value="3">中型光电机组</option>
+				<option value="4">大型光电机组</option>
+				<option value="5">超级光电机组</option>
+			</select>
+            <input name="stype" type="hidden" id="stype" value="runing">
+			<span id="btn_search" style="float: right;">确定搜索</span>
+		</div>
+        <div class="dropload-box fixed-contb">
+            <div class="message">
+            </div>
+        </div>
+	</div>
+	
+	<include file="public/nav"/>
+<include file="public/footer"/>
+<link href="__PUBLIC__/Wap/js/LCalendar/LCalendar.css" rel="stylesheet">
+<script src="__PUBLIC__/Wap/js/LCalendar/LCalendar.js"></script>
+<link href="__PUBLIC__/Wap/js/dropload/dropload.css" rel="stylesheet">
+<script src="__PUBLIC__/Wap/js/dropload/dropload.min.js"></script>
+<script language="javascript" type="text/javascript">
+var maxDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate()
+var calendar = new LCalendar();
+calendar.init({
+	'trigger': '#begin', //标签id
+	'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+	'minDate': (new Date().getFullYear()-3) + '-' + 1 + '-' + 1, //最小日期
+	'maxDate': maxDate //最大日期
+});
+var calendar = new LCalendar();
+calendar.init({
+	'trigger': '#end', //标签id
+	'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+	'minDate': (new Date().getFullYear()-3) + '-' + 1 + '-' + 1, //最小日期
+	'maxDate': maxDate //最大日期
+});
+var pageStart = 1;
+var dropload; //下拉加载对象
+$(function(){
+	pageInit();
+});
+function pageInit(){
+	//交易数据
+	bindSerach();
+	BindEvent();
+	bindDropload();
+}
+//搜索
+function bindSerach(){
+	$('#btn_search').click(function(){
+		$('.message').html('');
+		pageStart = 1;
+		dropload.noData(false);
+		dropload.unlock ();
+		loadDownFn(dropload);
+	});
+}
+function BindEvent(){
+	$('.nav-tabs span').click(function(){
+		if($(this).hasClass('hover')){
+			return false;
+		}
+		$('.nav-tabs span').removeClass('hover');
+		$(this).addClass('hover');
+		$('#stype').val($(this).attr('data-type'));
+		$('#begin').val('');
+		$('#end').val('');
+		$("#subtype option:first").prop("selected","selected");
+		$('.message').html('');
+		pageStart = 1;
+		dropload.noData(false);
+		dropload.unlock ();
+		loadDownFn(dropload);
+	});
+}
+function bindDropload(){
+	// dropload
+    dropload = $('.dropload-box').dropload({
+		scrollArea : window,
+		domDown : {
+			domClass   : 'dropload-down',
+			domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+			domLoad    : '<div class="dropload-load"><span class="loading"></span></div>',
+			domNoData  : '<div class="dropload-noData">没有更多数据</div>'
+		},
+		loadDownFn : loadDownFn
+	});
+}
+
+//下拉加载回调
+function loadDownFn(me){
+	PostApi("{:U('Api/Mills/millList')}",
+	{
+		page:pageStart,
+		stype:$('#stype').val(),
+		begin:$('#begin').val(),
+		end:$('#end').val(),
+		subtype:$('#subtype').val()
+	},function(data){
+		if(data.returnCode == 1 && data.result.list.length > 0) {
+			var html = '';
+			$.each(data.result.list,function(idx,mill){
+				html +=   '<div>'
+						// + '<span></span>'
+						+ '<ul>'
+						+ '<li><p>编号:</p><p>' + mill.mill_sn + '</p></li>'
+						+ '<li><p>类型:</p><p>' + mill.type + '</p></li>'
+						+ '<li><p>购买时间:</p>' + mill.create_time + '</p></li>'
+						+ '<li><p>到期时间:</p><p>' + mill.stop_time + '</p></li>'
+						+ '<li><p>累计开采:</p><p>' + mill.output + '</p></li>'
+						+ '<li><p>状态:</p><p>' + mill.status + '</p></li>'
+						+ '</ul>'
+						+ '<a href="{:U("Wap/Wallet/millView")}?mill_sn=' + mill.mill_sn + '">查看</a>'
+						+ '</div>';
+			});
+			pageStart = data.result.page;
+			$('.message').append(html);
+			me.noData(false);
+		} else {
+			// 无数据
+			me.noData();
+			// 锁定
+			me.lock();
+		}
+		me.resetload();
+	});
+}
+</script>
+</body>
+</html>

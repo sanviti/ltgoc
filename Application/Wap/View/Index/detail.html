@@ -1,0 +1,40 @@
+<include file="public/header"/>
+<style type="text/css">
+	.photoelectricity_introduce img{
+		max-width:100%;
+	}
+</style>
+<body>
+	<?php
+		    $agent = $_SERVER['HTTP_USER_AGENT'];
+		    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<div class="header">
+			<div class="goback" onclick="goBack()"></div>
+			<div class="title">{$category_name}</div>
+		</div>
+		<style type="text/css">
+			.photoelectricity_introduce{
+				margin-top: 2.8rem;
+			}
+		</style>
+	<?php
+	    }else{
+
+	?>
+		<style type="text/css">
+			.photoelectricity_introduce{
+				margin-top: 1.5rem;
+			}
+		</style>
+	<?php
+	    }
+	?>
+	
+	
+	<div class="photoelectricity_introduce">
+		<div style="font-size:.6rem; margin-bottom: .8rem">{$title}</div>
+		{$content}
+	</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+		<footer>
+			<i><img src="__ROOT__/Public/Wap/img/banyuan.png"/></i>
+			
+				<?php
+					if(CONTROLLER_NAME == 'Index' AND ACTION_NAME == 'index'){
+				?>
+				<a href="javascript:;">
+				<img src="__ROOT__/Public/Wap/img/icon/home-curr.png" alt="" />
+				<p style="color:#fff">首页</p>
+				</a>
+				<?php
+					}else{
+				?>
+				<a href="{:U('Wap/Index/index')}">
+				<img src="__ROOT__/Public/Wap/img/icon/home.png" alt="" />
+				<p>首页</p>
+				</a>
+				<?php
+					}
+				?>
+			
+				<?php
+					if(CONTROLLER_NAME == 'Shop' AND ACTION_NAME == 'index'){
+				?>
+				<a href="javascript:;">
+				<img src="__ROOT__/Public/Wap/img/icon/active-curr.png" alt="" />
+				<p style="color:#fff">商城</p>
+				</a>	
+				<?php
+					}else{
+				?>
+				<a href="{:U('Wap/Shop/index')}">
+				<img src="__ROOT__/Public/Wap/img/icon/active.png" alt="" />
+				<p>商城</p>
+				</a>	
+				<?php
+					}
+				?>
+				
+			
+			
+				<?php
+					if(CONTROLLER_NAME == 'Wallet' AND ACTION_NAME == 'index'){
+				?>
+				<a href="javascript:;">
+				<img src="__ROOT__/Public/Wap/img/icon/wallet-curr.png" alt=""  class="wallet_img"/>
+				<p style="color:#fff">钱包</p>
+				</a>
+				<?php
+					}else{
+				?>
+				<a href="{:U('Wap/Wallet/index')}">
+				<img src="__ROOT__/Public/Wap/img/icon/wallet.png" alt=""  class="wallet_img"/>
+				<p>钱包</p>
+				</a>
+				<?php
+					}
+				?>
+				
+			
+				<?php
+					if(CONTROLLER_NAME == 'Deal' AND ACTION_NAME == 'index'){
+				?>
+				<a href="javascript:;">
+				<img src="__ROOT__/Public/Wap/img/icon/charts-curr.png" alt="" />
+				<p style="color:#fff">交易</p>
+				</a>
+				<?php
+					}else{
+				?>
+				<a href="{:U('Wap/Deal/index')}">
+				<img src="__ROOT__/Public/Wap/img/icon/charts.png" alt="" />
+				<p>交易</p>
+				</a>
+				<?php
+					}
+				?>
+				
+				
+			
+				<?php
+					if(CONTROLLER_NAME == 'Members' AND ACTION_NAME == 'index'){
+				?>
+				<a href="javascript:;">
+				<img src="__ROOT__/Public/Wap/img/icon/my-curr.png" alt="" />
+				<p style="color:#fff">我的</p>
+				</a>
+				<?php
+					}else{
+				?>
+				<a href="{:U('Wap/Members/index')}">
+				<img src="__ROOT__/Public/Wap/img/icon/my.png" alt="" />
+				<p>我的</p>
+				</a>	
+				<?php
+					}
+				?>
+				
+			
+		</footer>

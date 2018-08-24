@@ -1,0 +1,240 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/jedate/jedate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                    <h4>修改商品推荐</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                <!--内容开始-->
+                    <form class="form-horizontal" method="post" action="{:U('recommend_to')}"  id="signupForm">
+                            <input type="hidden" name="id" id="id" value="{$id}">
+                            <input type="hidden" name="p" id="p" value="{$p}">
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">所属栏位</label>
+	                              <div class="col-sm-6" style="width: 250px;">
+	                                <select name="lid" class="form-control fromtype" id="lid">
+										<option value="" >请选择</option>
+										<option value="1" <if condition="$data['lid'] eq 1">selected</if>>1号栏位</option>
+										<option value="2" <if condition="$data['lid'] eq 2">selected</if>>2号栏位</option>
+										<option value="3" <if condition="$data['lid'] eq 3">selected</if>>3号栏位</option>
+										<option value="4" <if condition="$data['lid'] eq 4">selected</if>>4号栏位</option>
+										<option value="5" <if condition="$data['lid'] eq 5">selected</if>>5号栏位</option>
+										<option value="6" <if condition="$data['lid'] eq 6">selected</if>>6号栏位</option>
+										<option value="7" <if condition="$data['lid'] eq 7">selected</if>>7号栏位</option>
+										<option value="8" <if condition="$data['lid'] eq 8">selected</if>>8号栏位</option>
+										<option value="9" <if condition="$data['lid'] eq 9">selected</if>>9号栏位</option>
+										<option value="10" <if condition="$data['lid'] eq 10">selected</if>>10号栏位</option>
+										<option value="11" <if condition="$data['lid'] eq 11">selected</if>>11号栏位</option>
+										<option value="12" <if condition="$data['lid'] eq 12">selected</if>>12号栏位</option>
+										<option value="13" <if condition="$data['lid'] eq 13">selected</if>>13号栏位</option>
+										<option value="14" <if condition="$data['lid'] eq 14">selected</if>>14号栏位</option>
+										<option value="15" <if condition="$data['lid'] eq 15">selected</if>>15号栏位</option>
+										<option value="16" <if condition="$data['lid'] eq 16">selected</if>>16号栏位</option>
+										<option value="17" <if condition="$data['lid'] eq 17">selected</if>>17号栏位</option>
+										<option value="18" <if condition="$data['lid'] eq 18">selected</if>>18号栏位</option>
+										<option value="19" <if condition="$data['lid'] eq 19">selected</if>>19号栏位</option>
+										<option value="20" <if condition="$data['lid'] eq 20">selected</if>>20号栏位</option>
+										<option value="21" <if condition="$data['lid'] eq 21">selected</if>>21号栏位</option>
+										<option value="22" <if condition="$data['lid'] eq 22">selected</if>>22号栏位</option>
+										<option value="23" <if condition="$data['lid'] eq 23">selected</if>>23号栏位</option>
+										<option value="24" <if condition="$data['lid'] eq 24">selected</if>>24号栏位</option>
+										<option value="25" <if condition="$data['lid'] eq 25">selected</if>>25号栏位</option>
+										<option value="26" <if condition="$data['lid'] eq 26">selected</if>>26号栏位</option>
+										<option value="27" <if condition="$data['lid'] eq 27">selected</if>>27号栏位</option>
+										<option value="28" <if condition="$data['lid'] eq 28">selected</if>>28号栏位</option>
+										<option value="29" <if condition="$data['lid'] eq 29">selected</if>>29号栏位</option>
+										<option value="30" <if condition="$data['lid'] eq 30">selected</if>>30号栏位</option>
+										<option value="31" <if condition="$data['lid'] eq 31">selected</if>>80%激励</option>
+										<option value="32" <if condition="$data['lid'] eq 32">selected</if>>品牌专区位</option>
+										<option value="33" <if condition="$data['lid'] eq 33">selected</if>>好物专区位</option>
+									</select>
+	                            </div>
+	                        </div>
+                            <div class="hr-line-dashed"></div>
+                   
+                            <div class="form-group">
+	                            <label class="col-sm-2 control-label">推荐来源</label>
+	                            <div class="col-sm-6" style="width: 250px;">
+	                                <select name="type" class="form-control fromtype" onchange="chose_type(this.value)">
+										<option value="" >请选择</option>
+										<option value="1" <if condition="$data['type'] eq 1">selected</if>>App商品ID</option>
+										<option value="2" <if condition="$data['type'] eq 2">selected</if>>页面</option>
+										<option value="3" <if condition="$data['type'] eq 3">selected</if>>分类列表</option>
+										<option value="4" <if condition="$data['type'] eq 4">selected</if>>好物列表</option>
+										<option value="6" <if condition="$data['type'] eq 6">selected</if>>品牌列表</option>
+									</select>
+	                            </div>
+	                        </div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">品牌名称</label>
+							<div class="col-sm-2">
+								 <select name="brand_id" class="form-control fromtype" id="brand_id">
+								   <option value="">请选择</option>
+								   <volist name="brand" id="vv">
+								       <option value="{$vv.id}" <if condition="$data['brand_id'] eq $vv['id']">selected</if>>{$vv.name}</option>
+								   </volist>
+								   <option></option>
+								 </select>
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">好物名称</label>
+							<div class="col-sm-2">
+								 <select name="found_id" class="form-control fromtype" id="found_id">
+								   <option value="">请选择</option>
+								   <volist name="found" id="vv">
+								       <option value="{$vv.id}" <if condition="$data['found_id'] eq $vv['id']">selected</if>>{$vv.name}</option>
+								   </volist>
+								   <option></option>
+								 </select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">推荐名称</label>
+							<div class="col-sm-1 one">
+								<input type="text"  name="title"  id="name" dataType="*" placeholder="名称" class="form-control" value="{$data.title}" style="width:100px;" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">推荐描述</label>
+							<div class="col-sm-1 one">
+								<input type="text"  name="des"  id="des" dataType="*" placeholder="描述" class="form-control"  value="{$data.des}" style="width:100px;" >
+							</div>
+						</div>
+						<div class="form-group" id="type" <if condition="$data.type eq 3">style="display: block;"<else/>style="display: none;"</if>>
+							<label class="col-sm-2 control-label">分类ID</label>
+							<div class="col-sm-1 one" style="width: 250px;">
+								<select name="cid" class="form-control  fromtype"  >
+									<option value="" >请选择</option>
+									<volist name="cdata"  key="k" id="v">
+										<option  <eq name="v.cat_id" value="$data.cid">selected</eq> <if condition="$v.parent_id eq 0">value="0"<else/>value="{$v.cat_id}"</if> ><if condition="$v.parent_id neq 0">__|</if>{$v.cat_name}</option>
+									</volist>
+								</select>
+
+								</select>
+							</div>
+						</div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品ID：</label>
+                                <div class="col-sm-1 one">
+									<input type="text"  name="goodsid"  id="goodsid" dataType="*" placeholder="商品ID" class="form-control" style="width:100px;" value="{$data['goodsid']}">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">显示截止时间：</label>
+                                <div class="col-sm-2 one">
+									<!-- <input type="text" id="et" onclick="return Calendar('et');" placeholder="请选择下架时间" value="{$data['etime']|date='Y-m-d H:i:s',###}" name="etime" class="form-control"/> -->
+									<p class="datep" style="display:none;"><input class="datainp" id="indate" type="text" placeholder="只显示年月" value=""  readonly></p>
+									<p class="datep">
+									  <input class="form-control" id="dateinfo" type="text" name="etime" placeholder="请选择"  value="{$data['etime']|date='Y-m-d H:i:s',###}" readonly>
+									</p>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">让利比列：</label>
+                                <div class="col-sm-2">
+									<select name="showrate" class="form-control fromtype">
+										<option value="">请选择</option>
+										<option value="1" <if condition="$data['showrate'] eq 1">selected</if>>显示</option>
+										<option value="0" <if condition="$data['showrate'] eq 0">selected</if>>隐藏</option>
+									</select>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品链接：</label>
+                                <div class="col-sm-1 one">
+									<input type="text"  name="link" id="link" dataType="*" placeholder="商品链接" class="form-control" style="width:560px;" value="{$data['link']}">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">展示图片</label>
+                                <div class="col-sm-6">
+                                    <img id="upload_img" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+									<if condition="isset($data)">
+										<input type="hidden" name="pic" id="img" value="{$data.pic}"/>
+									   <else/>
+									   <input type="hidden" name="pic" id="img"/>
+									</if>
+									<if condition="isset($data)">
+									     <span id="picc"><img  src="{$data.pic}" width="100" height="100" ></span>
+									    <else/>
+									    <span id="picc"></span>
+									</if>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success" id="btn" >提交</button>
+                                    <a class="btn btn-danger" href="">取消</a>
+                                </div>
+                            </div>
+                        </form>
+
+                <!--内容开始-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+    	$('.submitButton').click(function(){
+    		$('#signupForm').submit();
+    	})
+      //上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadRecommend/")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			if(data.status == 1){
+					$('#img').val(data.url);
+					var root= '__ROOT__';
+					var img='<img src="'+root+data.url+'" width="100" height="100">';
+					$("#picc").html(img);
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+	   	jeDate({
+			dateCell:"#dateinfo",
+			format:"YYYY-MM-DD hh:mm:ss",
+			isinitVal:true,
+			isTime:true, //isClear:false,
+			minDate:"2014-09-19 00:00:00",
+			okfun:function(val){
+				$("#dateinfo").val(val);
+			}
+		})
+    })
+	function  chose_type(type){
+		if(type==3){
+			$("#type").show();
+		}else{
+			$("#type").hide();
+		}
+	}
+</script>
+<include file="Public/footer"/>

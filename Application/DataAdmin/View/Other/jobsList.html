@@ -1,0 +1,231 @@
+<include file="Public/header"/>
+
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>人才招聘</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                	<!--搜索开始-->
+                	<form name="search" action="{:U('jobsList')}" id="searchForm" method="post">
+					<div class="search-box row">
+						<div class="col-md-9">
+							<div class="form-group">
+								<span class="pull-left form-span">标题:</span>
+								<input type="text" name="title" value="{:I('title')}" class="form-control" placeholder="" style="width:200px;">
+							</div>
+							<div class="form-group">
+								<select name="stype" class="form-control">
+								<option value="0" <if condition="$Think.request.stype heq '0'"> selected="selected"</if>>精确查询</option>
+								<option value="1" <if condition="$Think.request.stype heq '1'"> selected="selected"</if>>模糊查询</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">状态:</span>
+								<select name="state" class="form-control">
+								<option value="" <if condition="$Think.request.state heq ''"> selected="selected"</if>>全部状态</option>
+								<option value="0" <if condition="$Think.request.state heq '1'"> selected="selected"</if>>未发布</option>
+								<option value="1" <if condition="$Think.request.state heq '2'"> selected="selected"</if>>已发布</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">管理员:</span>
+								<select name="admin_id" class="form-control">
+									<option value="" <if condition="$Think.request.admin_id heq ''"> selected="selected"</if>>全部</option>
+									<foreach name="adminList" item="vo">         
+                                        <option value="{$vo.id}" <if condition="$Think.request.admin_id eq $vo['id']"> selected="selected"</if> style="font-weight:bold">{$vo.username}</option>
+                                    </foreach>
+								</select>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>       
+							</div>
+						</div>
+
+						<div class="col-md-3">
+						<div class="btn-group pull-right" role="group" aria-label="...">
+							<a href="{:U('jobsAdd')}" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新增</a>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 更改状态
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="batchchage" data-value="2"><a href="javascript:;">已发布</a></li>
+								<li class="batchchage" data-value="1"><a href="javascript:;">未发布</a></li>
+								</ul>
+							</div>
+							<button type="button" class="btn btn-default batchdel"><span class="glyphicon glyphicon-trash"></span> 批量删除</button>
+						</div>
+						</div>                        
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5 text-center"><input type="checkbox" class="selectAll" /></th>
+									<th class="w20">标题</th>
+									<th class="w10 text-center">职位</th>									
+									<th class="w5 text-center">访问量</th>
+									<th class="w10 text-center">状态</th>	
+									<th class="w10 text-center">管理员</th>
+                                    <th class="w10">更新时间</th>                                    
+                                    <th class="w10">创建时间</th>
+									<th class="w15">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center"><input type="checkbox" name="ids[]" value="{$vo.id}" class="selectAll-item" /></td>
+										<td>
+										<a href="{:U('jobsEdit',array('id'=>$vo['id']))}">{$vo.title}</a>
+										</td>										
+										<td class="text-center">{$vo.position}</td>										
+										<td class="text-center">{$vo.view}</td>
+										<td class="text-center">
+											<if condition="$vo.state eq 2">	
+												<span class="succ">已发布</span>
+											</if>
+											<if condition="$vo.state eq 1">
+												<span class="fail">未发布</span>
+											</if>
+										</td>
+										<td class="text-center">{$vo.username}</td>
+                                        <td>{$vo.last_time|date='Y-m-d H:i:s',###}</td>
+                                        <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>                                        
+										<td>
+											<a href="{:U('jobsEdit',array('id'=>$vo['id']))}">编辑</a>
+											<span class="text-explode">|</span>
+											<a href="javascript:;" class="del" url="{:U('jobsDel',array('id'=>$vo['id']))}">删除</a>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="10">
+											<div class="pull-right">
+												<nav>{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="10" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+
+
+
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('#form-wizard', {
+	        callback:function(){
+	            location.reload();
+	        }
+	    });
+		$('#searchBtn').click(function(){
+			$('#searchForm').submit();
+		})
+	    //删除
+	    bind_delete_action('.del');
+	    //批量删除
+	    bind_batch_delete('.batchdel');
+	    //批量更改状态
+	    bind_batch_change('.batchchage');
+
+	    //批量删除
+	    function bind_batch_delete(selector){
+	    	$(selector).click(function(){
+	    		if(!betch_check()){
+		    		msg('请选择要删除的数据');
+		    		 return false;
+		    	}
+		    	confirm('确定执行批量删除？该操作不能被撤回!',function(){
+		    		send('{:U("BatchDel")}', $('#listForm').serialize());
+		    	})
+		    	
+	    	})
+	    }
+
+	    //批量更改
+	    function bind_batch_change(selector){	    	
+	    	$(selector).click(function(){
+	    		if(!betch_check()){
+		    		msg('请选择要修改的数据');
+		    		 return false;
+		    	}
+		    	var data = $('#listForm').serialize();
+		    	data = data+'&state='+$(this).data('value');
+		    	confirm('确定执行批量修改？',function(){
+		    		send('{:U("batchChangeState")}', data);
+		    	})
+		    	
+	    	});
+	    }
+
+	    //发送数据
+	    function send(url, data){
+	    	var params = {
+                url : url,
+                params : data,
+                callback : function(data){
+                    var msgCallBack;
+                    if(data.status == 1){
+                        msgCallBack = function(){
+                            window.location.reload();
+                        }
+                    }
+                    msg(data.info,msgCallBack);
+                }
+            }
+            ajax(params);
+	    }
+
+	    //批量操作检查数据
+	    function betch_check(){
+	    	if($('.selectAll-item:checkbox:checked').length > 0){
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
+	    }
+
+	})
+</script>
+<include file="Public/footer"/>

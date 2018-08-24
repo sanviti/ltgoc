@@ -1,0 +1,146 @@
+<include file="Public/header"/>
+<style>
+*{padding:0;margin:0;}
+ol,ul,li{list-style:none; vertical-align:middle;}
+a{ text-decoration:none;outline: none;}
+
+.hello {
+    width: 100%;
+}
+.hello .ul{
+    width: 100%;
+    display:  flex;
+    flex-wrap: wrap;
+}
+.hello .ul li{
+    width: 50%;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    padding: 10px 0;
+}
+.hello .btn{
+    width: 100%;display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.hello .btn a{
+    width:82px;height: 34px;
+    border-radius: 3px;font-size: 14px;
+    text-align: center;
+    line-height: 34px;
+    margin: 0 10px;
+}
+.hello .btn .yes{
+    background: #1d84c6;
+    color: #fff;
+}
+.hello .btn .no{
+    background: #dddddd;
+    color: #676a6c;
+}
+</style>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.all.min.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                    <h4>充值GOC</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                <!--内容开始-->
+                    <div class="form-horizontal" method="post" action=""  id="signupForm">
+                    		<div class="form-group">
+                                <label class="col-sm-2 control-label">充值手机号：</label>
+                                <div class="col-sm-2">
+									<input type="text"  name="phone"  id="phone" dataType="*" placeholder="充值手机号" class="form-control" style="width:400px;">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">充值数量：</label>
+                                <div class="col-sm-2">
+									<input type="text"  name="num"  id="num" dataType="*" placeholder="充值数量" class="form-control" style="width:400px;">
+								</div>
+                            </div>
+ 							<div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success" id="btn" >提交</button>
+                                    <a class="btn btn-danger" href="">取消</a>
+                                </div>
+                            </div>
+                        </div>
+                <!--内容开始-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+
+$(function(){
+	$("#btn").click(function(){
+		var phone = $("#phone").val();
+		var num = $("#num").val();
+		if(phone=="" || num==""){
+			layer.msg("请完善充值信息");
+			return false;
+		}else{
+			$.post("{:U('adds')}",{"phone":phone,"num":num},function(d){
+				if(d.returnCode=="FAIL"){
+					layer.msg(d.returnMsg);
+					return false;
+				}else{
+					var d = d.result;
+					var content = '<div class="hello">';
+						content += '<ul class="ul">';
+						content += '<li>手机号</li>';
+						content += '<li>'+d.phone+'</li>';
+						content += '<li>用户名称</li>';
+						content += '<li>'+d.rname+'</li>';
+						content += '<li>充值数量</li>';
+						content += '<li>'+d.num+'</li>';
+						content += '</ul>';
+						content += '<div class="btn">';
+						content += '<a href="javascript:;" class="yes">确认充值</a>';
+						content += '<a href="javascript:;" class="no">取消</a>';
+						content += '</div>';
+						content += '</div>';
+					layer.open({
+						  type: 1,
+						  skin: 'layui-layer-rim', //加上边框
+						  area: ['820px', '340px'], //宽高
+						  content: content
+					});
+				}	
+			},"json");
+		}
+	})
+	
+	$(document).on('click', '.no', function(){
+		location.href="__ACTION__";
+	});
+	
+	$(document).on('click', '.yes', function(){
+		var phone = $("#phone").val();
+		var num = $("#num").val();
+		$.post("{:U('add_goc')}",{"phone":phone,"num":num},function(d){
+			alert(d.returnMsg);
+			location.href = "{:U('rechargeLists')}";
+		},"json")
+	});
+})
+</script>
+<include file="Public/footer"/>

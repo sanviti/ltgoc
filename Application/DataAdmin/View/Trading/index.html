@@ -1,0 +1,638 @@
+<include file="Public/header"/>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+
+<!-- Latest compiled and minified Locales -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+<style type="text/css">
+    .top-box{
+        height: 150px;
+        padding: 20px;
+    }
+    .top-box .title{
+        font-size: 16px; font-weight: bold; color: #fff;
+    }
+    .top-box .num{
+        font-size: 42px; font-weight: bold; color: #fff;margin-top: 20px;
+    }
+    .top-box span{
+        font-size:18px; margin-left: 5px;
+    }
+    .top-box .num a{
+        font-size:14px; margin-left: 5px; font-weight: normal; color: #fff;
+    }
+    .top-box .num em{
+        font-style: normal;
+    }
+    .buybg{
+        background: #e83a3a;
+    }
+    .sellbg{
+        background: #80c337;
+    }
+    .defbg{
+        background: #3789c3;
+    }
+    .defbg .title{
+        font-size: 16px; font-weight: bold; color: #fff;
+    }
+    .defbg .acttitle{
+        font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 20px;
+    }
+    .defbg .num{
+        font-size: 22px; font-weight: bold; color: #fff;margin-top: 0px; margin-bottom: 10px;
+    }
+    
+    .btns .btn{
+       margin-right: 10px;
+    }
+    .top-box .infos{
+        margin-top: 15px; color: #fff; font-size: 16px;
+    }
+    .top-box .infos span{
+        font-size:14px;
+    }
+    .top-box .infos em{
+        font-style: normal;
+    }
+    
+    .buylist,.selllist{
+        border:1px solid #f0f0f0;padding: 10px;
+    }
+    .buylist .title, .selllist .title{
+        font-size:14px; font-weight: bold; line-height: 28px;
+    }
+    .orderlist{
+        margin-top: 20px;
+    }
+    button[name='refresh']{
+        height: 34px;
+    }
+</style>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>交易管理</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list"> 
+                    
+					<!--内容开始-->
+					   <div class="row">
+                            <div class="col-md-3">
+                                <div class="top-box buybg">
+                                    <div class="title">买单总量</div>
+                                    <div class="num"><em id="buy_sum">0.00</em><span>GOC</span></div>
+                                </div>
+                            </div>               
+                            <div class="col-md-3">
+                                <div class="top-box sellbg">
+                                    <div class="title">卖单总量</div>
+                                    <div class="num"><em id="sell_sum">0.00</em><span>GOC</span></div>
+                                </div>
+                            </div>               
+                            <div class="col-md-3">
+                                <div class="top-box defbg">
+                                    <div class="title">市场持有</div>
+                                    <div class="num"><em id="user_goc">0.00</em><span>GOC</span> <a href="javascript:;"  data-toggle="modal" data-target="#price_group_modal">[成本明细]</a></div>
+                                    <div class="title">平台持有</div>
+                                    <div class="num"><em id="sys_goc">0.00</em><span>GOC</span></div>
+                                </div>
+                            </div>    
+                            <div class="col-md-3">
+                                <div class="top-box defbg">
+                                    <div class="acttitle">操作</div>
+                                    <div class="btns">
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#match_buy_modal">匹配买盘</button>
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#match_sell_modal">匹配卖盘</button>
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#price_group_modal">强制卖出</button>
+                                    </div>
+                                    <div class="infos"><span>买单成交：</span><em id="buy_succ_sum">0.00</em> <span>卖单成交：</span><em id="sell_succ_sum">0.00</em></div>
+                                </div>
+                            </div>      
+                       </div>
+                       <div class="row orderlist">
+                            <div class="col-md-6">
+                                <div class="buylist">
+                                    <div class="title">买单队列</div>
+                                    <table class="table table-striped table-hover table-condensed" id="buytb">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>买入数量</th>
+                                                <th>用户</th>
+                                                <th>时间</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                    </table>
+                                </div>   
+                            </div>            
+                            <div class="col-md-6">
+                                <div class="selllist">
+                                    <div class="title">卖单队列</div>
+                                    <table class="table table-striped table-hover table-condensed" id="selltb">
+                                        
+                                    </table>
+                                </div> 
+                            </div>      
+                       </div>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+
+<!--匹配买盘-->
+<div class="modal fade" id="match_buy_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    匹配买盘
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form class="form-horizontal" method="post" action="" name="basic_validate" id="match_buy_form">
+                            <div class=""></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">匹配模式</label>
+                                <div class="col-sm-6">
+                                    <label>
+                                        <input type="radio" name="buy_match_type" id="match_type1" value="1" checked>
+                                        全量成交
+                                    </label>
+
+                                    <label>
+                                        <input type="radio" name="buy_match_type" id="match_type2" value="2">
+                                        百分比成交
+                                    </label>
+                                </div>
+                            </div>
+                            <div class=""></div>
+                            <div class="form-group" id="buy_raterow" style="display: none;">
+                                <label class="col-sm-2 control-label">百分比</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="buy_rate" id="buy_rate" placeholder="输入成交百分比" class="form-control">
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=""></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">成交量</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="buy_total" id="buy_total" placeholder="输入成交量" class="form-control">
+                                    <span id="helpBlock" class="help-block">当前未匹配成功的订单量为：<em style="font-style: normal; color: red" id="no_match_buy"></em> GOC</span>
+                                </div>
+
+                            </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="match_buy">
+                    批量成交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--成交买入-->
+
+<!--匹配卖盘-->
+<div class="modal fade" id="match_sell_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    匹配卖盘
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form class="form-horizontal" method="post" action="" name="basic_validate" id="match_sell_form">
+                            <div class=""></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">匹配模式</label>
+                                <div class="col-sm-6">
+                                    <label>
+                                        <input type="radio" name="sell_match_type" id="sell_match_type1" value="1" checked>
+                                        全量成交
+                                    </label>
+
+                                    <label>
+                                        <input type="radio" name="sell_match_type" id="sell_match_type2" value="2">
+                                        百分比成交
+                                    </label>
+                                </div>
+                            </div>
+                            <div class=""></div>
+                            <div class="form-group" id="sell_raterow" style="display: none;">
+                                <label class="col-sm-2 control-label">百分比</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="sell_rate" id="sell_rate" placeholder="输入成交百分比" class="form-control">
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=""></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">成交量</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="sell_total" id="sell_total" placeholder="输入成交量" class="form-control">
+                                    <span id="helpBlock" class="help-block">当前未匹配成功的订单量为：<em style="font-style: normal; color: red" id="no_match_sell"></em> GOC</span>
+                                </div>
+
+                            </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="match_sell">
+                    批量成交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--成交卖出-->
+
+<!--成本明细-->
+<div class="modal fade" id="price_group_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    成本明细
+                </h4>
+            </div>
+            <div class="modal-body" id="">
+                <table class="table table-bordered table-striped table-hover" >
+                    <thead>
+                        <tr><th>价格</th><th>数量</th><th>操作</th></tr>
+                    </thead>
+                    <tbody id="price_list">
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--成本明细-->
+
+</body>
+<script type="text/javascript">
+	$(function(){
+        
+        pageInit();
+
+        function price_group(){
+            $('#price_group_modal').on('show.bs.modal', function(){
+                var url = '{:U("priceGroup")}';
+                var params = {
+                    url : url,
+                    callback : function(data){
+                        var html = '';
+                        $.each(data, function(index, item){
+                            html += '<tr><td>' + item.price + '</td><td>' + item.num 
+                            + '</td><td><a href="javascript:;" class="compel" data-price="' + item.price + '">强制卖出</a></td></tr>';
+                        })
+                        $('#price_list').html(html);
+                    }
+                }
+                ajax(params);
+            })
+
+            $('#price_list').on('click', '.compel', function(){
+                var price = $(this).data('price');
+                var url = '{:U("compelSell")}';
+
+                var params = {
+                    url : url,
+                    params : {price : price},
+                    callback : function(data){
+                        msg(data.info);
+                        $('#price_group_modal').modal('hide');
+                    }
+                }
+                ajax(params);
+            })
+        }
+
+        //匹配买单
+        function match_buy(){
+            $('input[name="buy_match_type"]').click(function(){
+                if($(this).val() == 1){
+                    $('#buy_raterow').hide();
+                }else{
+                    $('#buy_raterow').show();
+                }
+            })
+            $('#match_buy_modal').on('show.bs.modal', function () {
+                // $('#match_buy_form')[0].reset();
+            })
+            $('#match_buy').click(function(){
+                var match_type = $('input[name="buy_match_type"]:checked').val();
+                var rate = $('#buy_rate').val();
+                var total = $('#buy_total').val();
+                if(match_type == 2){
+                    if(!isBigDecimal(rate) || !isDecimalRangeIn(rate, 1, 99)){
+                        msg('请输入正确的百分比【1-99】');
+                        return ;
+                    }
+                }
+                if(!isBigDecimal(total) || total <= 0){
+                    msg('请输入正确的成交量');
+                    return ;
+                }
+
+                var data = $('#match_buy_form').serialize();
+                var url = '{:U("batch_succ", array("type" => 1))}';
+                var params = {
+                    url : url,
+                    params : data,
+                    callback : function(data){
+                        msg(data.info);
+                        $('#match_buy_modal').modal('hide');
+                    }
+                }
+                ajax(params);
+               
+            });
+        }
+        //匹配卖单
+        function match_sell(){
+            $('input[name="sell_match_type"]').click(function(){
+                if($(this).val() == 1){
+                    $('#sell_raterow').hide();
+                }else{
+                    $('#sell_raterow').show();
+                }
+            })
+            $('#match_sell_modal').on('show.bs.modal', function () {
+                // $('#match_sell_form')[0].reset();
+            })
+            $('#match_sell').click(function(){
+                var match_type = $('input[name="sell_match_type"]:checked').val();
+                var rate = $('#sell_rate').val();
+                var total = $('#sell_total').val();
+                if(match_type == 2){
+                    if(!isBigDecimal(rate) || !isDecimalRangeIn(rate, 1, 99)){
+                        msg('请输入正确的百分比【1-99】');
+                        return ;
+                    }
+                }
+                if(!isBigDecimal(total) || total <= 0){
+                    msg('请输入正确的成交量');
+                    return ;
+                }
+
+                var data = $('#match_sell_form').serialize();
+                var url = '{:U("batch_succ", array("type" => 2))}';
+                var params = {
+                    url : url,
+                    params : data,
+                    callback : function(data){
+                        msg(data.info);
+                        $('#match_sell_modal').modal('hide');
+                    }
+                }
+                ajax(params);
+               
+            });
+        }
+        //买入列表
+        $('#buytb').bootstrapTable({
+            pagination : true,
+            pageSize : 10,
+            sidePagination:"server",
+            search : true,
+            searchText : '',
+            showRefresh :true,
+            url: '{:U('orderlist', array('type' => 1))}',
+            dataType : 'json',  
+            columns: [{
+                field: 'id',
+                title: 'ID'
+            }, {
+                field: 'user',
+                title: '用户'
+            }, {
+                field: 'num',
+                title: '卖出数量'
+            }, {
+                field: 'succ_num',
+                title: '成交数量'
+            },
+            {
+                field: 'time',
+                title: '时间'
+            },
+            {
+                field: 'status',
+                title: '状态',
+                formatter : function(value, row, index){
+                    var status = '';
+                    switch(value){
+                        case '0':
+                            status = '匹配中';
+                        break;
+                        case '1':
+                            status = '交易成功';
+                        break;
+                        case '-1':
+                            status = '订单取消';
+                        break;
+                    }
+                    return status;
+
+                }
+            },
+            {
+                field: 'id',
+                title: '操作',
+                formatter : function(value, row, index){
+                    //<a href='javascript:;' data-id='"+ value +"' class='succOneOrder'>全量成交</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    var html ="<a href='javascript:;' data-id='"+ value +"' class='cancelOrder'>撤销订单</a>";
+                    return html;
+
+                }
+            }, ],
+            onLoadSuccess :function(data){
+                // console.log(data);
+            }
+        });
+
+        //卖出列表
+        $('#selltb').bootstrapTable({
+            pagination : true,
+            pageSize : 10,
+            sidePagination:"server",
+            search : true,
+            searchText : '',
+            showRefresh :true,
+            url: '{:U('orderlist', array('type' => 2))}',
+            dataType : 'json',  
+            columns: [{
+                field: 'id',
+                title: 'ID'
+            }, {
+                field: 'user',
+                title: '用户'
+            }, {
+                field: 'num',
+                title: '卖出数量'
+            }, {
+                field: 'succ_num',
+                title: '成交数量'
+            },{
+                field: 'time',
+                title: '时间'
+            },
+            {
+                field: 'status',
+                title: '状态',
+                formatter : function(value, row, index){
+                    var status = '';
+                    switch(value){
+                        case '0':
+                            status = '匹配中';
+                        break;
+                        case '1':
+                            status = '交易成功';
+                        break;
+                        case '-1':
+                            status = '订单取消';
+                        break;
+                    }
+                    return status;
+
+                }
+            },
+            {
+                field: 'id',
+                title: '操作',
+                formatter : function(value, row, index){
+                    //<a href='javascript:;' data-id='"+ value +"' class='succOneOrder'>全量成交</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    var html ="<a href='javascript:;' data-id='"+ value +"' class='cancelOrder'>撤销订单</a>";
+                    return html;
+
+                }
+            }, ],
+            onLoadSuccess :function(data){
+                // console.log(data);
+            }
+        });
+
+        
+
+        
+		function pageInit(){
+            refresh();
+            match_buy();
+            match_sell();
+            price_group();
+            pageBindEvent();
+            setInterval(refresh, 10000);
+        }
+
+        //绑定事件
+        function pageBindEvent(){
+            //绑定成交按钮
+            $(document).on('click', '.succOneOrder', function(){
+                succ_order($(this).data('id'));
+            });
+            //绑定撤销按钮
+            $(document).on('click', '.cancelOrder', function(){
+                cancel_order($(this).data('id'));
+            });
+        }
+        //撤销订单
+        function cancel_order(id){
+            var url = '{:U("cancel_order")}';
+            var params = {
+                url : url,
+                params : {id : id},
+                callback : function(data){
+                    msg(data.info);
+                }
+            }
+            ajax(params);
+        }
+        //全量成交单笔订单
+        function succ_order(id){
+            var url = '{:U("oneOrderSucc")}';
+            var params = {
+                url : url,
+                params : {id : id},
+                callback : function(data){
+                    msg(data.info);
+                }
+            }
+            ajax(params);
+        }
+        //刷新页面数据
+        function refresh(){
+            var url = '{:U("refresh")}';
+            var params = {
+                hideShade : 1,
+                url : url,
+                callback : function(data){
+                    $('#buy_sum').html(data.buy_sum);
+                    $('#buy_succ_sum').html(data.buy_succ_sum);
+                    $('#sell_sum').html(data.sell_sum);
+                    $('#sell_succ_sum').html(data.sell_succ_sum);
+                    $('#user_goc').html(data.user_goc);
+                    $('#sys_goc').html(data.sys_goc);
+                    $('#no_match_buy').html(data.buy_sum - data.buy_succ_sum);
+                    $('#no_match_sell').html(data.sell_sum - data.sell_succ_sum);
+                }
+            }
+            ajax(params);
+        }
+
+
+	})
+</script>
+<include file="Public/footer"/>

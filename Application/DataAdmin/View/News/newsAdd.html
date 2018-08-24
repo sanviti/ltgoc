@@ -1,0 +1,178 @@
+<include file="Public/header"/>
+<js file="__PUBLIC__/Common/Ueditor/ueditor.config.js" />
+<js file="__PUBLIC__/Common/Ueditor/ueditor.all.min.js" />
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+                    <notempty name="detail">
+                        <h4>编辑文章</h4> 
+                    <else/>
+                        <h4>添加文章</h4> 
+                    </notempty>	                	     
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                <!--内容开始-->
+					<form class="form-horizontal" method="post" action="" name="basic_validate" id="form">
+                            <notempty name="detail">
+                                <input type="hidden" name="id" value="{$detail.id}"/>
+                            </notempty>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">标题</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="title" id="title" placeholder="输入标题" class="form-control" datatype="*" value="{$detail.title}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">图片</label>
+                                <div class="col-sm-8">
+                                    <img src="{$detail.picurl|default="/Public/DataAdmin/images/upload_img.png"}" width="80" class="uploadOne" id="upload_img">
+                                    <input type="hidden" name="PicUrl" id="PicUrl" class="PicUrl" nullmsg="请上传图片" errormsg="请上传图片" value="{$detail.picurl}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">所属分类</label>
+                                <div class="col-sm-6">                                  
+                                    <select id="cate_id" datatype="n" name="cate_id" class="form-control m-b chosen-select">
+                                        <option value=''>选择分类</option>
+                                        <foreach name="list" item="vo">
+                                            <notempty name = "vo['child']">               
+                                                <optgroup label="{$vo.cat_name}">
+                                                    <php>
+                                                        $size = count($vo['child']);
+                                                    </php>
+                                                    <foreach name="vo['child']" item="c" key="k2">
+                                                        <php>
+                                                            if($k2 == ($size - 1)){
+                                                                $prefix = '╚═ ';
+                                                            }else{
+                                                                $prefix = '╠═ ';
+                                                            }                                                            
+                                                        </php>
+                                                        <option value="{$c.cat_id}" <if condition="$c['cate_id'] eq $detail['cate_id']"> selected="selected"</if>>{$prefix}{$c.cat_name}</option>
+                                                    </foreach>
+
+                                                </optgroup>
+                                            <else/>
+                                            <option value="{$vo.cat_id}" <if condition="$vo['cat_id'] eq $detail['cate_id']"> selected="selected"</if> style="font-weight:bold">{$vo.cat_name}</option>
+                                            </notempty>
+                                        </foreach>
+                                    </select>                                    
+                                </div>
+                            </div>      
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">简介</label>
+                                <div class="col-sm-6">                                  
+                                   <textarea name="des" class="form-control">{$detail.des}</textarea>                                 
+                                </div>
+                            </div>                                      
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">正文</label>
+                                <div class="col-sm-6">
+                                    <script type="text/plain" id="editor" name="content" style="width:100%;height:300px;"></script>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">浏览次数</label>
+                                <div class="col-sm-1">
+                                    <input type="text" name="view" id="view" class="form-control"  value="{$detail.view|default='0'}">
+                                </div>
+                              
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">来源</label>
+                                <div class="col-sm-1">
+                                <notempty name="detail">
+                                    <input type="text" name="from" id="from" class="form-control"  value="{$detail.from}">
+                                <else/>
+                                    <input type="text" name="from" id="from" class="form-control"  value="{:C('sitename')}">
+                                </notempty>
+                                </div>
+                            </div>
+                            <div class=""></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">状态
+                                </label>
+                                <div class="col-sm-6">
+                                <div class="radio i-checks">
+                                        <label>
+                                        <input type="radio" <if condition="$detail.state eq 1">checked="checked"</if> value="1" name="state"> <i></i> 审核通过</label>
+                                        <label>
+                                        <input type="radio" <if condition="$detail.state eq 0">checked="checked"</if> value="0" name="state"> <i></i> 审核失败</label>
+                                    </div>                                                                  
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="Jun-TiJiao" type="submit">保存内容</button>
+                                    <a class="btn btn-white" href="{:U('News/newsList')}">取消</a>
+                                </div>
+                            </div>
+                        </form>
+				<!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('.form-horizontal', {
+            beforeSubmit : function(){
+                if($('textarea[name="content"]').val() == ''){
+                    msg('请输入文章正文');
+                    return false;
+                }
+            },
+	        msgCallback:function(){
+	            location.href = '{:U("newsList")}';
+	        }
+	    });
+        //图片上传
+        bind_uploadOne({
+            uploadUrl : '{:U("Upload/uploadImg")}',
+            bind : '#upload_img',
+            dataType : 'JSON',
+            callback : function(data,el){
+                if(data.status == 1){
+                    $(el).siblings('img').attr('src',data.url);
+                    $(el).siblings('input').val(data.url);
+                }else{
+                    msg(data.info);
+                }
+            }
+        })
+
+        //富文本
+        var ue = UE.getEditor('editor');
+        <notempty name="detail">
+        ue.addListener("ready", function () {  
+               // editor准备好之后才可以使用  
+               ue.setContent('{:addslashes($detail['content'])}'); 
+        });  
+         </notempty>
+
+	})	
+</script>
+<include file="Public/footer"/>

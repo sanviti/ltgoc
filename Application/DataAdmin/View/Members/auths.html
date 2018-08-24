@@ -1,0 +1,269 @@
+<include file="Public/header"/>
+
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>C2认证列表</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                	<!--搜索开始-->
+                	<form name="search" action="" id="searchForm" method="post">
+					<div class="search-box row">
+						<div class="col-md-9">
+							<div class="form-group">
+								<span class="pull-left form-span">姓名:</span>
+								<input type="text" name="rname" value="{:I('rname')}" class="form-control" placeholder=""/>
+							</div>
+							<div class="form-group">
+								<select name="stype" class="form-control">
+								<option value="0" <if condition="$Think.request.stype heq '0'"> selected="selected"</if>>精确查询</option>
+								<option value="1" <if condition="$Think.request.stype heq '1'"> selected="selected"</if>>模糊查询</option>
+								</select>
+							</div>
+                            <div class="form-group">
+                                <span class="pull-left form-span">证件号:</span>
+                                <input type="text" name="idcard" value="{:I('idcard')}" class="form-control" placeholder="" size="20" style="width:auto;"/>
+                            </div>
+							
+							<div class="form-group">
+								<span class="pull-left form-span">状态:</span>
+								<select name="status" class="form-control">
+								<option value="" <if condition="$Think.request.status heq ''"> selected="selected"</if>>全部状态</option>
+								<option value="0" <if condition="$Think.request.status heq '0'"> selected="selected"</if>>未审核</option>
+                                <option value="1" <if condition="$Think.request.status heq '1'"> selected="selected"</if>>审核通过</option>
+                                <option value="-1" <if condition="$Think.request.status heq '-1'"> selected="selected"</if>>审核失败</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>       
+							</div>
+						</div>
+
+						<div class="col-md-3">
+						<div class="btn-group pull-right" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default batc_audit" data-action="pass"><span class="glyphicon glyphicon-plus"></span> 批量通过</button>
+							<button type="button" class="btn btn-default batc_audit" data-action="fail"><span class="glyphicon glyphicon-trash"></span> 批量失败</button>
+						</div>
+						</div>                        
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5 text-center"><input type="checkbox" class="selectAll" /></th>
+									<th class="w10 text-center">姓名</th>
+                                    <th class="w10 text-center">证件号</th>
+                                    <th class="w5 text-center">身份证正面</th>
+                                    <th class="w5 text-center">身份证背面</th>
+                                    <th class="w5 text-center">手持身份证</th>
+                                    <th class="w5 text-center">认证类型</th>
+                                    <th class="w10 text-center">申请时间</th>   
+                                    <th class="w10 text-center">处理时间</th>           
+									<th class="w5 text-center">状态</th>         
+									<th class="w15">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center"><input type="checkbox" name="ids[]" value="{$vo.id}" class="selectAll-item" /></td>
+                                        <td class="text-center"><strong>{$vo.rname}</strong></td>
+                                        <td>{$vo['idcard']}</td>
+                                        <td class="text-center"><img src="{$vo.frontimg}" height="30" class="photo" data-name="{$vo.rname}" data-card="{$vo.idcard}"/></td>
+                                        <td class="text-center"><img src="{$vo.backimg}" height="30" class="photo" data-name="{$vo.rname}" data-card="{$vo.idcard}"/></td>
+                                        <td class="text-center"><img src="{$vo.photo}" height="30" class="photo" data-name="{$vo.rname}" data-card="{$vo.idcard}"/></td>
+                                        <td class="text-center">
+                                            <switch name="vo['type']" >
+                                            <case value="1"><span class="succ">C1</span></case>
+                                            <case value="2"><span class="succ">C2</span></case>
+                                            </switch>
+                                        </td>
+                                        <td class="text-center">
+                                            <empty name="vo['ctime']">
+                                                [--/--/-- --：--]
+                                            <else/>
+                                                {$vo.ctime|date='Y-m-d H:i',###}
+                                            </empty>                                       
+                                        </td>
+                                        <td class="text-center">
+                                            <empty name="vo['ptime']">
+                                                [--/--/-- --：--]
+                                            <else/>
+                                                {$vo.ptime|date='Y-m-d H:i',###}
+                                            </empty>                                       
+                                        </td>
+                                        <td class="text-center">
+                                            <switch name="vo['status']" >
+                                            <case value="-1"><span class="fail" title="{$vo['remark']}">审核失败</span></case>
+                                            <case value="0"><span class="">未审核</span></case>
+                                            <case value="1"><span class="succ">审核通过</span></case>
+                                            </switch>
+                                        </td>
+										<td>
+                                            <a href="javascript:;" class="audit" data-action="pass" data-id="{$vo.id}">审核通过</a> |
+                                            <a href="javascript:;" class="audit" data-action="fail" data-id="{$vo.id}">审核失败</a>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="15">
+											<div class="pull-right">
+												<nav>{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="15" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+<div id="photoView" style="display: none; position: relative;">
+    <img src="#" width="800"/>
+    <span style="position: absolute; bottom: 0; left:0; font-size:30px; width: 100%; font-weight: bold; text-align: center; display: block; height: 46px; line-height: 46px; background: rgba(30,123,37,.8); color: #fff;"></span>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//搜索
+		$('#searchBtn').click(function(){
+			$('#searchForm').submit();
+		})
+
+        //审核
+        bind_audit('.audit');
+        //批量审核
+        bind_batch_audit('.batc_audit');
+        bind_openPhoto('.photo');
+
+        function bind_audit(selector){
+            $(selector).click(function(){
+                var id = $(this).data('id');
+                var action = $(this).data('action');
+                if(action=="pass"){
+                	 confirm('确认此操作？',function(){
+                         send('{:U("auth_confirm")}',{ids : id, action : action});
+                     })
+                }else{
+                	layer.use('extend/layer.ext.js', function(){  
+	                	layer.prompt({title: '输入拒绝原因，并确认', formType: 2}, function(text, index){
+	                		send('{:U("auth_confirm")}',{ids : id, action : action, remark : text});
+	                	});  
+                	});  
+                }
+            })
+        }
+        //打开图片
+        function bind_openPhoto(selector){
+            $(selector).click(function(){
+                var name = $(this).data('name');
+                var card = $(this).data('card');
+                var src = $(this).attr('src');
+                $('#photoView').children('span').text(name + ' ' + card);
+                $('#photoView').children('img').attr('src', src);
+                layer.open({
+                  type: 1,
+                  title: false,
+                  closeBtn: 0,
+                  area: '800px',
+                  skin: 'layui-layer-nobg', //没有背景色
+                  shadeClose: true,
+                  content: $('#photoView')
+                });
+            })
+        }
+        
+        function bind_batch_audit(selector){
+            $(selector).click(function(){
+                if(!betch_check()){
+                    msg('请选择数据');
+                     return false;
+                }
+                var action = $(this).data('action');
+                var ids = checked2string();
+                if(action=="pass"){
+               	   confirm('确认此操作？',function(){
+                        send('{:U("auth_confirm")}',{ids : ids, action : action});
+                    })
+               }else{
+	               	layer.use('extend/layer.ext.js', function(){  
+	                	layer.prompt({title: '输入拒绝原因，并确认', formType: 2}, function(text, index){
+	                		send('{:U("auth_confirm")}',{ids : ids, action : action, remark : text});
+	                	});  
+	               	});  
+               }
+            })
+        }
+
+	    //发送数据
+	    function send(url, data){
+	    	var params = {
+                url : url,
+                params : data,
+                callback : function(data){
+                    var msgCallBack;
+                    if(data.status == 1){
+                        msgCallBack = function(){
+                            window.location.reload();
+                        }
+                    }
+                    msg(data.info,msgCallBack);
+                }
+            }
+            ajax(params);
+	    }
+
+        //批量操作检查数据
+        function betch_check(){
+            if($('.selectAll-item:checkbox:checked').length > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        //获取选中
+        function checked2string(){
+            $ids = '';
+            $('.selectAll-item:checkbox:checked').each(function(){
+                $ids += $(this).val() + ',';
+            })
+            return $ids;
+        }
+
+	})
+</script>
+<include file="Public/footer"/>

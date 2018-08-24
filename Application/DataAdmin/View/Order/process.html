@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>订单详情</title>
+<link href="__PUBLIC__/Admin/css/bootstrap.min.css" rel="stylesheet">
+<link href="__PUBLIC__/Admin/bootstrap-table/bootstrap-table.min.css"
+	rel="stylesheet">
+<link href="__PUBLIC__/Admin/bootstrap-table/bootstrap-editable.css"
+	rel="stylesheet">
+<link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css"
+	rel="stylesheet">
+<link href="__PUBLIC__/Admin/css/style.min.css?v=4.0.0" rel="stylesheet">
+<script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+<script src="__PUBLIC__/Admin/js/bootstrap.min.js?v=3.3.5"></script>
+<script type="text/javascript"
+	src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+
+<style type="text/css">
+.rightText {
+	text-align: left;
+	color: #555;
+	line-height: 30px;
+	font-weight: 400;
+}
+
+.amount {
+	font-size: 18px;
+	color: red;
+	font-family: Arial, Verdana, "\5b8b\4f53";
+}
+
+.bd {
+	font-weight: bold;
+	font-family: Arial, Verdana, "\5b8b\4f53";
+}
+
+.hr {
+	height: 0px;
+	line-height: 0px;
+	font-size: 0px;
+	border-bottom: 1px solid #f5f5f5;
+	margin-bottom: 5px;
+}
+
+.form-group {
+	margin-bottom: 5px !important;
+}
+
+.switchery {
+	height: 20px !important;
+	width: 40px !important;
+}
+
+.switchery>small {
+	height: 20px !important;
+	width: 20px !important;
+}
+
+.radio {
+	padding-top: 0 !important;
+}
+
+.red {
+	color: red
+}
+
+.green {
+	color: green;
+}
+</style>
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form class="form-horizontal form-border" id="form" method="post">
+						<input name="orderid" value="{$Think.get.orderid}" type="hidden" />
+						<div class="form-group">
+							<label class="col-sm-3 control-label">联系人</label>
+							<div class="col-sm-2 rightText">{$data.rname}</div>
+							<label class="col-sm-1 control-label">联系方式</label>
+							<div class="col-sm-2 rightText">{$data.mobile}</div>
+						</div>
+						<div class="hr"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">收货地址</label>
+							<div class="col-sm-2 rightText">{$data.address}</div>
+							<label class="col-sm-1 control-label">下单时间</label>
+							<div class="col-sm-2 rightText">{$data.ctime|date="Y-m-d
+								H:i:s",###}</div>
+						</div>
+						<div class="hr"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">订单ID</label>
+							<div class="col-sm-2 rightText">{$data.ordersn}</div>
+							<label class="col-sm-1 control-label">已完成时间</label>
+							<div class="col-sm-2 rightText">{$data.succtime|date="Y-m-d
+								H:i:s",###}</div>
+						</div>
+						<div class="hr"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">支付金额</label>
+							<div class="col-sm-4 rightText">
+								{$data.amount} （订单金额 {$data.total_price} + 运费
+								{$data.express_fee} - 满减 {$data.reduce} - 积分兑换
+								<php>echo number_format($data['integral'] / 100,2)</php>
+								)
+							</div>
+
+						</div>
+						<div class="hr"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">支付方式</label>
+							<div class="col-sm-2 rightText">
+								<switch name="data['payway']"> <case value="1">
+								<span class="badge badge-warning">现金</span></case> <!-- <case value="2"><span class="badge badge-primary">金锭</span></case> -->
+								</switch>
+							</div>
+							<label class="col-sm-1 control-label">订单状态</label>
+							<div class="col-sm-2 rightText">
+								<php>$zh = shop_order_status($data['status']);</php>
+								<switch name="data['status']"> <case value="0">
+								<span class="label label-warning">{$zh}</span></case> <case
+									value="1|2|-10|-20"> <span class="label label-success">{$zh}</span></case>
+								<case value="3|-12|-22"> <span
+									class="label label-primary">{$zh}</span></case> <case value="-1">
+								<span class="label">{$zh}</span></case> <case value="-11|-21"> <span
+									class="label label-danger">{$zh}</span></case> </switch>
+							</div>
+						</div>
+
+						<div class="hr"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">订单商品</label>
+							<div class="col-sm-6 rightText">
+								<table class="table table-bordered" width="60%">
+									<thead>
+										<tr class="long-tr">
+											<th width="40%" class="tl">商品名称</th>
+											<th width="10%" class="tl">规格</th>
+											<th width="10%" class="tl">单价</th>
+											<th width="10%">数量</th>
+											<th width="10%">总价</th>
+											<th width="10%">促销</th>
+										</tr>
+									</thead>
+									<tbody>
+										<volist name="goods" id="vo">
+										<tr class="long-td">
+											<if condition="$vo.name neq ''">
+											<td class="tl">{$vo.rname}</td>
+											<else />
+											<td class="tl">{$vo.goods_name}</td>
+											</if>
+											<td class="tl"><strong>{$vo.flag}<strong></td>
+											<td class="tl">{$vo.price}</td>
+											<td><strong>{$vo.num}</strong></td>
+											<td><strong>{$vo.amount}</strong></td>
+											<td><if condition="vo.promote eq 1"> 是 <else /> 否
+												</if></td>
+										</tr>
+										</volist>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<if condition="$data['sendtime'] neq ''">
+						<div class="hr"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">快递信息</label>
+							<div class="col-sm-2 rightText">
+								{$data.exp_company}{$data.express_no}</div>
+							<label class="col-sm-1 control-label">发货时间</label>
+							<div class="col-sm-2 rightText">
+								{$data.sendtime|date="Y-m-d H:i:s",###}</div>
+						</div>
+						</if>
+
+						<switch name="data['status']"> <case value="-1">
+
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<a href="javascript:;" class="btn btn-default closeIframe">关闭</a>
+							</div>
+						</div>
+
+						</case> <case value="2|3">
+
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<a href="javascript:;" class="btn btn-default closeIframe">关闭</a>
+							</div>
+						</div>
+
+						</case> <case value="0">
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<!--  <button type="button" class="btn btn-success" onClick="cfmpay()">确认付款</button>
+						               <button type="button" class="btn btn-cancel" onClick="cancel()">取消订单</button> -->
+								<a href="javascript:;" class="btn btn-default closeIframe">关闭</a>
+							</div>
+						</div>
+						</case> <case value="1">
+						<div class="hr"></div>
+						<!-- <div class="form-group">
+						            <label class="col-sm-3 control-label">快递公司</label>
+						            <div class="col-sm-2 rightText">
+						                <select name="company" id="company" class="form-control">
+						                    <volist name="company" id="c">
+						                        <option value="{$c.name}">{$c.name}</option>
+						                    </volist>
+						                </select>
+						            </div>
+						            <label class="col-sm-1 control-label">快递单号</label>
+						            <div class="col-sm-2 rightText">
+						            <input type="text" name="express_no" id="express_no" placeholder="输入快递单号" class="form-control" value="">
+						            </div>
+						        </div> -->
+						<div class="hr"></div>
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<!-- <button type="button" class="btn btn-success" onclick="sendgoods()">确认发货</button> -->
+								<a href="javascript:;" class="btn btn-default closeIframe">关闭</a>
+							</div>
+						</div>
+
+						</case> <case value="-10|-11|-12|-20|-21|-22">
+						<div class="hr"></div>
+						<!-- <div class="form-group">
+						            <label class="col-sm-3 control-label">售后单号</label>
+						            <div class="col-sm-2 rightText">
+						                {$refund.afterno}
+						            </div>
+						            <label class="col-sm-1 control-label">申请时间</label>
+						            <div class="col-sm-2 rightText">
+						                {$refund.ctime|date="Y-m-d H:i:s",###}
+						            </div>
+						        </div>
+						        <div class="form-group">
+						            <label class="col-sm-3 control-label">服务类型</label>
+						            <div class="col-sm-2 rightText">
+						                <if condition="$refund['aft_type'] eq 1">
+						                    仅退款
+						                <else/>
+						                    退货退款
+						                </if>
+						            </div>
+						            <label class="col-sm-1 control-label">退款金额</label>
+						            <div class="col-sm-2 rightText">
+						                {$refund.aft_refund}
+						            </div>
+						        </div>
+						        <div class="form-group">
+						            <label class="col-sm-3 control-label">货物状态</label>
+						            <div class="col-sm-1 rightText">
+						                <if condition="$refund['gdstatus'] eq 1">
+						                    未收到货
+						                    <else/>
+						                    未收到货
+						                </if>
+						            </div>
+						            <label class="col-sm-2 control-label">退款原因</label>
+						            <div class="col-sm-3 rightText">
+						                {$refund.reason}
+						            </div>
+						        </div>
+						        <div class="form-group">
+						            <label class="col-sm-3 control-label">处理状态</label>
+						            <div class="col-sm-2 rightText">
+						                <if condition="$refund['status'] eq 0">
+						                    未处理
+						                    <else/>
+						                    已处理
+						                </if>
+						            </div>
+						            <label class="col-sm-1 control-label">处理人</label>
+						            <div class="col-sm-2 rightText">
+						                {$refund.admin}
+						            </div>
+						        </div>
+						        <if condition="$refund['status'] eq 0">
+						            <div class="hr"></div>
+						            <div class="form-group">
+						                <label class="col-sm-3 control-label">拒绝理由</label>
+						                <div class="col-sm-4 rightText">
+						                    <input type="text" name="explain" id="explain" placeholder="拒绝理由" class="form-control" value="">
+						                </div>
+						            </div>
+						        <else/>
+						            <div class="hr"></div>
+						            <div class="form-group">
+						                <label class="col-sm-3 control-label">拒绝理由</label>
+						                <div class="col-sm-4 rightText">
+						                    {$refund.explain}
+						                </div>
+						            </div>
+						        </if>
+						        <input type="hidden" name="afterid" id="afterid" class="form-control" value="{$refund.afterid}">
+						 -->
+						<div class="hr"></div>
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<!-- <if condition="$data['status'] eq -10 OR $data['status'] eq -20">
+						                 <if condition="$refund['aft_type'] eq 1">
+						                     <button type="button" class="btn btn-success" onclick="agree_back(-12)">同意退款</button>
+						                     <button type="button" class="btn btn-success" onclick="repluse_back(-11)">拒绝退款</button>
+						                     <else/>
+						                     <button type="button" class="btn btn-success" onclick="agree_back(-22)">同意退货</button>
+						                     <button type="button" class="btn btn-success" onclick="repluse_back(-21)">拒绝退货</button>
+						                 </if>
+						                </if> -->
+
+								<a href="javascript:;" class="btn btn-default closeIframe">关闭</a>
+							</div>
+						</div>
+						</case> </switch>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<js file="__PUBLIC__/Admin/js/plugins/switchery/switchery.js" />
+<!--IOS开关样式-->
+<css file="__PUBLIC__/Admin/css/plugins/switchery/switchery.css" />
+<js file="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js" />
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})
+	    $(".confirm").click(function(){
+	        layer.confirm('确定更改订单？', {icon: 3}, function(index){
+	            $("#form").submit();
+	        });
+	    });
+	    var index = parent.layer.getFrameIndex(window.name);
+	    $('.closeIframe').click(function(){
+	        parent.layer.close(index);
+	    });
+	});
+	
+	var elem = document.querySelector('.js-switch');
+	        var switchery = new Switchery(elem, {
+	            color: '#1AB394',
+	        });
+	
+	
+	var postparmas = {
+	    url : '{:U('orderStatus')}',
+	    callback : function(data){
+	        layer.msg(data.returnMsg,{skin:"layui-layer-hui",time:1000,end:function(){
+	            if(data.returnCode == 'SUCCESS'){
+	                window.location.reload(); //重载页面
+	                parent.location.reload(); //重载父页面
+	            }
+	        }});
+	    },
+	    params : {
+	        orderid : '{$data.orderid}',
+	    }
+	}
+	//确认付款
+	function cfmpay(){
+	    postparmas.params.status = '1';
+	    ajax(postparmas);
+	}
+	//关闭交易
+	function odclose(){
+	    postparmas.params.status = '-2';
+	    ajax(postparmas);
+	}
+	//取消订单
+	function cancel(){
+	    postparmas.params.status = '-1';
+	    ajax(postparmas);
+	}
+	//确认发货
+	/* function sendgoods(){
+	    var company = $('#company').val();
+	    var express_no = $('#express_no').val();
+	    if(company == '' || express_no == ''){
+	        layer.msg('请填写快递信息',{skin:"layui-layer-hui",time:1000});
+	        return false;
+	    }
+	
+	    postparmas.params.status = '2';
+	    postparmas.params.company = company;
+	    postparmas.params.express_no = express_no;
+	    ajax(postparmas);
+	} */
+	//拒绝退款、拒绝退货
+	function repluse_back(sta){
+	    var afterid = $('#afterid').val();
+	    var explain = $('#explain').val();
+	    if( explain == ''){
+	        layer.msg('请填写拒绝理由',{skin:"layui-layer-hui",time:1000});
+	        return false;
+	    }
+	    postparmas.params.status = sta;
+	    postparmas.params.afterid = afterid;
+	    postparmas.params.explain = explain;
+	    ajax(postparmas);
+	}
+	//同意退款、同意退货
+	function agree_back(sta){
+	    var afterid = $('#afterid').val();
+	    postparmas.params.status = sta;
+	    postparmas.params.afterid = afterid;
+	    ajax(postparmas);
+	}
+	
+	
+	function ajax(params){
+	    $.post(params.url,params.params,function(data){
+	        if(typeof(params.callback) == 'function'){
+	            params.callback(data);
+	        }
+	    },'json');
+	}
+</script>
+</html>

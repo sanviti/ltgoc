@@ -1,0 +1,335 @@
+<include file="public/header"/>
+	<body style="background: #f1f1f2;">
+		<div id="info-box">
+        <?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <include file="public/top"/>
+        <?php
+            }else{
+        ?>
+            <style type="text/css">.c_content{margin-top: 0}</style>
+        <?php
+            }
+        ?>
+		<div class="c_content" id="main">
+			<ul>
+				<li class="but-nickname">
+					<span>昵称</span>
+					<p id="nickname"></p>
+				</li>
+				<li>
+					<span>手机号</span>
+					<p id="mobile"></p>
+				</li>
+				<li>
+					<span>会员等级</span>
+					<p id="vip_level"></p>
+				</li>
+				<li class="but-tag" style="margin-bottom: .5rem;">
+					<span>个性签名</span>
+					<p id="member_tag"></p>
+				</li>
+				<li>
+					<span>C1实名认证</span>
+					<a href="{:U('Wap/Members/auth_c1')}"><img src="__ROOT__/Public/Wap/img/icon/right_j.png"/><span class="tip" id="c1-box" style="float: right; text-align: right; color:#000; margin-right: .5rem;"></span></a>
+				</li>
+				<li style="margin-bottom: .5rem;">
+					<span>C2实名认证</span>
+					<a href="{:U('Wap/Members/auth_c2')}"><img src="__ROOT__/Public/Wap/img/icon/right_j.png"/><span class="tip" id="c2-box" style="float: right; text-align: right; color:#000; margin-right: .5rem;"></span></a>
+				</li>
+				<li>
+					<span>银行卡</span>
+					<a href="{:U('Wap/Members/BankCard')}"><img src="__ROOT__/Public/Wap/img/icon/right_j.png"/>
+                    <span class="tip" id="bankcard-box" style="float: right; text-align: right; color:#000; margin-right: .5rem;"></span>
+                    </a>
+				</li>
+				<li class="but-ali">
+					<span>支付宝</span>
+					<p id="alipay_account"></p>
+				</li>
+				<li class="but-weixin" style="margin-bottom: .5rem;">
+					<span>微信</span>
+					<p id="weixin_account"></p>
+				</li>
+				<li>
+					<span>申请区域</span>
+					<a href="javascript:;" onClick="waitOpen()"><img src="__ROOT__/Public/Wap/img/icon/right_j.png"/></a>
+				</li>
+				<li style="margin-bottom: .5rem;">
+					<span>申请商家</span>
+					<a href="javascript:;" onClick="waitOpen()"><img src="__ROOT__/Public/Wap/img/icon/right_j.png"/></a>
+				</li>
+				
+			</ul>
+			
+		</div>
+		<include file="public/nav"/>
+        </div>
+<!--修改昵称-->
+<div class="swiper-slide" id="nick-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelNickName"></div>
+            <div class="title">修改昵称</div>
+            <div href="javascript:;" class="herder_r submitNickName">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="nick_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <input type="text" name="nickname" class="set-input" />
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+
+<!--修改个性签名-->
+<div class="swiper-slide" id="tag-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelTagName"></div>
+            <div class="title">修改签名</div>
+            <div href="javascript:;" class="herder_r submitTagName">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="tag_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <textarea name="member_tag"  cols="45" rows="5" class="set-input"></textarea>
+                    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<!--修改支付宝-->
+<div class="swiper-slide" id="ali-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelAliName"></div>
+            <div class="title">修改支付宝</div>
+            <div href="javascript:;" class="herder_r submitAliName">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="ali_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <input type="text" name="alipay_account" class="set-input" />
+                    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<!--修改微信-->
+<div class="swiper-slide" id="weixin-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelWeixinName"></div>
+            <div class="title">修改微信</div>
+            <div href="javascript:;" class="herder_r submitWeixinName">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="weixin_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <input type="text" name="weixin_account" class="set-input" />
+                    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	//修改昵称
+	$('.but-nickname').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#nick-box').fadeIn(function(){
+			$('.cancelNickName').on('click',function(){		
+				$('#nick-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitNickName').on('click',function(){		
+				_this = $('#nick-box .set-input').val();
+				if(_this == "")
+				{
+					alertMsg('请填写昵称');
+					return false;
+				}
+				AjaxPost('{:U("Api/Members/editInfo")}','nick_form','.submitNickName',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#nickname').html(_this);
+							$('#nick-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	//修改个性签名
+	$('.but-tag').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#tag-box').fadeIn(function(){
+			$('.cancelTagName').on('click',function(){		
+				$('#tag-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitTagName').on('click',function(){
+				_this = $('#tag-box .set-input').html();
+				AjaxPost('{:U("Api/Members/editInfo")}','tag_form','.submitTagName',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#member_tag').html($('#tag-box .set-input').val());
+							$('#tag-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	//修改支付宝
+	$('.but-ali').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#ali-box').fadeIn(function(){
+			$('.cancelAliName').on('click',function(){		
+				$('#ali-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitAliName').on('click',function(){		
+				_this = $('#ali-box .set-input').val();
+				if(_this == "")
+				{
+					alertMsg('请填写支付宝');
+					return false;
+				}
+				AjaxPost('{:U("Api/Members/editMemberDep")}','ali_form','.submitAliName',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#alipay_account').html(_this);
+							$('#ali-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	//修改微信
+	$('.but-weixin').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#weixin-box').fadeIn(function(){
+			$('.cancelWeixinName').on('click',function(){		
+				$('#weixin-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitWeixinName').on('click',function(){		
+				_this = $('#weixin-box .set-input').val();
+				if(_this == "")
+				{
+					alertMsg('请填写微信');
+					return false;
+				}
+				AjaxPost('{:U("Api/Members/editMemberDep")}','weixin_form','.submitWeixinName',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#weixin_account').html(_this);
+							$('#weixin-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	PostApi("{:U('Api/Members/memberInfo')}", {}, function(data){
+		if(data.returnCode){
+			$('#nickname').html(data.result.nickname);
+			$('input[name="nickname"]').val(data.result.nickname);
+			$('#mobile').html(data.result.phone);
+			$('#vip_level').html(data.result.vip_level);
+			$('#member_tag').html(data.result.member_tag);
+			$('textarea[name="member_tag"]').html(data.result.member_tag);
+			$('#alipay_account').html(data.result.alipay_account);
+			$('input[name="alipay_account"]').val(data.result.alipay_account);
+			$('#weixin_account').html(data.result.weixin_account);
+            if(data.result.card_name == ''){
+                $('#bankcard-box').html('未添加');
+            }else{
+                $('#bankcard-box').html(data.result.card_name);
+            }
+            
+			$('input[name="weixin_account"]').val(data.result.weixin_account);
+			$('.spinner').remove();
+		}
+	});
+	PostApi("{:U('Api/Members/query_auth')}", {type:1}, function(data){
+		if(data.returnCode > 0){
+			if(data.result.status == 0){
+				$('#c1-box').html('认证中');
+			} else if(data.result.status == 1){
+				$('#c1-box').html('已认证');
+			}
+		} else {
+			$('#c1-box').html('未认证');
+		}
+		$('.spinner').remove();
+	});
+    
+	PostApi("{:U('Api/Members/query_auth')}", {type:2}, function(data){
+		if(data.returnCode > 0){
+			if(data.result.status == 0){
+				$('#c2-box').html('认证中');
+			} else if(data.result.status == 1){
+				$('#c2-box').html('已认证');
+			}
+		} else {
+			$('#c2-box').html('未认证');
+		}
+		$('.spinner').remove();
+	});
+
+});
+</script>
+	</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale-1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="__PUBLIC__/Api/wap/css/public.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Api/wap/css/register.css" />
+		<script type="text/javascript" src="__PUBLIC__/Api/wap/js/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="__PUBLIC__/Api/wap/js/common.js" ></script>
+		<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/layer/layer.js" ></script>
+		<title>注册</title>
+	</head>
+	<body>
+	  <div class="newdiv">
+		<div class="icon_box">
+			<img src="__PUBLIC__/Api/wap/images/ht_png1.png" />
+		</div>
+		<form action="" method="post" name="register_form" id="register_form">
+			<div class="list_box">		
+				<div class="list">
+					<div class="lab"></div>
+					<input class="pho" type="text" name="phone" id="phone" name="" placeholder="请输入手机号" value="" />
+					<div class="type close"></div>
+				</div>
+				
+				<div class="list">
+					<div class="lab lab1"></div>
+					<input type="text" name="recomid" id="recomid" placeholder="请输入推荐码" value="{$lid}" disabled="disabled"/>
+				</div>
+				
+				<div class="list">
+					<div class="lab lab2"></div>
+					<input type="password" name="password" id="password" placeholder="请输入登录密码" value="" />
+					<div class="type type1"></div>
+				</div>
+				
+				<div class="list">
+					<div class="lab lab2"></div>
+					<input type="password" name="pay_password" id="pay_password" placeholder="请输入交易密码" value="" />
+					<div class="type type1"></div>
+				</div>
+				
+				<div class="list">
+					<div class="lab lab3"></div>
+					<input type="text" name="imgcode" id="imgcode" placeholder="请输入图形验证码" value="" />
+					<div class="validate"><img src="{:U('Wvcode/image')}" width="100%" height="100%" class="refresh"/></div>
+				</div>
+				
+				<div class="list">
+					<div class="lab lab4"></div>
+					<input type="number" name="smscode" id="smscode" placeholder="请输入短信验证码" value="" />
+					<div class="send" id="sendcode">点击发送</div>
+				</div>
+				
+				<div class="but" id="register_btn">注册</div>
+			</div>
+		</form>	
+		</div>
+	</body>
+	<script>
+		//- 设置根元素fontSize
+		(function (doc, win) {
+		    var _root = doc.documentElement,
+		        resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize',
+		        resizeCallback = function () {
+		            var clientWidth = _root.clientWidth,
+		                fontSize = 20;
+		            if (!clientWidth) return;
+		            if(clientWidth < 750) {
+		                fontSize = 20 * (clientWidth / 375);
+		            } else {
+		                fontSize = 20 * (750 / 375);
+		            }
+		            _root.style.fontSize = fontSize + 'px';
+		        };
+		    if (!doc.addEventListener) return;
+		    win.addEventListener(resizeEvent, resizeCallback, false);
+		    doc.addEventListener('DOMContentLoaded', resizeCallback, false);
+		})(document, window);
+	</script>
+	<script>
+		$(".refresh").click(function(){
+			$(this).attr("src","{:U('Wvcode/image')}");
+		})
+		$(function(){
+			var countdown=60;
+			//重新输入手机号
+			$(".close").click(function(){
+				$(".pho").val("");
+			});
+			//密码type切换
+			$(".type1").click(function(){
+				var typeon = $(this).prev().prop("type");
+				if(typeon == "password"){
+					$(this).prev().prop("type","text");
+				} else {
+					$(this).prev().prop("type","password");
+				};
+			})
+			/**发送短信**/
+			isWaiting = false;
+			$("#sendcode").click(function(){
+				var _this = $(this);
+				if(!isPhoneNo($('input[name="phone"]').val())){
+					layer.msg('请输入正确的手机号码');
+					return false;
+				}
+				imgcode = $('#imgcode');
+		  		if(isEmpty(imgcode.val())){
+		  			layer.msg("请输入图形验证码");
+					imgcode.focus();
+					return false;
+				}
+				if(isWaiting == true) return;
+				isWaiting = true;
+				
+				var data = {
+					validcode : $('#imgcode').val(),
+					mobile    : $('input[name="phone"]').val()
+				}
+				$.post('{:U("Api/Wvcode/reg_sms")}', data, function(data){
+					console.log(data);
+					if(data.returnCode == "SUCCESS"){
+						layer.msg(data.returnMsg);
+						var sms_timer = data.result.out_time;
+						var time = null;
+						timer = setInterval(function(){
+							if(sms_timer > 0){
+								_this.attr('disabled', true);
+								sms_timer--;
+								_this.html(sms_timer);
+							}
+							if(sms_timer <= 0){
+								isWaiting = false;
+								_this.removeAttr('disabled');
+								_this.html('重新发送');
+								clearInterval(timer);
+							}
+						},1000);
+					} else {
+						$('.refresh').attr("src","{:U('Wvcode/image')}");
+						isWaiting = false;
+						_this.removeAttr('disabled');
+						layer.msg(data.returnMsg);
+					}
+				},'json');
+			});
+		});
+		
+		/**执行注册**/
+		$("#register_btn").click(function(){
+			if($('input[name="phone"]').val() == ''){
+				layer.msg('请填写手机号');
+				return false;
+			}
+			if($('input[name="recomid"]').val() == ''){
+				layer.msg('请填写推荐码');
+				return false;
+			}
+			if($('input[name="password"]').val() == ''){
+				layer.msg('请填写登录密码');
+				return false;
+			}
+			if($('input[name="pay_password"]').val() == ''){
+				layer.msg('请填写交易密码');
+				return false;
+			}
+			var password=$('input[name="pay_password"]').val();
+			var reg = /^\d{6}\b/;
+			if(!reg.test(password)){
+				layer.msg('交易密码为6位数字');
+				return false;
+			}
+			if($('input[name="imgcode"]').val() == ''){
+				layer.msg('请填写图形验证码');
+				return false;
+			}
+			if($('input[name="smscode"]').val() == ''){
+				layer.msg('请填写短信验证码');
+				return false;
+			}
+			var mobile = $('input[name="phone"]').val();
+			var password = $('input[name="password"]').val();
+			var pay_password = $('input[name="pay_password"]').val();
+			var smscode = $('input[name="smscode"]').val();
+			var recomid = $('input[name="recomid"]').val();
+			$.post("{:U('Api/Login/reg')}",
+					{"mobile":mobile,'password':password,'pay_password':pay_password,'smscode':smscode,'lid':recomid},function(d){
+						layer.msg(d.returnMsg);
+						if(d.returnCode == "SUCCESS"){
+							setTimeout("location.href='{:U('Api/Web/download')}'",2000);
+						}else{
+							var lid = $("#recomid").val();
+							setTimeout("location.href='__ACTION__/lid/'"+lid,2000);
+						}
+					},'json');
+		})
+	</script>
+</html>

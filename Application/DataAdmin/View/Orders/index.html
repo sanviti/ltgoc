@@ -1,0 +1,191 @@
+<include file="Public/header"/>
+
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>订单管理</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                	<!--搜索开始-->
+                	<form name="search" action="" id="searchForm" method="post">
+					<div class="search-box row">
+						<div class="col-md-9">
+							<div class="form-group">
+								<span class="pull-left form-span">订单号:</span>
+								<input type="text" name="order_sn" value="{:I('order_sn')}" class="form-control" placeholder=""/>
+							</div>
+							<div class="form-group">
+                                <span class="pull-left form-span">发布类型:</span>
+                                <select name="type" class="form-control">
+                                <option value="" <if condition="$Think.request.type heq ''"> selected="selected"</if>>全部类型</option>
+                                <option value="1" <if condition="$Think.request.type heq '1'"> selected="selected"</if>>买入</option>
+                                <option value="2" <if condition="$Think.request.type heq '2'"> selected="selected"</if>>卖出</option>
+                                </select>
+                            </div>
+							<div class="form-group">
+								<span class="pull-left form-span">当前状态:</span>
+								<select name="status" class="form-control">
+								<option value="" <if condition="$Think.request.status heq ''"> selected="selected"</if>>全部状态</option>
+                                <option value="1" <if condition="$Think.request.status heq '1'"> selected="selected"</if>>买家发布</option>
+                                <option value="2" <if condition="$Think.request.status heq '2'"> selected="selected"</if>>卖家发布</option>
+                                <option value="3" <if condition="$Think.request.status heq '3'"> selected="selected"</if>>匹配成功</option>
+                                <option value="4" <if condition="$Think.request.status heq '4'"> selected="selected"</if>>买家标记付款</option>
+                                <option value="5" <if condition="$Think.request.status heq '5'"> selected="selected"</if>>交易成功</option>
+                                <option value="-1" <if condition="$Think.request.status heq '-1'"> selected="selected"</if>>卖家撤单</option>
+                                <option value="-2" <if condition="$Think.request.status heq '-2'"> selected="selected"</if>>买家撤单</option>
+								<option value="101" <if condition="$Think.request.status heq '101'"> selected="selected"</if>>强制成交</option>
+                                <option value="102" <if condition="$Think.request.status heq '102'"> selected="selected"</if>>强制撤单</option>
+								</select>
+							</div>
+						
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>       
+							</div>
+						</div>                   
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5 text-center"><input type="checkbox" class="selectAll" /></th>
+									<th class="w10 text-center">订单号</th>
+                                    <th class="w5 text-center">发布类型</th>
+                                    <th class="w10 text-center">PEC数量</th>
+                                    <th class="w10 text-center">价格（USD）</th>
+                                    <th class="w10 text-center">总价（USD）</th>
+                                    <th class="w10 text-center">卖出用户</th>
+                                    <th class="w10 text-center">买入用户</th>
+                                    <th class="w10 text-center">当前状态</th>
+                                    <th class="w10 text-center">创建时间</th>
+									<th class="w10">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center"><input type="checkbox" name="ids[]" value="{$vo.id}" class="selectAll-item" /></td>
+                                        <td class="text-center"><strong>{$vo.order_sn}</strong></td>
+                                        <td class="text-center">
+                                            <switch name="vo['type']" >
+                                            <case value="1"><span class="succ">买入</span></case>
+                                            <case value="2"><span class="succ">卖出</span></case>
+                                            </switch>
+                                        </td>
+                                        <td class="text-center">{:number_format($vo['opc'], 4)}</td>
+                                        <td class="text-center">{:number_format($vo['price'], 2)}</td>
+                                        <td class="text-center">{:number_format($vo['total_usd'], 2)}</td>
+                                        <td class="text-center">{$vo.buy_name}</td>
+                                        <td class="text-center">{$vo.sell_name}</td>
+                                        <td class="text-center">
+                                            <switch name="vo['status']" >
+                                                <case value="1"><span class="succ">买家发布</span></case>
+                                                <case value="2"><span class="succ">卖家发布</span></case>
+                                                <case value="3"><span class="succ">匹配成功</span></case>
+                                                <case value="4"><span class="succ">买家标记付款</span></case>
+                                                <case value="5"><span class="succ">交易成功</span></case>
+                                                <case value="-1"><span class="succ">卖家撤单</span></case>
+                                                <case value="-2"><span class="fail">买家撤单</span></case>
+                                                <case value="101"><span class="fail">强制成交</span></case>
+                                                <case value="102"><span class="fail">强制撤单</span></case>
+                                            </switch>
+                                        </td>
+                                            
+                                        <td class="text-center">
+                                            <empty name="vo['create_time']">
+                                                [--/--/-- --：--]
+                                            <else/>
+                                                {$vo.create_time|date='Y-m-d H:i',###}
+                                            </empty>                                       
+                                        </td>
+                                        
+										<td>
+                                            <a href="{:U('detail',array('id'=>$vo['id']))}">详细信息</a>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="15">
+											<div class="pull-right">
+												<nav>{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="15" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//搜索
+		$('#searchBtn').click(function(){
+			$('#searchForm').submit();
+		})
+
+        //锁定账号
+        bind_lock('.lock');
+        function bind_lock(selector){
+            $(selector).click(function(){
+                var id = $(this).data('id');
+                confirm('锁定或者开启用户？',function(){
+                    send('{:U("lock")}',{id : id});
+                })
+            })
+        }
+	    //发送数据
+	    function send(url, data){
+	    	var params = {
+                url : url,
+                params : data,
+                callback : function(data){
+                    var msgCallBack;
+                    if(data.status == 1){
+                        msgCallBack = function(){
+                            window.location.reload();
+                        }
+                    }
+                    msg(data.info,msgCallBack);
+                }
+            }
+            ajax(params);
+	    }
+
+
+	})
+</script>
+<include file="Public/footer"/>

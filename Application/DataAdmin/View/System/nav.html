@@ -1,0 +1,180 @@
+<include file="Public/header"/>
+<style>
+	.parentMenu{
+		background: #ECECEC;
+	}
+	.subMenu{
+		background: #F5F5F5;
+	}
+	tr.parentMenu td:first-child,tr.subMenu td:first-child{
+		line-height: 34px;
+		font-size:28px;
+	}
+</style>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>导航管理</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+					<!--搜索开始-->
+
+					<div class="search-box row">
+						<div class="col-md-9">
+
+						</div>
+
+						<div class="col-md-3">
+							<div class="btn-group pull-right" role="group" aria-label="...">
+								<a href="javascript:;" class="btn btn-default"id="creatMenu"><span class="glyphicon glyphicon-plus"></span> 新建一级导航</a>
+							</div>
+						</div>
+					</div>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="form" action="" method="post" class="form-horizontal">
+					<div class="table-margin">
+						<table class="table table-bordered" id="MenuTb">
+							<thead>
+							<tr class="table2_tytle">
+								<td class="w10 text-center">#</td>
+								<td class="w20">导航名称</td>
+								<td class="w50">链接</td>
+								<td class="w20">操作</td>
+							</tr>
+							</thead>
+							<foreach name="indexMenu" item="vo" key="k">
+								<tbody menuid="{$k+1}" class="mc{$k+1}"><tr class="parentMenu normal_li">
+									<td class="text-center">◎</td>
+									<td>
+										<input type="text" name="navList[{$k+1}][name]" class="form-control" id="encodingaeskey" value="{$vo.name}" maxlength="10" size="10">
+									</td>
+
+									<td><input type="text" name="navList[{$k+1}][value]" class="form-control" id="encodingaeskey" value="<empty name="$vo['key']">{$vo.url}<else />{$vo.key}</empty>"></td>
+									<td class="text-left"><a href="javascript:;" class="btn btn-primary addSubMenu" menuid="{$k+1}" style="margin-right: 10px;">
+										<span class="fa fa-plus fa-fw"></span>
+										添加子菜单
+									</a>
+										<a href="javascript:;" class="btn btn-danger" id="delMenu" menuid="{$k+1}">
+											<span class="fa fa-trash-o fa-fw"></span>
+											删除
+										</a></td>
+								</tr>
+
+								<foreach name="vo['sub_button']" item="sub" key="sub_k">
+
+									<tr class="subMenu mc{$k+1}-{$sub_k}" menuid="{$sub_k}">
+										<td class="text-center">○</td><td><input type="text" name="navList[{$k+1}][sub_button][{$sub_k}][name]" class="form-control" id="encodingaeskey" value="{$sub.name}" maxlength="10" size="10"></td>
+										<td>
+											<input type="text" name="navList[{$k+1}][sub_button][{$sub_k}][value]" class="form-control" id="encodingaeskey" value="<empty name="sub['key']">{$sub.url}<else />{$sub.key}</empty>" ></td>
+										<td class="text-left"><a href="javascript:;" class="btn btn-danger" id="delMenu" menuid="{$k+1}-{$sub_k}">删除</a></td></tr>
+								</foreach>
+
+								</tbody>
+							</foreach>
+						</table>
+						<div class="form-group">
+							<div class="col-sm-12 text-center">
+								<button class="btn btn-info" type="submit">保存修改</button>&nbsp;&nbsp;&nbsp;
+								<a class="btn btn-default" onclick="window.location.reload();">取消</a>&nbsp;&nbsp;&nbsp;
+							</div>
+
+						</div>
+					</div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('#form');
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		//创建菜单
+		$("#creatMenu").click(function(){
+			var MenuLen = $("#MenuTb>tbody").length;
+			var MenuID = MenuLen == 0 ? 1 : parseInt($("#MenuTb>tbody:last").attr("menuid")) + 1;
+			var menuHtml = '<tbody menuid="'+ MenuID +'" class="mc'+ MenuID +'">'+
+					'<tr class="parentMenu">'+
+					'<td class="text-center">◎</td>'+
+					'<td><input type="text" name="navList['+ MenuID +'][name]" class="form-control"'+
+					'class="form" id="encodingaeskey" value="" '+
+					'maxlength="10" size="10" /></td>'+
+
+					'<td><input type="text" name="navList['+ MenuID +'][value]"'+
+					' class="form-control" id="encodingaeskey"'+
+					'value=""/></td>'+
+					'<td class="text-left">'+
+					'<a href="javascript:;" class="btn btn-primary addSubMenu" style="margin-right:10px;" MenuID = '+ MenuID +'>'+
+					'<span class="fa fa-plus fa-fw"></span> 添加子菜单</a>'+
+					'<a href="javascript:;" class="btn btn-danger" id="delMenu" MenuID = '+ MenuID +'>'+
+					'<span class="fa fa-trash-o fa-fw"></span> 删除</a>'+
+					'</td>'+
+					'</tr> '+
+					'</tbody>';
+			if(MenuID == 1){
+				$("#MenuTb>thead").after(menuHtml);
+			}else{
+				$("#MenuTb>tbody:last").after(menuHtml);
+			}
+
+		});
+
+
+		//创建子菜单
+		$(document).on('click','.addSubMenu',function(){
+			var ID = $(this).attr("MenuID");
+			var MenuLen = $("tbody[menuid = '"+ ID +"']").children("tr.subMenu").length;
+
+			var MenuID = MenuLen == 0 ? 1 : parseInt($("tbody[menuid = '"+ ID +"']>tr.subMenu:last").attr("menuid")) + 1;
+
+			var menuHtml =    '<tr class="subMenu mc'+ ID +'-'+ MenuID +'" menuid="'+ MenuID +'" >'+
+					'<td class="text-center" >○</td>'+
+					'<td><input type="text" name="navList['+ ID +'][sub_button]['+ MenuID +'][name]" class="form-control"'+
+					'class="form" id="encodingaeskey" value="" '+
+					'maxlength="10" size="10" /></td>'+
+
+					'<td><input type="text" name="navList['+ ID +'][sub_button]['+ MenuID +'][value]"'+
+					' class="form-control" id="encodingaeskey"'+
+					'value=""/></td>'+
+					'<td class="text-left">'+
+					'<a href="javascript:;" class="btn btn-danger" id="delMenu" MenuID = '+ ID + '-' + MenuID +'>'+
+					'<span class="fa fa-trash-o fa-fw"></span> 删除</a>'+
+					'</td>'+
+					'</tr> ';
+
+			$("tbody[menuid = '"+ ID +"'] tr:last").after(menuHtml);
+
+		});
+
+		//删除菜单
+		$(document).on('click','#delMenu',function(){
+			var _this = $(this);
+			var message = '确定删除？';
+			confirm(message, function(){
+				$('.mc'+_this.attr('MenuID')).remove();
+			});
+
+		});
+	});
+</script>
+<include file="Public/footer"/>

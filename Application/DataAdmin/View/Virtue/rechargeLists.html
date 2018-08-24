@@ -1,0 +1,139 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>充值GOC管理</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+		             <form name="search" action="__ACTION__" id="searchForm" method="post">
+		             <div class="search-box row">
+						<div class="col-md-13">
+							<div class="form-group">
+								<span class="pull-left form-span">用户ID：</span>
+								<input type="text" name="userid" value="{:I('userid')}" class="form-control" placeholder="">
+							</div>	
+							<div class="form-group">
+								<span class="pull-left form-span">用户名称：</span>
+								<input type="text" name="rname" value="{:I('rname')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">充值时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="st" name="btime" onclick="return Calendar('st');" value=""  placeholder="充值开始时间" class="form-control" style="width:125px;"/>
+								</div>
+								<span class="pull-left form-span">&nbsp;&nbsp;&nbsp;&nbsp;----</span>
+								<div class="col-sm-4">
+									<input type="text" id="et" onclick="return Calendar('et');" placeholder="充值结束时间" value="" name="etime" class="form-control" style="width:125px;"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+							</div>
+							<!--<div class="form-group">-->
+								<!--<button class="form-control btn btn-default" id="exportBtn"><span class="glyphicon glyphicon"></span> 导出</button>-->
+							<!--</div>-->
+						</div>
+                    </div>
+		             </form>   	
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5" style="text-align:center;">#</th>
+									<th class="w10"  style="text-align:center;">手机号</th>
+									<th class="w10" style="text-align:center;">用户ID</th>
+									<th class="w10" style="text-align:center;">用户姓名</th>
+									<th class="w10" style="text-align:center;">充值数量</th>
+									<th class="w10" style="text-align:center;">充值类型</th>
+									<th class="w8" style="text-align:center;">充值时间</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center">{$vo.id}</td>	
+										<td class="text-center">
+											{$vo.phone}
+										</td>
+										<td class="text-center">
+										    {$vo.userid}
+										</td>
+										<td class="text-center">
+											{$vo.rname}
+										</td>
+										<td class="text-center">
+											{$vo.num}
+										</td>
+										<td class="text-center">
+											<switch name="vo['type']">
+											   <case value="0">GOC</case>
+											   <case value="1">链通积分</case>
+											   <case value="2">余额</case>
+											</switch>
+										</td>
+										<td class="text-center">
+											{$vo.ctime|date="Y-m-d H:i:s",###}
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="13">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="13" class="text-center">
+										没有数据啦！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script src="__PUBLIC__/DataAdmin/js/layer/layer.js"></script>
+<script type="text/javascript">
+//$(function(){
+//	 $('#exportBtn').click(function(){
+//	     $('#searchForm').attr('action','{:U('DataAdmin/Export/apply_export')}');
+//	     $('#searchForm').submit();
+//	 });
+//})
+
+
+//});
+</script>
+<include file="Public/footer"/>

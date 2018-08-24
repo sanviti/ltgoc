@@ -1,0 +1,251 @@
+<include file="public/header"/>
+<body>
+	<?php
+	    $agent = $_SERVER['HTTP_USER_AGENT'];
+	    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<div class="header">
+			<div class="goback" onClick="goBack()"></div>
+			<div class="title">{$page_title}</div>
+		</div>
+	<?php
+	    }else{
+	?>
+		<style type="text/css">.copy_top{display: none}</style>
+	<?php
+	    }
+	?>
+	<div class="copy_top"></div>
+	<div class="Buy_nav">
+		<i></i>
+		<center>买方订单情况</center>
+		<i></i>
+	</div>
+	<div class="seller_info" style="height: 35rem;">
+		<h1>买方信息</h1>
+		<ul>
+			<li>
+				<p>名字：</p>
+				<p id="rname"></p>
+			</li>
+			<li>
+				<p>联系电话：</p>
+				<p id="phone"></p>
+			</li>
+			<li>
+				<p>PEC数量：</p>
+				<p id="opc"></p>
+			</li>
+			<li>
+				<p>USD：</p>
+				<p id="total_usd"></p>
+			</li>
+			<li>
+				<p>RMB：</p>
+				<p id="total_cny"></p>
+			</li>
+			<li>
+				<p>支付宝：</p>
+				<p class="start" id="alipay" data-pay="1">点击开启</p>
+			</li>
+			<li>
+				<p>微信：</p>
+				<p class="start" id="weixin" data-pay="2">点击开启</p>
+			</li>
+			<li>
+				<p>银行开户行：</p>
+				<p class="start" data-pay="3" id="bank_name">点击开启</p>
+			</li>
+			<li>
+				<p>开户名：</p>
+				<p class="start" data-pay="3" id="card_name">点击开启</p>
+			</li>
+		  <li>
+				<p>银行卡号：</p>
+				<p class="start" data-pay="3" id="card_number">点击开启</p>
+			</li>
+			<li>
+				<p>其他支付：</p>
+				<p class="start" data-pay="4" id="other" data-value="">点击开启</p>
+			</li>
+			<li id="msgWarp" style="display: none">
+				<p>卖家留言：</p>
+				<p data-pay="3" id="message">点击开启</p>
+			</li>
+			<li id="certWarp" style="display: none">
+				<p>凭证：</p>
+				<p><img src="" id="cert_img" style="width:5rem;" /></p>
+			</li>
+		</ul>
+		
+		<div class="seller_words">
+			<ul>
+				<li>
+					<i>交易匹配时间：2018-03-20 15:11:12</i>
+				</li>
+				<li id="btnHTML">
+				</li>
+			</ul>
+		</div>
+
+	</div>
+<style type="text/css">
+	.layui-m-layercont{
+		padding: 20px 30px;
+	}
+	#btnHTML{
+		text-align: center;
+	}
+</style>
+<div id="paybox" style="display:none">
+    <input name="pwd" type="password" id="paypwd" style="width:100%; height: 1rem;border: 1px solid #f0f0f0;" placeholder="请牢记交易密码"/>
+    <input type="hidden" name="ordersn" id="ordersn">
+  <p id="tip" style="font-size:.38rem; text-align: right;line-height: 1rem; height: 1rem; color:#a0a0a0; ">请输入交易密码</p>
+</div>
+<div id="payother" style="display:none">
+    <textarea rows="5" name="other" type="text" id="other" style="width:100%; border: 1px solid #f0f0f0;"></textarea>
+    <p id="tip" style="font-size:.38rem; text-align: right;line-height: 1rem; height: 1rem; color:#a0a0a0; ">请输入其它支付方式</p>
+</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	$('.start').click(function(){
+		var payway = $(this).attr('data-pay');
+		var params = {
+			order_sn : $('#ordersn').val(),
+			payway : payway
+		}
+		var value = $(this).attr('data-value');
+		$('#payother #other').text(value);
+		if(payway == 4){
+			layer.open({
+				title: [
+				  '其它支付',
+				  'background-color:#f2f2f2; color:#000;'
+				]
+				,anim: 'up'
+				,content: $('#payother').html()
+				,btn: ['确认', '取消']
+				,yes : function(){
+					other = $('.layui-m-layercont #other');
+					if(isEmpty(other.val())){
+						$('.layui-m-layercont #tip').css('color', 'red');
+						other.focus();
+						return;
+					}
+					params.other = other.val();
+					open_payway(params);
+				}
+			});
+		} else {
+			open_payway(params);
+		}
+	});
+	PostApi("{:U('Api/Orders/sell_order')}", {id:{$id}}, function(data){
+		if(data.returnCode == 1){
+			$('#rname').html(data.result.buy_rname);
+			$('#phone').html(data.result.buy_phone);
+			$('#opc').html(data.result.opc);
+			$('#total_usd').html(data.result.total_usd);
+			$('#total_cny').html(data.result.total_cny);
+			$('#card_name').html(data.result.card_name);
+			$('#bank_name').html(data.result.bank_name);
+			$('#card_number').html(data.result.card_number);
+			$('#alipay').html(data.result.sell_zfb);
+			$('#weixin').html(data.result.sell_wx);
+			if(data.result.sell_other !== '点击开启'){
+				$('#other').attr('data-value', data.result.sell_other).html('点击查看');
+			}else{
+				$('#other').html(data.result.sell_other);
+			}
+			$('#ordersn').val(data.result.order_sn);
+			var orderStatus = data.result.status;
+			var htmlA = '';
+			switch(orderStatus){
+				case '2':
+				  	htmlA += '<a href="javascript:history.back();" style="background: #ccc">返回列表</a><a href="javascript:cancel_order(2, ' + data.result.order_sn + ');" style="background: #ccc">撤销订单</a>';
+				  	break;
+				case '3':
+					htmlA += '<a href="javascript:history.back();" style="background: #ccc">返回列表</a>';
+					break;
+				case '4':
+					$('#message').html(data.result.message);
+					$('#msgWarp').show();
+					$('#cert_img').attr('src', data.result.cert_img);
+					$('#certWarp').show();
+
+					htmlA += '<a href="javascript:;">订单申诉</a><a href="javascript:confirm_money();">确认收款</a>';
+					break;
+				case '-1':
+				case '-2':
+				case '102':
+					htmlA += '已撤单';
+					break;
+				case '101':
+				case '5':
+					htmlA += '已成交';
+					break;
+			}
+
+			// if(orderStatus >= 2 && orderStatus < 5){
+			// 	htmlA += '<a href="javascript:cancel_order(' + data.result.type + ', ' + data.result.order_sn + ');" style="background: #ccc">撤销订单</a><a href="javascript:confirm_money();">确认收款</a>';
+			// }
+			// if(orderStatus == 5){
+			// 	htmlA += '<a href="javascript:history.back();" style="background: #ccc">返回列表</a><a href="javascript:;">订单申诉</a>';
+			// }
+			$('#btnHTML').html(htmlA);
+			$('.spinner').remove();
+		}
+	});
+});
+function open_payway(params){
+	PostApi("{:U('Api/Orders/open_payway')}", params, function(data){
+		if(data.returnCode == 1){
+			if(params.payway == 1){
+				$('#alipay').html(data.result.alipay_account);
+			}
+			if(params.payway == 2){
+				$('#weixin').html(data.result.weixin_account);
+			}
+			if(params.payway == 3){
+				$('#bank_name').html(data.result.bank_name);
+				$('#card_name').html(data.result.card_name);
+				$('#card_number').html(data.result.card_number);
+			}
+			if(params.payway == 4){
+				$('#other').html('点击查看').attr('data-value', data.result.sell_other);
+			}
+			alertMsg(data.returnMsg);
+		}
+	});
+}
+function confirm_money(){
+	layer.open({
+		title: [
+		  '交易密码',
+		  'background-color:#f2f2f2; color:#000;'
+		]
+		,anim: 'up'
+		,content: $('#paybox').html()
+		,btn: ['确认', '取消']
+		,yes : function(){
+			  password = $('.layui-m-layercont #paypwd');
+			  ordersn = $('.layui-m-layercont #ordersn');
+			  if(isEmpty(password.val())){
+				  $('.layui-m-layercont #tip').css('color', 'red');
+				  password.focus();
+				  return;
+			  }
+			  var params = {
+				  paypwd : password.val(),
+				  ordersn : ordersn.val()
+			  }
+			  PostApi('{:U("Api/Orders/confirm_money")}', params, function(data){
+				  alertMsg(data.returnMsg);
+			  });
+		}
+	});
+}
+</script>
+</body>
+</html>

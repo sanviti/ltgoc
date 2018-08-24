@@ -1,0 +1,138 @@
+
+<include file="Public/header"/>
+<link href="__PUBLIC__/DataAdmin/css/attribute.css" rel="stylesheet"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/goods/goods.attrbute.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>商品属性设置</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+					
+					<!--内容开始-->
+					<form id="listForm" method="post" action="{:U('setattribute_do')}">
+					<div class="table-margin">
+						<p>
+							<b style="font-size:14px;">商品规格</b>
+							<button type="button" class="btn btn-default " id="addAttr" style="margin-left:1050px;"> 添加规格</button>
+							<button type="button" class="btn btn-default addImgAttr" id="addImgAttr"> 添加图片规格</button>
+						</p>
+						<table class="table table-bordered table-header table-hover" id="attribute">
+							 <?php
+								$i2 = 0;
+							 ?>
+                              <volist name="attribute" id="attr" key="keys">
+                                   <if condition="$attr['imgAttr'] eq 1">
+                                     <tr attrid="{$i2}" class="imgAttr"><td style="text-align: left;padding: 5px;"><div class="attname_wrap"><input type="text" size="10" name="attribute[{$i2}][attname]" value="{$attr.attname}" placeholder="属性名称"><a class="btn btn-xs btn-danger pull-right delAttr" style="margin-right:50px;">删除属性</a><a class="btn btn-xs btn-primary pull-right addAttrVal">添加值</a></div><div class="attrs_wrap"><input type="hidden" size="10"name="attribute[{$i2}][imgAttr]" value="1">
+                                      <php>$i3 = 0;</php>
+                                      <volist name="attr['attvalue']" id="attrOpt">
+                                          <div class="attrs_item" index="{$i3}">
+                                             <img src="{$attrOpt.img}" class="uploadOne">
+                                             <input name="attribute[{$i2}][attvalue][{$i3}][img]" value="{$attrOpt.img}" class="optimg">
+                                             <input type="file" name="" class="uploadfile"><p>
+                                             <input type="text" size="10" name="attribute[{$i2}][attvalue][{$i3}][optval]" value="{$attrOpt.optval}" placeholder="属性值"></p>
+                                             <i class="fa fa-close delAttrVal">X</i>
+                                             </div>
+                                             <php>$i3++;</php>
+                                        </volist>
+                                         </div>
+                                         </td></tr>
+                                   <else/>
+                                        <tr attrid="{$i2}">
+	                                        <td style="text-align: left;padding: 5px;">
+	                                            <div class="attname_wrap">
+		                                            <input type="text" size="10" name="attribute[{$i2}][attname]" placeholder="属性名称" value="{$attr.attname}">
+		                                            <a class="btn btn-xs btn-danger pull-right delAttr" style="margin-right:50px;">删除属性</a>
+		                                            <a class="btn btn-xs btn-primary pull-right addAttrVal">添加值</a>
+	                                            </div>
+		                                        <div class="attrs_wrap">
+		                                        <php>$i3 = 0;</php>
+		                                        <volist name="attr['attvalue']" id="attrOpt">
+		                                                <div class="attrs_item" index="{$i3}"><p>
+		                                                <input type="text" size="10" name="attribute[{$i2}][attvalue][{$i3}][optval]" value="{$attrOpt.optval}" placeholder="属性值"></p>
+		                                                <i class="fa fa-close delAttrVal">X</i></div>
+		                                                <php>$i3++;</php>
+		                                         </volist>
+		                                        </div>
+	                                        </td>
+                                        </tr>
+                                   </if>
+                                            <php>$i2++;</php>
+                                </volist>		
+							
+						
+							
+						</table>
+						<p>
+							<b style="font-size:14px;">库存表格</b>
+							<button type="button" class="btn btn-default " id="create_stock_table" style="margin-left:1050px;"> 刷新库存表格</button>
+							
+						</p>
+						<table class="table table-bordered table-header table-hover" id="stockTable">
+							<thead>
+								<tr>
+									<volist name="attribute" id="attr">
+                                         <th class="w10">{$attr.attname}</th>
+                                     </volist>
+									<th class="w10">价格</th>
+									<th class="w10">库存</th>
+								</tr>
+							</thead>
+							<tbody>
+								<php>
+                                                            $i2 = 0;
+                                                        </php>
+                                                        <volist name="stock" id="item">
+                                                        <php>
+                                                            $optVal = explode('|',$item['flag']);
+                                                        </php>
+                                                        <tr>
+                                                        <volist name="optVal" id="val">
+                                                        <td>{$val}</td>
+                                                        </volist>
+                                                        <td><input type="hidden" size="32" name="stock[{$i2}][flag]" value="{$item.flag}"><input type="text" size="6" name="stock[{$i2}][price]" value="{$item.price}"></td>
+                                                        <td><input type="text" size="6" name="stock[{$i2}][stock]" value="{$item.stock}"><input type="hidden" size="6" name="stock[{$i2}][img]" value="{$item.img}"> </td>
+                                                        </tr>
+                                                        <php>
+                                                            $i2++;
+                                                        </php>
+                                                        </volist>
+							
+							</tbody>
+							
+						</table>
+                    </div>
+
+					<div class="form-group" style="float:right;">
+								
+								<button class="Jun-TiJiao submitButton" type="submit">保存内容</button>
+								<a class="btn btn-white" href="{:U('index')}">取消</a>
+								
+					</div>
+							<input type="hidden" id="id" name="id" value="{$id}" />
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+<!--
+	var uploadUrl = '{:U("Upload/upload")}'; //图片上传地址
+//-->
+</script>
+
+<include file="Public/footer"/>

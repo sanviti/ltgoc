@@ -1,0 +1,952 @@
+<include file="Public/header"/>
+<body>
+<style>
+.col-md-7{
+	width:61%;
+}
+.col-md-5{
+	width:39%;
+}
+.col-md-7 .form-group{
+	padding-right:5px !important;
+}
+.tablebox{ width:1200px; }
+.tablebox table{ border:1px solid #ccc; width: 100%; border-bottom:none; border-right:none;}
+.tablebox table tr{ width: 100%; }
+.tablebox table td{ border-bottom:1px solid #ccc; height: 60px; line-height:60px; text-align: center; border-right:1px solid #ccc; }
+.tablebox table td span{ font-size: 14px; color: #000;}
+.form_box{float: left;
+    padding-right: 15px;display: block;
+    width: 118px; cursor: pointer;
+    height: 34px; position: relative;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    margin-right:10px;
+}
+.form_box span{ display: block; text-align: center; }
+.form_box .form_boxcheck{ display: none; position: absolute; z-index: 10; border:1px solid #ccc; left: 0; width: 335px; 
+background: #fff;flex-wrap: wrap; top: 33px; padding-top: 10px; padding-left: 15px;}
+.form_box .form_boxcheck li{ display: flex; margin-right: 15px; width:90px; margin-bottom: 10px; }
+</style>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>商品管理</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                	<!--搜索开始-->
+                	<form name="search" action="{:U('index')}"  method="get">
+					<div class="search-box row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<span class="pull-left form-span">商品名</span>
+								<input type="text" name="name" value="{:I('name')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">店铺ID</span>
+								<input type="text" name="shopid" value="{:I('shopid')}" class="form-control" placeholder="" style="width:100px;">
+							</div>
+							<div class="form-group">
+								<select name="state" class="form-control">
+								<option value="" <if condition="$Think.request.state heq ''"> selected="selected"</if>>请选择商品状态</option>
+								<option value="0" <if condition="$Think.request.state heq '0'"> selected="selected"</if>>下架</option>
+								<option value="1" <if condition="$Think.request.state heq '1'"> selected="selected"</if>>上架</option>
+								<option value="2" <if condition="$Think.request.state heq '2'"> selected="selected"</if>>待审核</option>
+								<option value="3" <if condition="$Think.request.state heq '3'"> selected="selected"</if>>待发布</option>
+								<option value="4" <if condition="$Think.request.state heq '4'"> selected="selected"</if>>拒绝</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<select name="tag" class="form-control">
+									 <option value=''>选择商品标签</option>
+								     <option value="cuxiao" <if condition="$Think.request.tag heq 'cuxiao'"> selected="selected"</if>>促销</option>
+								     <option value="tuijian" <if condition="$Think.request.tag heq 'tuijian'"> selected="selected"</if>>推荐</option>
+								     <option value="eight" <if condition="$Think.request.tag heq 'eight'"> selected="selected"</if>>80%激励</option>
+								     <option value="manjian" <if condition="$Think.request.tag heq 'manjian'"> selected="selected"</if>>满减</option>
+								     <option value="maizeng" <if condition="$Think.request.tag heq 'maizeng'"> selected="selected"</if>>买赠</option>
+								     <option value="zhekou" <if condition="$Think.request.tag heq 'zhekou'"> selected="selected"</if>>折扣</option>
+								</select>
+								<!-- <ul class="form_boxcheck checkboxs" style="display:none;">
+									<li>
+										<input type="checkbox" name="tag[]" value="cuxiao" <if condition="$is_hot eq 1">checked="checked"</if> />促销
+									</li>
+									<li>
+										<input type="checkbox" name="tag[]" value="tuijian" <if condition="$is_recommend eq 1">checked</if>/>推荐
+									</li>
+									<li>
+										<input type="checkbox" name="tag[]" value="eight" />80%激励
+									</li>
+									<li>
+										<input type="checkbox" name="tag[]" value="manjian" />满减
+									</li>
+									<li>
+										<input type="checkbox" name="tag[]" value="maizeng"/>买赠
+									</li>
+									<li>
+										<input type="checkbox" name="tag[]" value="zhekou" />折扣
+									</li>
+								</ul> -->
+							</div>
+							<div class="form-group">
+								<select name="is_pinpai" class="form-control">
+								<option value="" <if condition="$Think.request.is_pinpai heq ''"> selected="selected"</if>>请选择品牌</option>
+								<!-- <option value="1" <if condition="$Think.request.is_pinpai heq '1'"> selected="selected"</if>>是</option> -->
+								<volist name="brand" id="vo">
+								    <option value="{$vo.id}" <if condition="$Think.request.is_pinpai heq $vo['id']"> selected="selected"</if>>{$vo.name}</option>
+								</volist>
+								</select>
+							</div>
+							<div class="form-group">
+								<select name="is_haowu" class="form-control">
+								<option value="" <if condition="$Think.request.is_haowu heq ''"> selected="selected"</if>>请选择好物</option>
+								<volist name="found" id="vo">
+								    <option value="{$vo.id}" <if condition="$Think.request.is_haowu heq $vo['id']"> selected="selected"</if>>{$vo.name}</option>
+								</volist>
+								</select>
+							</div>
+							<!-- <div class="form-group">
+								<select name="is_zhekou" class="form-control">
+								<option value="" <if condition="$Think.request.is_zhekou heq ''"> selected="selected"</if>>请选择折扣</option>
+								<option value="1" <if condition="$Think.request.is_zhekou heq '1'"> selected="selected"</if>>是</option>
+								</select>
+							</div> -->
+							<div class="form-group">
+								<select name="paixu" class="form-control">
+									<option value="" <if condition="$Think.request.paixu heq ''"> selected="selected"</if>>请选择排序</option>
+									<option value="csortdown" <if condition="$Think.request.paixu heq csortdown"> selected="selected"</if>>自定义降序</option>
+									<option value="csortup" <if condition="$Think.request.paixu heq csortup"> selected="selected"</if>>自定义升序</option>
+									<option value="id" <if condition="$Think.request.paixu heq id"> selected="selected"</if>>ID降序</option>
+									<option value="up" <if condition="$Think.request.paixu heq up"> selected="selected"</if>>点击量升序</option>
+									<option value="down" <if condition="$Think.request.paixu heq down"> selected="selected"</if>>点击量降序</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<select name="cid" class="form-control">
+									<option value="" >分类</option>
+									<foreach name="catInfo" item="vo" key="k">
+										<option value="{$vo.cat_id}" <if condition="$Think.request.cid eq $vo['cat_id']"> selected="selected"</if>><if condition="$vo.parent_id neq 0">__|</if>{$vo.cat_name}</option>
+									</foreach>
+
+								</select>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn" type="submit"><span class="glyphicon glyphicon-search"></span> 搜索</button>  
+							</div>
+						</div>
+
+						<div class="col-md-8">
+						<div class="btn-group pull-right" role="group" aria-label="..." style="width:100%;">
+							<a href="{:U('Exp/GoodsOrder')}" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 导出</a>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 商品设置
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="batchchage" data-value="3"><a href="javascript:;">待发布</a></li>
+								<li class="batchchage" data-value="2"><a href="javascript:;">下架</a></li>
+								<li class="hotchage" data-value="1"><a href="javascript:;">设为促销</a></li>
+								<li class="hotchage" data-value="0"><a href="javascript:;">取消促销</a></li>
+								<li class="recommendchage" data-value="1"><a href="javascript:;">设为推荐</a></li>
+								<li class="recommendchage" data-value="0"><a href="javascript:;">取消推荐</a></li>
+								<li class="eight" data-value="1"><a href="javascript:;">设为80%激励</a></li>
+								<li class="eight" data-value="0"><a href="javascript:;">取消80%激励</a></li>
+								<li class="manjian" data-value="1"><a href="javascript:;">设为满减</a></li>
+								<li class="manjian" data-value="0"><a href="javascript:;">取消满减</a></li>
+								<li class="maizeng" data-value="1"><a href="javascript:;">设为买赠</a></li>
+								<li class="maizeng" data-value="0"><a href="javascript:;">取消买赠</a></li>
+								<li class="zhekou" data-value="1"><a href="javascript:;">设为折扣</a></li>
+								<li class="zhekou" data-value="0"><a href="javascript:;">取消折扣</a></li>
+								<!--  <li class="batchchage" data-value="4"><a href="javascript:;">拒绝</a></li>-->
+								</ul>
+							</div>
+							<!-- <div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置促销
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="hotchage" data-value="1"><a href="javascript:;">设为促销</a></li>
+								<li class="hotchage" data-value="0"><a href="javascript:;">取消促销</a></li>
+								</ul>
+							</div> -->
+							<!-- <div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置推荐
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="recommendchage" data-value="1"><a href="javascript:;">设为推荐</a></li>
+								<li class="recommendchage" data-value="0"><a href="javascript:;">取消推荐</a></li>
+								</ul>
+							</div> -->
+							<!-- <div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置80%激励
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="eight" data-value="1"><a href="javascript:;">设为80%激励</a></li>
+								<li class="eight" data-value="0"><a href="javascript:;">取消80%激励</a></li>
+								</ul>
+							</div> -->
+							<!-- <div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置满减
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="manjian" data-value="1"><a href="javascript:;">设为满减</a></li>
+								<li class="manjian" data-value="0"><a href="javascript:;">取消满减</a></li>
+								</ul>
+							</div> -->
+							<!-- <div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置买赠
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="maizeng" data-value="1"><a href="javascript:;">设为买赠</a></li>
+								<li class="maizeng" data-value="0"><a href="javascript:;">取消买赠</a></li>
+								</ul>
+							</div>	 -->
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置品牌
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<volist name="brand" id='vv'>
+								    <li class="spinpai" data-value="{$vv.id}"><a href="javascript:;">设置{$vv.name}</a></li>
+								</volist>
+								<volist name="brand" id='vv'>
+									<li class="xpinpai" data-value="{$vv.id}"><a href="javascript:;">取消{$vv.name}</a></li>
+								</volist>
+								</ul>
+							</div>
+							<!-- <div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置折扣
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<li class="zhekou" data-value="1"><a href="javascript:;">设为折扣</a></li>
+								<li class="zhekou" data-value="0"><a href="javascript:;">取消折扣</a></li>
+								</ul>
+							</div> -->
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-edit"></span> 设置好物
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+								<volist name="found" id='vv'>
+								    <li class="shaowu" data-value="{$vv.id}"><a href="javascript:;">设置{$vv.name}</a></li>
+								</volist>
+								<volist name="found" id='vv'>
+									<li class="xhaowu" data-value="{$vv.id}"><a href="javascript:;">取消{$vv.name}</a></li>
+								</volist>
+								</ul>
+							</div>
+							<button type="submit" class="btn btn-default batchdel"><span class="glyphicon glyphicon-trash"></span> 删除</button>
+						</div>
+						</div>                        
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w2 text-center"><input type="checkbox" class="selectAll" /></th>
+									<th class="w1">排序</th>
+									<th class="w2">商品ID</th>
+									<th class="w8">所属店铺</th>
+									<th class="w10">商品名称</th>									
+									<th class="w5">图片</th>
+									<th class="w3">库存</th>
+									<th class="w5">邮费</th>
+									<th class="w6">添加时间</th>
+									<th class="w1">参考价</th>
+									<th class="w10">让利比列</th>
+									<th class="w10">状态</th>
+									<th class="w5">点击量</th>
+									<th class="w6">是否推荐</th>
+									<th class="w6">是否促销</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center"><input type="checkbox" name="ids[]" value="{$vo.id}" class="selectAll-item" /></td>
+										<td><input type="text" name="csort" value="{$vo.csort}" class="form-control csort" data-id="{$vo.id}" style="width:30px; text-align: center; padding: 6px 0;"></td>
+										<td>{$vo.id}</td>
+										<td>{$vo.s_name}</td>		
+										<td>{$vo.name}</td>	
+										<td>
+											<img src="__ROOT__{$vo.img}"  width="40" height="40"/>
+										</td>
+										<td>{$vo.stock}</td>
+										<td>
+											<if condition="$vo['postage'] eq 0">
+												包邮
+											<else/>
+												{$vo.postage}元
+											</if>
+										</td>	
+										<td>{$vo.ctime|date='Y-m-d H:i:s',###}</td>
+										<td><input type="text" name="look_price" value="{$vo.look_price}" class="form-control look_price" data-id="{$vo.id}"></td>	
+										<td>
+											<select name="ret_money" id="ret_money" data="{$vo.id}" class='ret_money form-control' style="width: 80%;text-indent:0px;padding:0px 0;margin-top: 0px;">
+				                        		<option value='0'>请选择</option>
+				                        		<!-- <option value="100" <if condition="$vo.ret_money eq '100'"> selected="selected"</if>>不返利</option> -->
+												<option value="1" <if condition="$vo.ret_money eq '1'"> selected="selected"</if>>1%</option>
+												<option value="2" <if condition="$vo.ret_money eq '2'"> selected="selected"</if>>2%</option>
+												<option value="3" <if condition="$vo.ret_money eq '3'"> selected="selected"</if>>3%</option>
+												<option value="4" <if condition="$vo.ret_money eq '4'"> selected="selected"</if>>4%</option>
+												<option value="5" <if condition="$vo.ret_money eq '5'"> selected="selected"</if>>5%</option>
+												<option value="6" <if condition="$vo.ret_money eq '6'"> selected="selected"</if>>6%</option>
+												<option value="7" <if condition="$vo.ret_money eq '7'"> selected="selected"</if>>7%</option>
+												<option value="8" <if condition="$vo.ret_money eq '8'"> selected="selected"</if>>8%</option>
+												<option value="9" <if condition="$vo.ret_money eq '9'"> selected="selected"</if>>9%</option>
+												<option value="10" <if condition="$vo.ret_money eq '10'"> selected="selected"</if>>10%</option>
+												<option value="11" <if condition="$vo.ret_money eq '11'"> selected="selected"</if>>11%</option>
+												<option value="12" <if condition="$vo.ret_money eq '12'"> selected="selected"</if>>12%</option>
+												<option value="13" <if condition="$vo.ret_money eq '13'"> selected="selected"</if>>13%</option>
+												<option value="14" <if condition="$vo.ret_money eq '14'"> selected="selected"</if>>14%</option>
+												<option value="15" <if condition="$vo.ret_money eq '15'"> selected="selected"</if>>15%</option>
+												<option value="16" <if condition="$vo.ret_money eq '16'"> selected="selected"</if>>16%</option>
+												<option value="17" <if condition="$vo.ret_money eq '17'"> selected="selected"</if>>17%</option>
+												<option value="18" <if condition="$vo.ret_money eq '18'"> selected="selected"</if>>18%</option>
+												<option value="19" <if condition="$vo.ret_money eq '19'"> selected="selected"</if>>19%</option>
+												<option value="20" <if condition="$vo.ret_money eq '20'"> selected="selected"</if>>20%</option>
+											
+										</td>
+										<td>
+											<if condition="$vo['status'] eq 1">
+												<select name="status" id="status" data="{$vo.id}" class='status form-control' style="width: 80%;text-indent:0px;padding:0px 0;margin-top: 0px;">
+													<!-- <option value=''>请选择</option> -->
+													<option value="1" <if condition="$vo.status eq '1'"> selected="selected"</if>>上架</option>
+													<option value="2" >下架</option>
+												</select>
+											<elseif condition="$vo['status'] eq 0"/>
+												下架
+											<elseif condition="$vo['status'] eq 2"/>
+												<select name="status" id="status" data="{$vo.id}" class='status form-control' style="width: 80%;text-indent:0px;padding:0px 0;margin-top: 0px;">
+													<!-- <option value=''>请选择</option> -->
+													<option value="1" <if condition="$vo.status eq '2'"> selected="selected"</if>>待审核</option>
+													<option value="3" >待发布</option>
+												</select>
+											<elseif condition="$vo['status'] eq 3"/>
+												待发布
+											<elseif condition="$vo['status'] eq 4"/>
+												未通过
+											</if>
+										</td>
+										<td>{$vo.click_num}</td>
+										<td>
+											<if condition="$vo['is_recommend'] eq 1">
+												是
+											<else />
+												否
+											</if>
+										</td>
+										<td>
+											<if condition="$vo['is_hot'] eq 1">
+												是
+											<else />
+												否
+											</if>
+										</td>
+										<td>
+											<a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
+											<span class="text-explode">|</span>
+											<a href="javascript:;" data="{$vo.id}" class="del">删除</a>
+											<span class="text-explode">|</span>
+											<a href="{:U('setattribute',array('id'=>$vo['id']))}">设置属性</a>
+											<if condition="$vo['status'] eq '2'">
+												<span class="text-explode">|</span>
+												<a href="javascript:;" id="{$vo['id']}" class="refuse">拒绝</a>
+											</if>
+											<span class="text-explode">|</span>
+											<if condition="$vo['is_r'] eq 1">
+											    <a href="javascript:;" class="dels" data-id="{$vo['id']}">取消App首页推荐</a>
+											    <elseif condition="$vo['is_r'] eq 0"/>
+											    <a href="{:U('addRecommend',array('goodsid'=>$vo['id']))}">推荐到App首页</a>
+											</if>
+											<!-- <span class="text-explode">|</span>
+											<a href="{:U('comments',array('goodsid'=>$vo['id'],'p'=>$p))}" id="goodscomment" data-value="{$vo['id']}" data-id="{$vo['name']}">商品评论</a> -->
+																					
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="16">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="16" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		$(document).on("click" ,'.del',function(){
+			var tt=$(this);
+            var id = $(this).attr('data');
+            layer.confirm('确定删除？', {
+				  btn: ['确定','取消'] //按钮
+				}, function(){
+					$.ajax({
+						url:"{:U('delGoods')}",
+						data:{
+							"id"     :id
+						},
+						type:"post",
+						dataType:"json",
+						success:function(data){
+							layer.closeAll();
+								if (data.code=='S')
+								{
+									tt.parents('tr').remove();
+									layer.msg('删除成功');
+									
+								}else{
+									layer.msg('删除失败');
+								}
+								
+									
+							}
+						});
+				}
+			);
+        });
+        //商品标签点击事件
+        function stopPropagation(e) {
+            var ev = e || window.event;
+            if (ev.stopPropagation) {
+                ev.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;//兼容IE
+            }
+        }
+        $('.form_box').click(function(e){
+        	$('.form_boxcheck').css({'display':'flex'});
+        	stopPropagation(e);
+        })
+        $(document).bind('click', function () {
+            $(".form_boxcheck").hide();
+        });
+        $(".form_boxcheck").click(function (e) {
+            stopPropagation(e);
+        });
+        //end
+
+		$('.batchchage').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			});
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setGoodsStatus')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		$('.hotchage').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setGoodsHot')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);					
+				}
+			});
+		})
+		$('.recommendchage').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setGoodsRecommed')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		
+		//设置80%激励
+		$('.eight').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setEight')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		
+		//设置满减
+		$('.manjian').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setManjian')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		//设置买赠
+		$('.maizeng').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setMaizeng')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		
+		//设置品牌
+		$('.spinpai').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setPinpai')}",
+				data:{
+					"idStr"     :chk_value,
+					"is_pinpai"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		//取消设置品牌
+		$('.xpinpai').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('unsetPinpai')}",
+				data:{
+					"idStr"     :chk_value,
+					"is_pinpai"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		//设置折扣
+		$('.zhekou').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setZhekou')}",
+				data:{
+					"idStr"     :chk_value,
+					"type"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		//设置好物
+		$('.shaowu').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('setFound')}",
+				data:{
+					"idStr"     :chk_value,
+					"is_haowu"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		//取消设置品牌
+		$('.xhaowu').click(function(){
+			var type = $(this).attr('data-value');
+			var chk_value =[];
+			$('input[name="ids[]"]:checked').each(function(){
+				chk_value.push($(this).val());
+			}); 
+			if (chk_value=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('unsetFound')}",
+				data:{
+					"idStr"     :chk_value,
+					"is_haowu"      :type
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.msg('操作成功');
+					setTimeout("location.reload();",1000);
+								
+									
+				}
+			});
+		})
+		//让利比列
+		$(document).on("change" ,'#ret_money',function(){
+			var ret_money = $(this).val();
+			var id = $(this).attr('data');
+			if (id=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			if (ret_money=='')
+			{
+				layer.msg('请选择比例');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('ret_money')}",
+				data:{
+					"id" :id,
+					"ret_money":ret_money
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.closeAll();
+					if(data.returnCode == "SUCCESS"){
+						layer.msg('设置成功');
+					}else{
+						layer.msg('设置失败');
+					}
+				}
+			});
+		})
+		
+		//列表审核商品
+		$(document).on("change" ,'#status',function(){
+			var status = $(this).val();
+			var id = $(this).attr('data');
+			if (id=='')
+			{
+				layer.msg('请选择操作数据');
+				return false;
+			}
+			
+			$.ajax({
+				url:"{:U('status')}",
+				data:{
+					"id" :id,
+					"status":status
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					layer.closeAll();
+					if(data.returnCode == "SUCCESS"){
+						layer.msg('成功');
+						location.href="__ACTION__/";
+					}else{
+						layer.msg('失败');
+					}
+				}
+			});
+		})
+		
+		//拒绝商品
+		$(document).on("click" ,'.refuse',function(){
+			var id = $(this).attr('id');
+			var str = "<div style='height:30px; padding:10px 20px 10px 20px; color:#999; font-size:14px;'><label style='font-family:'楷体';'>拒绝理由：</label><input type='text' name='cause' id='cause' style='width:280px;'></div>";
+			str+="<div style='height:30px; padding:20px 20px 10px 160px;'><input type='button' id='rsub' value='确定' style='width:50px; color:blue;'></div>";
+			layer.open({
+				  type: 1,
+				  title:"请填写拒绝理由",
+				  skin: 'layui-layer-rim', //加上边框
+				  area: ['420px', '160px'], //宽高
+				  content: str
+				});
+			$("#rsub").click(function(){
+				var cause = $("#cause").val();
+				if(cause == null || cause == ''){
+					layer.msg("请填写拒绝理由");
+					return false;
+				}
+				$.post("{:U('set_refuse')}",{'id':id,'cause':cause},function(d){
+					if(d.returnCode=="SUCCESS"){
+						alert(d.returnMsg);
+						layer.closeAll();
+						location.href="__ACTION__/";
+					}else{
+						alert(d.returnMsg);
+					}
+				},'json');
+			});
+		})
+		
+		//取消App首页推荐
+		$(document).on("click" ,'.dels',function(){
+			var id = $(this).data('id');
+			var p = '{$p}';
+			$.post("{:U('delRecommend')}",{"goodsid":id},function(d){
+				console.log(d);
+				if(d.returnCode=="SUCCESS"){
+					layer.msg("取消成功！");
+				}else{
+					layer.msg("取消失败！");
+				}
+				location.href="__ACTION__/p/"+p;
+			},"json");
+		})
+	
+		//设置商品参考价
+		$(document).on("blur" ,'.look_price',function(){
+			var id = $(this).data('id');
+			var look = $(this).val();
+			var p = '{$p}';
+			$.post("{:U('set_lookprice')}",{"goodsid":id,"look":look},function(d){
+				console.log(d);
+				if(d.returnCode=="SUCCESS"){
+					layer.msg("设置成功！");
+				}else{
+					layer.msg("设置失败！");
+				}
+				location.href="__ACTION__/p/"+p;
+			},"json");
+		})
+
+		//设置排序
+		$(document).on("blur" ,'.csort',function(){
+			var id = $(this).data('id');
+			var num = $(this).val();
+			$.post("{:U('set_csort')}",{"goodsid":id,"num":num},function(d){
+				console.log(d);
+				if(d.returnCode=="SUCCESS"){
+					layer.msg("设置成功！");
+					location.reload();
+				}else{
+					layer.msg("设置失败！");
+					location.reload();
+				}
+			},"json");
+		})
+	})
+</script>
+<include file="Public/footer"/>

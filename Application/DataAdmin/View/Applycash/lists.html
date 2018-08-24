@@ -1,0 +1,275 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<link href="__PUBLIC__/DataAdmin/css/uploadfile.css" rel="stylesheet">
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>提现管理</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+		             <form name="search" action="__ACTION__" id="searchForm" method="post">
+		             <div class="search-box row">
+						<div class="col-md-13">
+							<div class="form-group">
+								<span class="pull-left form-span">用户ID：</span>
+								<input type="text" name="userid" value="{:I('userid')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">开户名：</span>
+								<input type="text" name="rname" value="{:I('rname')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">处理状态：</span>
+								<select name="state" class="form-control">
+								   <option value="">-选择-</option>
+								   <option value="0" <if condition="$Think.request.state heq '0'"> selected="selected"</if>>未处理</option>
+								   <option value="1" <if condition="$Think.request.state heq '1'"> selected="selected"</if>>已打款</option>
+								   <option value="-1" <if condition="$Think.request.state heq '-1'"> selected="selected"</if>>已拒绝</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">申请时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="st" name="btime" onclick="return Calendar('st');" value="{$Think.request.btime}"  placeholder="请选择申请开始时间" class="form-control" style="width:125px;"/>
+								</div>
+								<span class="pull-left form-span">&nbsp;&nbsp;&nbsp;&nbsp;----</span>
+								<div class="col-sm-4">
+									<input type="text" id="et" onclick="return Calendar('et');" placeholder="申请结束时间" value="{$Think.request.etime}" name="etime" class="form-control" style="width:125px;"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">处理时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="ct" name="ctime" onclick="return Calendar('ct');" value="{$Think.request.ctime}"  placeholder="请选择处理时间" class="form-control" style="width:125px;"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="exportBtn"><span class="glyphicon glyphicon"></span> 导出</button>
+							</div>
+						</div>
+                    </div>
+		             </form> 
+		              <form name="search" action="__ACTION__" id="searchFormid" method="post">
+			             <div class="search-box row">
+							<div class="col-md-13">
+								<div class="form-group">
+									<span class="pull-left form-span">申请时间:</span>
+									<div class="col-sm-4">
+										<input type="text" id="aa" name="subtime" onclick="return Calendar('aa');" value=""  placeholder="请选择申请时间" class="form-control" style="width:125px;"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<span class="pull-left form-span">起始id：</span>
+									<input type="text" name="startid" id="startid"  value="{:I('startid')}" class="form-control" placeholder="">
+								</div>
+								<div class="form-group">
+									<span class="pull-left form-span">结束id：</span>
+									<input type="text" name="endid" id="endid" value="{:I('endid')}" class="form-control" placeholder="">
+								</div>
+								<div class="form-group">
+									<button class="form-control btn btn-default" id="idexportBtn"><span class="glyphicon glyphicon"></span>导出表格</button>
+								</div>
+								<div class="form-group">
+									<button class="form-control btn btn-default" id="exportBtnc"><span class="glyphicon glyphicon"></span> 导出NC表格</button>
+								</div>
+							</div>
+	                    </div>
+		             </form>  
+		             <form class="form-inline" method="post">
+                     <div class="col-sm-6">
+                       	上传已打款Exl：<font color='red'>(请上传xls，xlsx类型的文件)</font><img id="upload_exl" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+                    </div>
+                	</form> 	
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5" style="text-align:center;">#</th>
+									<th class="w10"  style="text-align:center;">开户名</th>
+									<th class="w10" style="text-align:center;">提现金额</th>
+									<th class="w10" style="text-align:center;">手续费</th>
+									<th class="w10" style="text-align:center;">支给金额</th>
+									<th class="w8" style="text-align:center;">申请时间</th>
+									<th class="w8" style="text-align:center;">处理时间</th>
+									<th class="w10" style="text-align:center;">处理状态</th>
+									<th class="w10" style="text-align:center;">处理人</th>
+									<th style="text-align:center;">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center">{$vo.id}</td>	
+										<td class="text-center">
+											{$vo.rname}【{$vo.userid}】
+										</td>
+										<td class="text-center">
+											{$vo.money}
+										</td>
+										<td class="text-center">
+											{$vo.account}
+										</td>
+										<td class="text-center">
+											{$vo.disburse}
+										</td>
+										<td class="text-center">
+											{$vo.ctime|date="Y-m-d H:i:s",###}
+										</td>
+										<td class="text-center">
+											<notempty name="vo.ptime">
+                                            {$vo.ptime|date="Y-m-d H:i",###}
+                                            <else/>
+                                           	 无
+                                            </notempty>
+										</td>
+										<td class="text-center">
+											<if condition="$vo.state eq 0">
+											未处理
+											<elseif condition="$vo.state eq 1" />
+											已打款
+											<elseif condition="$vo.state eq -1" />
+											已拒绝
+											</if>
+										</td>
+										<td class="text-center">
+											<notempty name="vo.admin">
+                                            {$vo.admin}
+                                            <else/>
+                                           	 无
+                                            </notempty>
+										</td>
+										<td class="text-center">
+											<a data-id="{$vo.id}" class="btn btn-primary openWindow"><i class="fa fa-pencil"></i>详细</a>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="11">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="11" class="text-center">
+										没有数据啦！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script src="__PUBLIC__/DataAdmin/js/layer/layer.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".openWindow").click(function(){
+	    var id = $(this).data("id");
+	    url = "{:U("process",'','')}"+"/id/"+id;
+	    var index = layer.open({
+	        type: 2,
+	        title:"提现详情",
+	        content: url,
+	        area: ['900px', '650px'],
+	        shadeClose: true,
+	        skin: 'layui-layer-rim',
+	        maxmin: true,
+	        scrollbar: true,
+	    });
+	});
+	 $('#exportBtn').click(function(){
+	     $('#searchForm').attr('action','{:U('DataAdmin/Export/apply_export')}');
+	     $('#searchForm').submit();
+	 }); 
+	 $('#idexportBtn,#exportBtnc').click(function(){
+         var url = '{:U('DataAdmin/Export/applycash')}';
+         var ncurl = '{:U('DataAdmin/Export/applycash_nc')}';
+         console.log($(this).attr('id'));
+         if($(this).attr('id') == 'idexportBtn'){
+             $('#searchFormid').attr('action', url);
+         }else{
+             $('#searchFormid').attr('action', ncurl);
+         }
+
+         var startid = parseInt($('#startid').val());
+         var endid   = parseInt($('#endid').val());
+         if(endid < startid || isNaN(startid) || isNaN(endid)){
+             alert('结束ID不能小于起始ID');
+             return;
+         }
+         $('#searchFormid').submit();
+     });
+	 
+	//上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("DataAdmin/Upload/uploadexcel")}',
+	   		bind : '#upload_exl',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			    var index = layer.load(1, {
+					  shade: [0.3,'#000'] //0.1透明度的白色背景
+					});
+	   			var url = data.url;
+	   			if(data.state == "SUCCESS"){
+	   				$.post("{:U('Upload/readexl')}",{"url":url},function(data){
+	   					console.log(data);
+	   					var data =  eval('(' + data + ')');
+						layer.closeAll();
+	   					if(data.returnCode=="SUCCESS"){
+	   						msg("处理成功");
+	   					}else{
+	   						msg("处理失败");
+	   					}
+	   				})
+	   			}else{
+	   				msg("上传失败");
+	   			}
+	   			location.href="__ACTION__";
+	   		}
+	   	})
+})
+
+
+$(".confirm").click(function(){
+    $href = $(this).data("href");
+    layer.confirm('确定已给用户打款？', {icon: 3}, function(index){
+        layer.close(index);
+        window.location.href= $href;
+    });
+
+});
+</script>
+<include file="Public/footer"/>

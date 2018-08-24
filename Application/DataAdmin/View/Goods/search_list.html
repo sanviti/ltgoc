@@ -1,0 +1,136 @@
+<include file="Public/header"/>
+<body>
+<style>
+.col-md-7{
+	width:61%;
+}
+.col-md-5{
+	width:39%;
+}
+.col-md-7 .form-group{
+	padding-right:5px !important;
+}
+</style>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>搜索栏默认关键词</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                	<div class="col-md-8" style="padding-left: 0px;width:400px;float:right;">
+                        <div class="btn-group " style="float:right; margin-left: 0px;" role="group" aria-label="...">
+                            <a  href="{:U('edit_search')}" class="btn btn-default batchdel" style="margin-right:20px;"><span class="glyphicon glyphicon-plus"></span> 添加</a>
+                        </div>
+                    </div>    
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>关键字</th>
+									<th>默认搜索类型</th>									
+									<th>操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td>{$vo.id}</td>
+										<td>{$vo.name}</td>
+										<td>
+											<if condition="$vo['type'] eq 1">商品
+											  <elseif condition="$vo['type'] eq 2"/>店铺
+											</if>
+										</td>
+										<td>
+										  <a href="{:U('edit_search',array('id'=>$vo['id']))}"  data-id="{$vo['id']}">修改</a>
+										  <a href="javascript:;" class="delcomment" data-id="{$vo['id']}">删除</a>
+										</td>	
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="9">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+								<tr>
+									<td colspan="9" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	var p = "{$p}";
+	var goodsid = "{$goodsid}";
+	//审核评论 
+	$(document).on("click" ,'.shenhe',function(){
+        var id = $(this).data('id');
+        layer.confirm('确定要审核通过吗？', {
+			  btn: ['确定','取消'] //按钮
+			}, function(){
+				$.post("{:U('changestatus')}",{"id":id},function(d){
+		        	if(d.returnCode=="SUCCESS"){
+		        		layer.msg("审核通过");
+		        	}else{
+		        		layer.msg("审核失败");
+		        	}
+		        	location.href="__ACTION__/goodsid/"+goodsid+"/p/"+p;
+		        },"json");
+			}
+        );        
+    });
+	
+	//删除
+	$(document).on("click" ,'.delcomment',function(){
+        var id = $(this).data('id');
+        layer.confirm('确定删除？', {
+			  btn: ['确定','取消'] //按钮
+			}, function(){
+				$.post("{:U('delsearch')}",{"id":id},function(d){
+		        	if(d.returnCode=="SUCCESS"){
+		        		layer.msg("删除成功");
+		        	}else{
+		        		layer.msg("删除失败");
+		        	}
+		        	location.href="__ACTION__";
+		        },"json");
+			}
+        );        
+    });
+})
+</script>
+<include file="Public/footer"/>

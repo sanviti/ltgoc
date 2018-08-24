@@ -1,0 +1,123 @@
+<include file="public/header"/>
+	<body class="spinner-hide">
+		<div class="register_box" style="height: 98vh;">
+			<!-- <p class="intertranslation"><span>中文</span>/<span>English</span></p> -->
+		  <div class="logo">
+				<div class="logo_img">
+					<img src="__ROOT__/Public/Wap/img/logo.png"/>
+				</div>
+				<h1>PEC光电链</h1>
+			</div>
+			<form action="" method="post" name="login_form" id="login_form">
+			<div class="register_main">
+				<div class="frame_box">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji.png"/>
+					<span>手机</span>
+					<input name="mobile" type="text" id="mobile" style="-webkit-appearance : none ; border-radius: 0; outline: none;" />
+			  </div>
+				<div class="frame_box" style="position: relative;">
+					<img src="__ROOT__/Public/Wap/img/icon/suo.png"/>
+					<span>密码</span>
+					<input name="password" type="password" id="password" class="pass" style="-webkit-appearance : none ; border-radius: 0; outline: none; width: 8rem;float: right;" />
+                    <span class="psd_hide" style="position: absolute; top:0; right: 0; margin-top: .1rem;"><img src="__ROOT__/Public/Wap/img/icon/hide.png"/></span>
+					<input type="hidden" name="validcode" id="validcode" value="" />
+				</div>
+				<div>
+				<button type="button" class="register_btn" id="btn_login">登录</button>
+				<p><a href="{:U('Wap/Login/register')}">点击注册</a><a href="{:U('Wap/Login/findpwd')}">忘记密码</a></p>
+				<div class="register_bottom" style="position: absolute; top:10rem;">
+				  <h4>Hello!</h4>
+					<h5>欢迎您进入PEC光电链</h5>
+				</div>
+				</div>
+		  </div>
+        </form>
+			
+		</div>
+
+<include file="public/footer"/>
+<div id="imgcodebox" style="display: none;">
+	<div class="imgcode"><img src="{:U('Api/Vcode/image')}" /></div>
+	<div class="imgcode_input"><input name="vcode" value="" /></div>
+	<div class="clear"></div>
+</div>
+<style type="text/css">
+	.layui-m-layercont{
+		padding: 30px 20px;
+	}
+	.imgcode img{
+		width: 50%; float: left;
+	}
+	.imgcode_input input{
+		width:45%; border:1px solid #ccc; height: 1.5rem;
+		/*padding:0 2%;*/
+		text-align: center;
+		outline: none;
+		float: right;
+	    -webkit-appearance: none;
+	    border-radius: 0;
+	    outline: none;
+	}
+	.clear{
+		clear:both;
+	}
+
+</style>
+<script src="__PUBLIC__/Wap/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>	
+<script language="javascript" type="text/javascript">
+$(function(){
+	$('#btn_login').click(function(){
+		var mobile = $('input[name="mobile"]');
+		var password = $('input[name="password"]');
+		if(mobile.val() == ''){
+			alertMsg('请输入手机号码');
+			mobile.focus();
+			return false;
+		}
+		if(password.val() == ''){
+			alertMsg('请输入登录密码');
+			password.focus();
+			return false;
+		}
+		layer.open({
+		  anim: 'up'
+		  ,content: $('#imgcodebox').html()
+		  ,btn: ['确认', '取消']
+		  ,yes : function(){
+		  		imgcode = $('.layui-m-layercont .imgcode_input input');
+		  		if(isEmpty(imgcode.val())){
+					$('.layui-m-layercont .imgcode_input input').css('borderColor', 'red');
+					imgcode.focus();
+					return;
+				}
+				$('#validcode').val(imgcode.val());
+				AjaxPost('{:U("Api/Login/login")}','login_form','#btn_login',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							mystorage.set('authtoken',data.result.authtoken);
+							location.href = "{:U('Wap/Members/index')}";
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+		  }
+		});
+	});
+	
+	var psd_v = true;
+	$(".psd_hide").click(function(){
+		if(psd_v){
+			password.type = "text";
+			$(".psd_hide").find("img").attr("src","__PUBLIC__/Wap/img/icon/show.png")
+		}else{
+			password.type = "password";
+			$(".psd_hide").find("img").attr("src","__PUBLIC__/Wap/img/icon/hide.png")
+		}
+		psd_v = !psd_v;
+	})
+
+});
+</script>
+	</body>
+</html>

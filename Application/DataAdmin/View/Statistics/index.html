@@ -1,0 +1,200 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+                    	<h4>数据统计</h4>            	     
+	            	</div>
+	              </div>
+                <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <div class="main">
+                        <div class="col-md-6">
+                          <div class="main-left col-md-12">
+                              <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="2">货币信息(平台总数)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th class="text-right w20">GOC</th>
+                                    <td>{$goc|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">冻结GOC</th>
+                                    <td>{$goc_lock|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">USDC</th>
+                                    <td>{$usdc|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">冻结USDC</th>
+                                    <td>{$usdc_lock|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">余额</th>
+                                    <td>{$balance|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">冻结余额</th>
+                                    <td>{$balance_lock|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">链通积分</th>
+                                    <td>{$chain_score|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">乐享积分</th>
+                                    <td>{$share_score|default="0"}</td>
+                                  </tr> 
+                                </tbody>
+                              </table>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="main-left col-md-12">
+                              <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="3">平台信息</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th class="text-right w20">现有用户</th>
+                                    <td>{$memcount|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">提现打款总数</th>
+                                    <td>{$applyout|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">提现中总数</th>
+                                    <td>{$applying|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">今日提现打款</th>
+                                    <td>{$todayApply|default="0"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">今日提现中</th>
+                                    <td>{$todayApplying|default="0"}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <!--<table class="table table-bordered table-striped">-->
+                                <!--<thead>-->
+                                  <!--<tr>-->
+                                    <!--<th colspan="3">交易信息</th>-->
+                                  <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbody>-->
+                                <!--<tr>-->
+                                    <!--<th class="text-right w20">姓名</th>-->
+                                    <!--<td>{$c2.rname|default="未认证"}</td>-->
+                                  <!--</tr>-->
+                                  <!--<tr>-->
+                                    <!--<th class="text-right w20">身份证号</th>-->
+                                    <!--<td>{$c2.idcard|default="未认证"}</td>-->
+                                  <!--</tr>-->
+                                  <!--<tr>-->
+                                    <!--<th class="text-right w20">手持身份证照片</th>-->
+                                    <!--<td>-->
+                                      <!--<img src="{$c2.photo|default="/Public/Wap/img/sfz03.jpg"}" style="width: 120px;height: 80px">-->
+                                    <!--</td>-->
+                                  <!--</tr>-->
+                                <!--</tbody>-->
+                              <!--</table>-->
+
+                              <!-- <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="3">光电机组信息</th>
+                                  </tr> 
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table> -->
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="main-left col-md-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>预约类型</th>
+                                        <th>预约价格</th>
+                                        <th>预约数量</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <volist name="moveBuyList" id="item" key="k">
+                                        <tr>
+                                            <th>买入</th>
+                                            <td>{$item['price']}</td>
+                                            <td>{$item['num']}</td>
+                                        </tr>
+                                    </volist>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="main-left col-md-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>预约类型</th>
+                                        <th>预约价格</th>
+                                        <th>预约数量</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <volist name="moveSellList" id="item" key="k">
+                                    <tr>
+                                        <th>卖出</th>
+                                        <td>{$item['price']}</td>
+                                        <td>{$item['num']}</td>
+                                    </tr>
+                                    </volist>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+
+    $('#memo').change(function(){
+      $val = $(this).val();
+      var params = {
+              url : '{:U("editmemo")}',
+              params : {memo : $val, id : {$member.id}},
+              callback : function(data){
+                  msg(data.info);
+              }
+          }
+          ajax(params);
+
+    })
+		
+	})	
+</script>
+<include file="Public/footer"/>

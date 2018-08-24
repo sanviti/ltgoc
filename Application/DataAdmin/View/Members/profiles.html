@@ -1,0 +1,232 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+                    <h4>用户资料</h4>            	     
+	            	  </div>
+	              </div>
+                <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+                <div class="clearfix"></div>
+                <input type="hidden" name="id" id="userid" value="{$member.id}"> 
+                <div class="content-list">
+                    <div class="main">
+                        <div class="col-md-6">
+                          <div class="main-left col-md-12">
+                              <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="2">基本信息</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th class="text-right w20">用户ID</th>
+                                    <td>{$member.userid}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">用户等级</th>
+                                    <td>
+                                      <!-- <switch name="member['vip_level']" >
+                                      <case value="0"><span class="succ">普通会员</span></case>
+                                      <case value="1"><span class="succ">普通</span></case>
+                                      <case value="2"><span class="succ">小区</span></case>
+                                      <case value="3"><span class="succ">大区</span></case>
+                                      </switch> -->
+                                      <input type="radio" class="vip_level" name="vip_level" value="1" <if condition="$member['vip_level'] eq 1">checked</if>/>普通&nbsp;&nbsp;
+                                      <input type="radio" class="vip_level" name="vip_level" value="2" <if condition="$member['vip_level'] eq 2">checked</if>/>小区&nbsp;&nbsp;
+                                      <input type="radio" class="vip_level" name="vip_level" value="3" <if condition="$member['vip_level'] eq 3">checked</if>/>大区
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">团队人数</th>
+                                    <td>{$member.team_people_num}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">直推人数</th>
+                                    <td>{$member.children_num}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">昵称</th>
+                                    <td>{$member.rname}</td>
+                                  </tr>
+                                 
+                                  <tr>
+                                    <th class="text-right w20">绑定手机</th>
+                                    <td>{$member.phone}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">地址</th>
+                                    <td>{$member.province}{$member.city}{$member.area}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">推荐人</th>
+                                    <td><empty name="member['leadid']">系统推荐<else/>{$member.leadid}</empty></td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">注册日期</th>
+                                    <td>[{$member.reg_time|date='Y-m-d H:i',###}]</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">最后登录时间</th>
+                                    <td>[{$member.login_time|date='Y-m-d H:i',###}]</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">最后登录ip</th>
+                                    <td>
+                                        <empty name="member['login_ip']">
+                                            [--.--.--.--]
+                                        <else/>
+                                            [{$member.login_ip}]
+                                        </empty>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">C1认证</th>
+                                    <td>
+                                        <eq name="member['auth_c1']" value="0">未认证<else/>已认证</eq>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">C2认证</th>
+                                    <td><eq name="member['auth_c2']" value="0">未认证<else/>已认证</eq></td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">账号状态</th>
+                                    <td><empty name="member['is_lock']">正常<else/>锁定</empty></td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">账户状态</th>
+                                    <td><empty name="member['is_freeze']">正常<else/>冻结</empty></td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w10">备注信息</th>
+                                    <td><textarea name="memo" id="memo" class="form-control">{$member.memo}</textarea></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="main-left col-md-12">
+                              <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="3">钱包信息</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th class="text-right w20">GOC</th>
+                                    <td>{$member.goc}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">冻结GOC</th>
+                                    <td>{$member.goc_lock}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">USDC</th>
+                                    <td>{$member.usdc}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">冻结USDC</th>
+                                    <td>{$member.usdc_lock}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">余额</th>
+                                    <td>{$member.balance}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">冻结余额</th>
+                                    <td>{$member.balance_lock}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">链通积分</th>
+                                    <td>{$member.chain_score}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">乐享积分</th>
+                                    <td>{$member.share_score}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="3">认证信息</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th class="text-right w20">姓名</th>
+                                    <td>{$c2.rname|default="未认证"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">身份证号</th>
+                                    <td>{$c2.idcard|default="未认证"}</td>
+                                  </tr>
+                                  <tr>
+                                    <th class="text-right w20">手持身份证照片</th>
+                                    <td>
+                                      <img src="{$c2.photo|default="/Public/Wap/img/sfz03.jpg"}" style="width: 120px;height: 80px">
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                              <!-- <table class="table table-bordered table-striped">
+                                <thead>
+                                  <tr>
+                                    <th colspan="3">光电机组信息</th>
+                                  </tr> 
+                                </thead>
+                                <tbody>
+                                </tbody>
+                              </table> -->
+                          </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+
+    $('#memo').change(function(){
+      $val = $(this).val();
+      var params = {
+              url : '{:U("editmemo")}',
+              params : {memo : $val, id : {$member.id}},
+              callback : function(data){
+                  msg(data.info);
+              }
+          }
+          ajax(params);
+
+    })
+    $(".vip_level").change(function(){
+    	var vip_level = $(this).val();
+    	var userid = $("#userid").val();
+    	$.post("{:U('change_vip_level')}",{"level":vip_level,"userid":userid},function(d){
+    			if(d.returnCode=="SUCCESS"){
+					msg("修改成功");
+				}else{
+					msg("修改失败");
+				}
+    			var dump = "__ACTION__/id/"+userid;
+				setTimeout("location.href = "+dump,1000);
+    	},"json");
+    })
+	})	
+</script>
+<include file="Public/footer"/>

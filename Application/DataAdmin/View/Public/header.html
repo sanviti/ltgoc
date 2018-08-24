@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+<title>后台管理</title>
+<link href="__PUBLIC__/DataAdmin/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/css/body.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/css/style.css" rel="stylesheet"/>
+<php>
+    $skin = cookie('skin-name');
+    switch($skin){
+        case 'orange':
+</php>
+    <link href="__PUBLIC__/DataAdmin/css/dermaorange.css" title="orange" rel="stylesheet" class="bodyskin" />
+    <link href="__PUBLIC__/DataAdmin/css/dermagreen.css" title="green" rel="stylesheet" class="bodyskin" disabled="disabled"/>
+    <link href="__PUBLIC__/DataAdmin/css/dermadefault.css" title="blue" rel="stylesheet" class="bodyskin" disabled="disabled"/>
+
+<php>
+        break;
+        case 'green':
+</php>
+    <link href="__PUBLIC__/DataAdmin/css/dermaorange.css" title="orange" rel="stylesheet" class="bodyskin" disabled="disabled"/>
+    <link href="__PUBLIC__/DataAdmin/css/dermadefault.css" title="blue" rel="stylesheet" class="bodyskin" disabled="disabled"/>
+    <link href="__PUBLIC__/DataAdmin/css/dermagreen.css" title="green" rel="stylesheet" class="bodyskin"/>
+<php>
+        break;
+        case 'blue':
+        default:
+</php>
+    <link href="__PUBLIC__/DataAdmin/css/dermaorange.css" title="orange" rel="stylesheet" class="bodyskin" disabled="disabled"/>
+    <link href="__PUBLIC__/DataAdmin/css/dermadefault.css" title="blue" rel="stylesheet" class="bodyskin" />
+    <link href="__PUBLIC__/DataAdmin/css/dermagreen.css" title="green" rel="stylesheet" class="bodyskin" disabled="disabled"/>
+<php>
+        break;
+    }
+</php>
+<link href="__PUBLIC__/DataAdmin/css/templatecss.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/js/plugins/Validform/validform.css" rel="stylesheet"/>
+<js href="__PUBLIC__/DataAdmin/js/jquery-1.11.1.min.js" />
+<js href="__PUBLIC__/DataAdmin/js/plugins/layer/layer.min.js"/>
+<js href="__PUBLIC__/DataAdmin/js/plugins/Validform/Validform_v5.3.1_min.js"/>
+<js href="__PUBLIC__/DataAdmin/js/jquery.cookie.js" />
+<js href="__PUBLIC__/DataAdmin/js/bootstrap.min.js" />
+<js href="__PUBLIC__/DataAdmin/js/style.js" />
+</head>

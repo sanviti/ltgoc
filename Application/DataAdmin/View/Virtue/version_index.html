@@ -1,0 +1,171 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>版本列表</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                	<!--搜索开始-->
+                	<form name="search" action="{:U('userlist')}" id="searchForm" method="post">
+					<div class="search-box row">
+							<a href="{:U('version_add')}" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新增</a>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w10">#</th>
+									<th class="w10">版本名称</th>
+									<th class="w10">系统类型</th>
+									<th class="w10">版本号</th>
+									<th class="w15">强制升级</th>
+									<th class="w10">管理员</th>
+									<th class="w10">时间</th>
+									<th class="w15">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td>{$vo.code}</td>
+										<td>{$vo.system}</td>
+										<td>{$vo.name}</td>
+										<td>{$vo.version}</td>
+										<td>
+											<if condition="$vo.force eq '1'">
+												<strong style="color:red;">是</strong>
+												<else/>
+												<strong style="color:green;">否</strong>
+											</if>
+										</td>
+										<td>
+											{$vo.managername}
+										</td>
+										<td>{$vo.dateline|date='Y-m-d H:i:s',###}</td>
+										<td>
+											<a href="{:U('version_edit',array('code'=>$vo['code']))}" >
+												<i class="fa fa-pencil"></i> 详细</a>&nbsp;&nbsp;
+											<!--<a href="javascript:;" data-id="{$vo.code}" class="btn btn-danger del">-->
+												<!--<i class="fa fa-trash-o"></i> 删除</a>-->
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="10">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="10" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('#form-wizard', {
+	        callback:function(){
+	            location.reload();
+	        }
+	    });
+		$('#searchBtn').click(function(){
+			$('#searchForm').submit();
+		})
+	    //删除
+	    bind_delete_action('.del');
+	    //批量删除
+	    bind_batch_delete('.batchdel');
+	    //批量更改状态
+	    bind_batch_change('.batchchage');
+
+	    function bind_batch_delete(selector){	    	
+	    	$(selector).click(function(){
+	    		if(!betch_check()){
+		    		msg('请选择要删除的数据');
+		    		 return false;
+		    	}
+		    	confirm('确定执行批量删除用户信息？操作不能撤回!',function(){
+		    		send('{:U("BatchDelUser")}', $('#listForm').serialize());
+		    	})
+		    	
+	    	})
+	    }
+
+	    function bind_batch_change(selector){	    	
+	    	$(selector).click(function(){
+	    		if(!betch_check()){
+		    		msg('请选择要修改的数据');
+		    		 return false;
+		    	}
+		    	var data = $('#listForm').serialize();
+		    	data = data+'&state='+$(this).data('value');
+		    	confirm('确定执行批量修改用户信息？',function(){
+		    		send('{:U("batchChangeUser")}', data);
+		    	})
+		    	
+	    	});
+	    }
+
+	    function send(url, data){
+	    	var params = {
+                url : url,
+                params : data,
+                callback : function(data){
+                    var msgCallBack;
+                    if(data.status == 1){
+                        msgCallBack = function(){
+                            window.location.reload();
+                        }
+                    }
+                    msg(data.info,msgCallBack);
+                }
+            }
+            ajax(params);
+	    }
+
+	    function betch_check(){
+	    	if($('.selectAll-item:checkbox:checked').length > 0){
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
+	    }
+
+	})
+</script>
+<include file="Public/footer"/>

@@ -1,0 +1,169 @@
+<include file="public/header"/>
+<style type="text/css">
+	.start{
+		width: 5rem;
+	    height: 1rem;
+	    float: left;
+	    background: #56bced;
+	    text-align: center;
+	    line-height: 0.5rem;
+	    color: #fff;
+	    line-height: 1rem;
+	}
+</style>
+<body>
+	<?php
+	    $agent = $_SERVER['HTTP_USER_AGENT'];
+	    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<div class="header">
+			<div class="goback" onClick="goBack()"></div>
+			<div class="title">{$page_title}</div>
+		</div>
+	<?php
+	    }else{
+	?>
+		<style type="text/css">.copy_top{display: none}</style>
+	<?php
+	    }
+	?>
+	<div class="copy_top"></div>
+	<div class="Buy_nav">
+		<i></i>
+		<center>卖方订单情况</center>
+		<i></i>
+	</div>
+	<div class="Buy_info">
+		<h1>卖方信息</h1>
+		<ul>
+			<li>
+				<p>名字：</p>
+				<p id="rname"></p>
+			</li>
+			<li>
+				<p>联系电话：</p>
+				<p id="phone"></p>
+			</li>
+			<li>
+				<p>PEC数量：</p>
+				<p id="opc"></p>
+			</li>
+			<li>
+				<p>USD：</p>
+				<p id="total_usd"></p>
+			</li>
+			<li>
+				<p>RMB：</p>
+				<p id="total_cny"></p>
+			</li>
+			<li>
+				<p>支付宝：</p>
+				<p id="alipay"></p>
+			</li>
+			<li>
+				<p>微信：</p>
+				<p id="weixin"></p>
+			</li>
+			<li>
+				<p>银行名称：</p>
+				<p id="bank_name"></p>
+			</li>
+			<li>
+				<p>持卡人：</p>
+				<p id="card_name"></p>
+			</li>
+			<li>
+				<p>银行卡号：</p>
+				<p id="card_number"></p>
+			</li>
+			<li>
+				<p>其它：</p>
+				<p id="other" data-value></p>
+			</li>
+		</ul>
+		<div class="Buy_points">
+			<i>交易转款钱,请电话联系对方，确认信息无误后再进行操作，转款钱请仔细核读对卖方显示的信息收款账户，如付款至其他账户(非卖方信息显示)，产生的交易纠纷，平台无法为您核实处理！且为会被系统检测为虚假交易冻结账户！付款成功后请上传显示卖方名字和账户的交易记录截图，作为买方的交易凭证。</i>
+		</div>
+		<div class="Buy_words">
+			<ul>
+				<li id="btnHTML">
+					
+				</li>
+			</ul>
+		</div>			
+	</div>
+<include file="public/footer"/>
+<style type="text/css">
+	.layui-m-layercont{
+		padding: 20px 30px;
+	}
+	#btnHTML{
+		text-align: center;
+	}
+</style>
+
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Orders/buy_order')}", {id:{$id}}, function(data){
+		if(data.returnCode == 1){
+			$('#rname').html(data.result.buy_rname);
+			$('#phone').html(data.result.buy_phone);
+			$('#opc').html(data.result.opc);
+			$('#total_usd').html(data.result.total_usd);
+			$('#total_cny').html(data.result.total_cny);
+			$('#bank_name').html(data.result.bank_name);
+			$('#card_number').html(data.result.card_number);
+			$('#card_name').html(data.result.card_name);
+			if(data.result.sell_other !== '请联系卖家开启'){
+				$('#other').addClass('start').attr('data-value',data.result.sell_other).text('点击查看');
+			}else{
+				$('#other').html(data.result.sell_other);
+			}
+			$('#alipay').html(data.result.sell_zfb);
+			$('#weixin').html(data.result.sell_wx);
+			var orderStatus = data.result.status;
+			var htmlA = '';
+			switch(orderStatus){
+				case '1':
+				  	htmlA += '<a href="javascript:history.back();" style="background: #ccc">返回列表</a><a href="javascript:cancel_order(1, ' + data.result.order_sn + ');" style="background: #ccc">撤销订单</a>';
+				  	break;
+				case '3':
+					htmlA += '<a href="{:U('Wap/Wallet/certificate/id/' . $id)}">确认付款</a><a href="javascript:cancel_order(1, ' + data.result.order_sn + ');" style="background: #ccc">撤销订单</a';
+					break;
+				case '4':
+					htmlA += '<a href="javascript:;">订单申诉</a><a href="javascript:cancel_order(1, ' + data.result.order_sn + ');" style="background: #ccc">撤销订单</a>';
+					break;
+				case '-1':
+				case '-2':
+				case '102':
+					htmlA += '已撤单';
+					break;
+				case '101':
+				case '5':				
+					htmlA += '已成交';
+					break;
+			}
+			// if(orderStatus >= 1 && orderStatus < 5){
+			// 	// if(order)
+			// 	htmlA += '<a href="{:U('Wap/Wallet/certificate/id/' . $id)}">确认付款</a>';
+			// 	htmlA += '<a href="javascript:cancel_order(' + data.result.type + ', ' + data.result.order_sn + ');" style="background: #ccc">撤销订单</a';
+			// }
+			// if(orderStatus == 5){
+			// 	htmlA += '<a href="javascript:history.back();" style="background: #ccc">返回列表</a><a href="javascript:;">订单申诉</a>';
+			// }
+			$('#btnHTML').html(htmlA);
+			$('.spinner').remove();
+		}
+	});
+
+	$(document).on('click', '.start', function(){
+		layer.open({
+				anim: 'up'
+				,content: $(this).attr('data-value')
+				,btn: ['确定']
+			});
+	})
+});
+</script>
+</body>
+</html>

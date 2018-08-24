@@ -1,0 +1,65 @@
+<include file="public/header"/>
+	<body class="spinner-hide" style="background: #f1f1f2;">
+        <?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <div class="header" style="position:relative;">
+                 <div class="goback" onclick="goBack();"></div>
+                <div class="title">{$page_title}</div>
+            </div>
+        <?php
+           }else{
+        ?>
+            <style type="text/css">.novice_banner{margin-top: 0}</style>
+        <?php
+            }
+        ?>
+		<div class="novice_banner">
+			<img src="__PUBLIC__/Wap/img/4.jpg"/>
+		</div>
+        <div class="dropload-box fixed-contb">
+		<ul class="novice_main">
+		</ul>
+        </div>
+		<include file="public/nav"/>
+<include file="public/footer"/>
+<link href="__PUBLIC__/Wap/js/dropload/dropload.css" rel="stylesheet">
+<script src="__PUBLIC__/Wap/js/dropload/dropload.min.js"></script>
+<script language="javascript" type="text/javascript">
+$(function(){
+	var pageStart = 1;
+    // dropload
+    $('.dropload-box').dropload({
+        scrollArea : window,
+		domDown : {
+            domClass   : 'dropload-down',
+            domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+            domLoad    : '<div class="dropload-load"><span class="loading"></span></div>',
+            domNoData  : '<div class="dropload-noData">没有更多数据</div>'
+        },
+        loadDownFn : function(me){
+            PostApi("{:U('Api/Members/newGuide')}", {page:pageStart}, function(data){
+				if(data.returnCode == 1) {
+					var html = '';
+					$.each(data.result.article_list,function(idx,article){
+						html += '<li><p>' + article.title + '</p>'
+								+ '<a href="{:U('Wap/Members/article')}?news_id=' + article.id + '">点击查看</a></li>'
+								+ '<div class="novice_children">' + article.des + '</div>';
+					});
+					pageStart = data.result.page;
+					$('.novice_main').append(html);
+				} else {
+					// 无数据
+					me.noData();
+					// 锁定
+					me.lock();
+				}
+				me.resetload();
+			});
+        }
+    });
+});
+</script>
+	</body>
+</html>

@@ -1,0 +1,56 @@
+<include file="public/header"/>
+	<body class="spinner-hide" style="background: #f1f1f2;">
+		<?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <include file="public/top"/>
+        <?php
+           }else{
+        ?>
+            <style type="text/css">.c_content{margin-top: 0}</style>
+        <?php
+            }
+        ?>
+		<div class="c_content">
+			<ul>
+				<li>
+					<span>登录密码修改</span>
+					<a href="{:U('Wap/Members/changePwd')}"><img src="__PUBLIC__/Wap/img/icon/right_j.png"/></a>
+				</li>
+				<li>
+					<span>交易密码修改</span>
+					<a href="{:U('Wap/Members/changePayPwd')}"><img src="__PUBLIC__/Wap/img/icon/right_j.png"/></a>
+				</li>
+				<li style="margin-bottom: 0.6rem;">
+					<span>忘记交易密码</span>
+					<a href="{:U('Wap/Members/resetPayPwd')}"><img src="__PUBLIC__/Wap/img/icon/right_j.png"/></a>
+				</li>
+				
+				<li>
+					<span>语言</span>
+					<p>中文</p>
+				</li>
+				<li>
+					<span>版本信息</span>
+					<p>1.0</p>
+				</li>
+			</ul>
+			<button class="log_out" style="width: 100%;" id="loginout">退出登录</button>
+		</div>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	$('#loginout').click(function(){
+		PostApi("{:U('Api/Login/loginout')}", {}, function(data){
+			if(data.returnCode == 1){
+				mystorage.clear();
+				location.href = "{:U('Wap/Login/index')}";
+				//$('.spinner').remove();
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

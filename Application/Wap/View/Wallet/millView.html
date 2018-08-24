@@ -1,0 +1,115 @@
+<include file="public/header"/>
+<link rel="stylesheet" type="text/css" href="__ROOT__/Public/Wap/css/mill.css?v=0.1"/>
+<body>
+		
+		<div class="accounts">
+			<div class="main_canvas">
+				<canvas id="canvas" style="background:#111"></canvas>
+			</div>
+			<div class="accounts_top">
+				<p id="mill-name"></p>
+				<a href="javascript:clear_account()">结算</a>
+			</div>
+			<div class="rotate_box">
+				<div class="rotate_img">
+					
+				</div>
+				<p id="status"></p>
+			</div>
+			<div class="bottom_text">
+				<h1 id="wait_out"></h1>
+				<p class="sunal">光电机组算力：<span id="mill_power"></span>GH/s</p>
+				<p>累计获得：<span id="output"></span> PEC</p>
+				<p>上次结算时间：<span id="last_time"></span></p>
+				<p>到期时间：<span id="stop_time"></span></p>
+			</div>
+		</div>
+<include file="public/footer"/>
+<script type="text/javascript">
+	
+window.onload = function(){
+	var canvas = document.getElementById("canvas");
+	var context =canvas.getContext("2d");
+	var W = window.innerWidth;
+	var H = window.innerHeight;
+	canvas.width = W;
+	canvas.height = H;
+	var fontSize = 14;
+	var colunms = Math.floor(W /fontSize);	
+	var drops = [];
+	for(var i=0;i<colunms;i++){
+		drops.push(0);
+	}
+	var str ="000111";
+	//绘画的函数
+	function draw(){
+		context.fillStyle = "rgba(0,0,0,0.08)";
+		context.fillRect(0,0,W,H);
+		context.font = "700 "+fontSize+"px  微软雅黑";
+		context.fillStyle ="#063c61";
+		for(var i=0;i<colunms;i++){
+			var index = Math.floor(Math.random() * str.length);
+			var x = i*fontSize;
+			var y = drops[i] *fontSize;
+			context.fillText(str[index],x,y);
+			if(y >= canvas.height && Math.random() > 0.99){
+				drops[i] = 0;
+			}
+			drops[i]++;
+		}
+	};
+
+	function randColor(){
+		var r = Math.floor(Math.random() * 256);
+		var g = Math.floor(Math.random() * 256);
+		var b = Math.floor(Math.random() * 256);
+		return "rgb("+r+","+g+","+b+")";
+	}
+
+	draw();
+	setInterval(draw,20);
+};
+$(function(){
+	init();
+});
+function init(){
+	PostApi("{:U('Api/Mills/mill')}", {mill_sn:'{$mill_sn}'}, function(data){
+	if(data.returnCode == 1){
+		$('#mill-name').html(data.result.mill_name);
+		$('#status').html(data.result.status_html);
+		$('#wait_out').html(data.result.wait_out + ' <span>PEC</span>');
+		$('#mill_power').html(data.result.mill_power);
+		$('#output').html(data.result.output);
+		$('#last_time').html(data.result.last_time);
+		$('#stop_time').html(data.result.stop_time);
+		if(data.result.status == 1){
+			$('.rotate_img').addClass('rotate_running');
+		}
+		$('.spinner').remove();
+	}
+	});
+}
+function clear_account(){
+	layer.open({
+		content: '你确定现在要结算吗吗？'
+		,btn: ['结算', '取消']
+		,yes: function(index){
+			PostApi("{:U('Api/Mills/getCoin')}",
+			{
+				millsn:'{$mill_sn}'
+			},function(data){
+				if(data.returnCode == 1) {
+					alertMsg(data.returnMsg, '', function(){
+						init();
+					});
+				} else {
+					alertMsg(data.returnMsg);
+				}
+			});
+		}
+	});
+
+}
+</script>
+	</body>
+</html>

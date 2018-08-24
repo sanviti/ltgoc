@@ -1,0 +1,182 @@
+<include file="Public/header"/>
+<body>
+<style>
+	.imgDiv{
+		margin-left:150px;
+	}
+	.imgDiv li{
+		float:left;
+		width:150px;
+		margin-right:10px;
+		position:relative;
+	}
+	.imgDiv li span{
+		position:absolute;
+		padding:10px;
+		font-size:20px;
+		right:0;
+		top:0;
+		background-color:#ccc;
+		opacity:0.5;
+	}
+</style>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent-->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>
+	                	      首页推荐&nbsp;&nbsp;<font size="1" color='red'></font> &nbsp;&nbsp;&nbsp;
+	                	  <a href="{:U('addRecommend')}"  class="btn btn-info">
+	                	  <span class="glyphicon glyphicon-edit"></span>添加商品推荐</a>
+	                	</h4> 
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                <!--搜索开始-->
+                	<form name="search" action="{:U('goods_recommend')}" id="searchForm" method="post">
+                	<input type="hidden" name="p" id="p" value="{$p}">
+					<div class="search-box row">
+						<div class="col-md-8">
+							<div class="form-group">
+								<span class="pull-left form-span">所属栏位:</span>
+								<select name="lid" class="form-control fromtype" id="lid">
+										<option value="" >请选择</option>
+										<option value="1" <if condition="$Think.request.lid heq '1'"> selected="selected"</if>>1号栏位</option>
+										<option value="2" <if condition="$Think.request.lid heq '2'"> selected="selected"</if>>2号栏位</option>
+										<option value="3" <if condition="$Think.request.lid heq '3'"> selected="selected"</if>>3号栏位</option>
+										<option value="4" <if condition="$Think.request.lid heq '4'"> selected="selected"</if>>4号栏位</option>
+										<option value="5" <if condition="$Think.request.lid heq '5'"> selected="selected"</if>>5号栏位</option>
+										<option value="6" <if condition="$Think.request.lid heq '6'"> selected="selected"</if>>6号栏位</option>
+										<option value="7" <if condition="$Think.request.lid heq '7'"> selected="selected"</if>>7号栏位</option>
+										<option value="8" <if condition="$Think.request.lid heq '8'"> selected="selected"</if>>8号栏位</option>
+										<option value="9" <if condition="$Think.request.lid heq '9'"> selected="selected"</if>>9号栏位</option>
+										<option value="10" <if condition="$Think.request.lid heq '10'"> selected="selected"</if>>10号栏位</option>
+										<option value="11" <if condition="$Think.request.lid heq '11'"> selected="selected"</if>>11号栏位</option>
+										<option value="12" <if condition="$Think.request.lid heq '12'"> selected="selected"</if>>12号栏位</option>
+										<option value="13" <if condition="$Think.request.lid heq '13'"> selected="selected"</if>>13号栏位</option>
+										<option value="14" <if condition="$Think.request.lid heq '14'"> selected="selected"</if>>14号栏位</option>
+										<option value="15" <if condition="$Think.request.lid heq '15'"> selected="selected"</if>>15号栏位</option>
+										<option value="16" <if condition="$Think.request.lid heq '16'"> selected="selected"</if>>16号栏位</option>
+										<option value="17" <if condition="$Think.request.lid heq '17'"> selected="selected"</if>>17号栏位</option>
+										<option value="18" <if condition="$Think.request.lid heq '18'"> selected="selected"</if>>18号栏位</option>
+										<option value="19" <if condition="$Think.request.lid heq '19'"> selected="selected"</if>>19号栏位</option>
+										<option value="20" <if condition="$Think.request.lid heq '20'"> selected="selected"</if>>20号栏位</option>
+										<option value="21" <if condition="$Think.request.lid heq '21'"> selected="selected"</if>>21号栏位</option>
+										<option value="22" <if condition="$Think.request.lid heq '22'"> selected="selected"</if>>22号栏位</option>
+										<option value="23" <if condition="$Think.request.lid heq '23'"> selected="selected"</if>>23号栏位</option>
+										<option value="24" <if condition="$Think.request.lid heq '24'"> selected="selected"</if>>24号栏位</option>
+										<option value="25" <if condition="$Think.request.lid heq '25'"> selected="selected"</if>>25号栏位</option>
+										<option value="26" <if condition="$Think.request.lid heq '26'"> selected="selected"</if>>26号栏位</option>
+										<option value="27" <if condition="$Think.request.lid heq '27'"> selected="selected"</if>>27号栏位</option>
+										<option value="28" <if condition="$Think.request.lid heq '28'"> selected="selected"</if>>28号栏位</option>
+										<option value="29" <if condition="$Think.request.lid heq '29'"> selected="selected"</if>>29号栏位</option>
+										<option value="30" <if condition="$Think.request.lid heq '30'"> selected="selected"</if>>30号栏位</option>
+										<option value="31" <if condition="$Think.request.lid heq '31'"> selected="selected"</if>>80%激励位</option>
+										<option value="32" <if condition="$Think.request.lid heq '32'"> selected="selected"</if>>品牌专区位</option>
+										<option value="33" <if condition="$Think.request.lid heq '33'"> selected="selected"</if>>好物专区位</option>
+									</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">推荐来源:</span>
+								<select name="type" class="form-control fromtype" id="lid">
+										<option value="" >请选择</option>
+										<option value="1" <if condition="$Think.request.type heq '1'"> selected="selected"</if>>App商品id</option>
+										<option value="2" <if condition="$Think.request.type heq '2'"> selected="selected"</if>>H5兑换商品</option>
+										<option value="3" <if condition="$Think.request.type heq '3'"> selected="selected"</if>>分类</option>
+										<option value="4" <if condition="$Think.request.type heq '4'"> selected="selected"</if>>好物</option>
+										<option value="6" <if condition="$Think.request.type heq '6'"> selected="selected"</if>>品牌</option>
+									</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">商品id</span>
+								<input type="text" name="goodsid" value="{:I('goodsid')}" class="form-control" placeholder="">
+							</div>
+							
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+							</div>
+						</div>
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<!--内容开始-->
+					<div class="form-horizontal" method="post" action="" name="basic_validate">
+							<form id="listForm" method="post">
+                        <div class="table-margin">
+                            <table class="table table-bordered table-header table-hover">
+                                <thead>
+                                <tr>
+                                	<th class="w10">ID</th>
+                                    <th class="w10">所属栏位</th>
+                                    <th class="w5">商品id</th>
+                                    <th class="w10">商品链接</th>
+									<th class="w5">分类ID</th>
+                                    <th class="w10">推荐来源</th>
+                                    <th class="w10">显示状态</th>
+                                    <th class="w10">商品显示图片</th>
+                                    <th class="w10">显示截止时间</th>
+                                    <th class="w10">让利比列</th>
+                                    <th class="w10">对应品牌</th>
+                                    <th class="w15">操作</th>
+                                </tr>
+                                </thead>
+
+                                <notempty name="list">
+                                    <tbody>
+                                    <volist name="list" id="vo" key="val">
+                                        <tr class="long-td">
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.lid}号栏位</td>
+                                            <td>{$vo.goodsid}</td>
+                                            <td>{$vo.link}</td>
+                                            <td>{$vo.cid}</td>
+                                            <td><if condition="$vo.type eq 1">APP商品ID<elseif condition="$vo.type eq 2"/>H5兑换商品<elseif condition="$vo.type eq 3" />分类列表</if></td>
+                                            <td><if condition="$vo.status eq 1">显示<elseif condition="$vo.status eq 0"/>隐藏</if></td>
+                                            <td><img src="{$vo['pic']}" width="60" height="60"></td>
+                                            <td>{$vo.etime|date="Y-m-d H:i:s",###}</td>
+                                            <td><if condition="$vo.showrate eq 1">显示<elseif condition="$vo.showrate eq 0"/>隐藏</if></td>
+                                            <td>{$vo.brand_id}</td>
+                                            <td>
+                                                <a href="{:U('recommendDetail',array('id'=>$vo['id'],'p'=>$p))}"  class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</a> 
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="12">
+                                            <div class="pull-right">
+                                                <nav class="pagination">{$page}</nav>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <else/>
+                                    <tr>
+                                        <td colspan="12" class="text-center">
+                                            没有数据拉！
+                                        </td>
+                                    </tr>
+                                </notempty>
+
+                            </table>
+                        </div>
+                    </form>
+					</div>
+					<!--内容结束-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body><include file="Public/footer"/>
+<script type="text/javascript">
+</script>

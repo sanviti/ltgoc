@@ -1,0 +1,151 @@
+<include file="public/header"/>
+    <script type="text/javascript">    	
+   		document.addEventListener('plusready', function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。
+   		});
+    </script>
+<body>
+	<div class="index_banner">
+		<div class="swiper-container">
+		    <div class="swiper-wrapper">
+		       
+		    </div>
+		    <!-- 如果需要分页器 -->
+		    <div class="swiper-pagination"></div>
+		</div>
+	</div>
+	<div class="proclamation">
+        <div>
+        	<img src="__PUBLIC__/Wap/img/icon/ba.png" alt="" />
+        	<p id="notice"><a style="color:#fff"></a></p>
+        	<!-- <span>所在区域：北京市丰台区</span> -->
+
+        </div>
+	</div>
+	<div class="index_main">
+		<div class="main_top">
+			<p>当前价：</p>
+			<p><span id="price">-.---</span></p>
+			<p>USD=<span id="cny">-.---</span> RMB</p>
+		</div>
+		<div class="charts_title">
+			<i></i>
+			<p>行情趋势</p>
+		</div>
+		<div class="charts_box" id="charts_box" style="margin:.1rem auto; height: 8rem; width: 14rem">
+			
+		</div>
+		<div class="charts_title" style="margin-bottom: 1rem">
+			<i></i>
+			<p>最新资讯</p>
+		</div>
+		<!-- <div class="main_more">更多</div> -->
+		<div class="information" style="margin-bottom: .4rem">
+			
+		</div>
+		
+	</div>
+	<include file="public/nav"/>
+	<script src="__PUBLIC__/Wap/js/echarts.min.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="__PUBLIC__/Wap/js/Storage.js" type="text/javascript" charset="utf-8"></script>	
+	<script>        
+		var cache = mystorage.get('indexCache');
+		if(cache){
+			_load_callback(cache);
+		}
+		$(function(){
+			
+			try { 
+				api("{:U('Api/index/index')}", {}, function(data){
+					if(data.returnCode){
+						banner(data.result.banner)
+						_load_callback(data);
+						mystorage.set('indexCache', data);
+					}	
+				});
+			} catch (e) { alert(e.name + ": " + e.message);} 
+
+			
+		})
+
+		function _load_callback(data){
+			notice(data.result.notice);
+			infos(data.result.infos);
+			setEchart(data.result.price_list, data.result.date_list);
+			$('#price').html(data.result.price);
+			$('#cny').html(data.result.cny);
+		}
+
+		function setEchart(price, dates){
+			var myChart = echarts.init(document.getElementById('charts_box'));
+			// 指定图表的配置项和数据
+	        var option = {
+	        	// color : '#0062f5',
+	            grid:{
+	            	top:30,
+	            	left:30,
+	            	bottom:30,
+	            	right:20,
+	            	left:40,
+	            },
+	            xAxis: {
+	            	splitNumber : 14,
+	                data: dates,
+	                axisTick : {
+	                	alignWithLabel : true,
+	                	interval : 1
+	                },
+	                
+	            },
+	            yAxis: {
+
+	            },
+	            series: [{
+	                name: '成交价',
+	                type: 'line',
+	                data: price,
+	                symbolSize:10,
+	                itemStyle:{
+	                	borderWidth:2,
+	                	
+	                }
+	            }]
+	        };
+	        // 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+
+		}
+		function infos(inf){
+			var infos = '';
+			$.each(inf, function(k, v){
+				infos += '<a href="'+ v.url +'"><img src="'+  v.picurl +'" style="width:100%"/></a>';
+			})
+			$('.information').html(infos);
+		}
+		//公告
+		function notice(nt){
+			$('#notice>a').html(nt.title).attr('href', nt.url);
+		}
+
+		//设置banner
+		function banner (ban){
+			var banner = '';
+			$.each(ban, function(k, v){
+				banner += '<a class="swiper-slide" href="'+ v.url +'"><img src="'+  v.pic_url +'"/></a>';
+			})
+			$('.swiper-wrapper').html(banner);
+			//设置滑动
+			var mySwiper = new Swiper ('.swiper-container', {
+				autoplay: true,
+				direction: 'horizontal',
+				loop: true,
+				pagination: {
+				  el: '.swiper-pagination',
+				},
+			});
+		}
+	  
+	 
+  </script>
+</body>
+</html>

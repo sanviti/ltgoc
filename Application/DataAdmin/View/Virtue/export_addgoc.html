@@ -1,0 +1,71 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<link href="__PUBLIC__/DataAdmin/css/uploadfile.css" rel="stylesheet">
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>充值GOC</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+		             <form class="form-inline" method="post">
+                     <div class="col-sm-6">
+                       	上传充值Exl：<font color='red'>(请上传xls，xlsx类型的文件)</font><img id="upload_exl" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+                    </div>
+                	</form> 	
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script src="__PUBLIC__/DataAdmin/js/layer/layer.js"></script>
+<script type="text/javascript">
+$(function(){ 
+	//上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("DataAdmin/Upload/uploadexcel")}',
+	   		bind : '#upload_exl',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			    var index = layer.load(1, {
+					  shade: [0.3,'#000'] //0.1透明度的白色背景
+					});
+	   			var url = data.url;
+	   			if(data.state == "SUCCESS"){
+	   				$.post("{:U('DataAdmin/Upload/add_goc')}",{"url":url},function(data){
+	   					var data =  eval('(' + data + ')');
+						layer.closeAll();
+	   					if(data.returnCode=="SUCCESS"){
+	   						msg("处理成功");
+	   					}else{
+	   						msg("处理失败");
+	   					}
+	   					setTimeout("location.href = '{:U('rechargeLists')}'",3000);
+	   				})
+	   			}else{
+	   				msg("上传失败");
+	   				setTimeout("location.href = '__ACTION__'",1000);
+	   			}
+	   			
+	   		}
+	   	})
+})
+</script>
+<include file="Public/footer"/>

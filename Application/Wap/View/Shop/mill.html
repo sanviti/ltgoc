@@ -1,0 +1,100 @@
+<include file="public/header"/>
+<body>
+	<?php
+		    $agent = $_SERVER['HTTP_USER_AGENT'];
+		    if(strpos($agent,"Html5Plus") === false){
+	?>
+		<div class="header">
+			<div class="goback" onClick="goBack()"></div>
+			<div class="title">{$page_title}</div>
+		</div>
+	<?php
+	    }else{
+
+	?>
+		<style type="text/css">
+			.copy_top{
+				height: 1rem;
+			}
+		</style>
+	<?php
+	    }
+	?>
+	
+	<div class="copy_top"></div>
+	<div class="Buy_nav">
+		<i></i>
+		<center>光电机组情况</center>
+		<i></i>
+	</div>
+	<div class="rent_table">
+		<table border="1" cellspacing="" cellpadding="">
+			<tr>
+				<th class="">类型</th>
+				<th>{$name}</th>
+			</tr>
+			<tr>
+				<th>运算周期</th>
+				<th>720小时</th>
+			</tr>
+			<tr>
+				<th>算力</th>
+				<th>{$power} GH/S</th>
+			</tr>
+			<tr>
+				<th>12小时产量</th>
+				<th>{$hour12} PEC</th>
+			</tr>
+			<tr>
+				<th>72小时产量</th>
+				<th>{$hour72} PEC</th>
+			</tr>
+			<tr>
+				<th>720小时产量</th>
+				<th>{$hour720} PEC</th>
+			</tr>
+			<tr>
+				<th>租用价格</th>
+				<th class="rent_Ten"><i>{$price}</i> PEC</th>
+			</tr>
+			<tr>
+				<th>支付密码</th>
+				<th class="rent_enter"><input type="hidden" name="type" id="type" value="{$type}" /><input type="password" placeholder="请输入" name="password" /></th>
+			</tr>
+		</table>
+	</div>
+	<div class="rent_sure">确定租用</div>
+	<include file="public/nav"/>
+</body>
+	<script src="__PUBLIC__/Wap/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="__PUBLIC__/Wap/js/Storage.js" type="text/javascript" charset="utf-8"></script>	
+	
+	<script type="text/javascript">
+		// PostApi
+		$('.rent_sure').click(function(){
+				var url = '{:U("Api/Mills/millGen")}';
+				var password = $('input[name="password"]');
+				var type = $('#type').val();
+				if(isEmpty(password.val())){
+					alertMsg('请输入交易密码');
+					password.focus();
+					return;
+				}
+				layer.open({
+				  anim: 'up'
+				  ,content: "确定购买此机组？"
+				  ,btn: ['确认', '取消']
+				  ,yes : function(){				  		
+						var params = {
+							paypwd : password.val(),
+							mtype   : type,
+						}
+						PostApi(url, params, function(data){
+							alertMsg(data.returnMsg);
+						})
+				  }
+				});
+				
+			})
+	</script>
+</html>

@@ -1,0 +1,99 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/jedate/jedate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                    <h4>添加搜索栏关键词</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                <!--内容开始-->
+                    <form class="form-horizontal" method="post" action="{:U('search_to')}"  id="signupForm">
+                            <input type="hidden" name="id" value="{$info.id}">
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">搜索类型</label>
+	                            <div class="col-sm-6" style="width: 250px;">
+	                                <select name="type" class="form-control fromtype"  onchange="chose_type(this.value)">
+										<option value="" >请选择</option>
+										<option value="1" <if condition="$info.type eq 1">selected</if>>商品</option>
+										<option value="2" <if condition="$info.type eq 2">selected</if>>店铺</option>
+									</select>
+	                            </div>
+	                        </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">搜索关键词：</label>
+                                <div class="col-sm-1 one">
+									<input type="text"  name="name" id="name" dataType="*" placeholder="搜索关键词" class="form-control" style="width:260px;" value="{$info.name}">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>                          
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success" id="btn" >提交</button>
+                                    <a class="btn btn-danger" href="">取消</a>
+                                </div>
+                            </div>
+                        </form>
+                    
+                <!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+    	$('.submitButton').click(function(){
+    		$('#signupForm').submit();
+    	})
+      //上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadRecommend/")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			console.log(data);
+	   			if(data.status == 1){
+					$('#img').val(data.url);
+					var root= '__ROOT__';
+					var img='<img src="'+root+data.url+'" width="100" height="100">';
+					$("#picc").append(img);
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+	    jeDate({
+			dateCell:"#dateinfo",
+			format:"YYYY-MM-DD hh:mm:ss",
+			isinitVal:true,
+			isTime:true, //isClear:false,
+			minDate:"2014-09-19 00:00:00",
+			okfun:function(val){
+				$("#dateinfo").val(val);
+			}
+		})
+
+    })
+
+	function  chose_type(type){
+		if(type==3){
+			$("#type").show();
+		}else{
+			$("#type").hide();
+		}
+	}
+</script>
+<include file="Public/footer"/>

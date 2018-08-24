@@ -1,0 +1,251 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>兑换列表</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                	<!--搜索开始-->
+                	<form name="search" action="" id="searchForm" method="post">
+					<div class="search-box row">
+						<div class="col-md-9">
+							<div class="form-group">
+								<span class="pull-left form-span">用户id:</span>
+								<input type="text" name="uid" value="{:I('uid')}" class="form-control" placeholder=""/>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">用户手机号:</span>
+								<input type="text" name="phone" value="{:I('phone')}" class="form-control" placeholder=""/>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">当前状态:</span>
+								<select name="status" class="form-control">
+								<option value="" <if condition="$Think.request.status heq ''"> selected="selected"</if>>全部状态</option>
+                                <option value="0" <if condition="$Think.request.status heq '0'"> selected="selected"</if>>未处理</option>
+                                <option value="1" <if condition="$Think.request.status heq '1'"> selected="selected"</if>>拒绝</option>
+                                <option value="2" <if condition="$Think.request.status heq '2'"> selected="selected"</if>>已处理</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">兑换时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="st" name="btime" onclick="return Calendar('st');" value="{$Think.request.btime}"  placeholder="请选择申请开始时间" class="form-control" style="width:125px;"/>
+								</div>
+								<span class="pull-left form-span">&nbsp;&nbsp;&nbsp;&nbsp;----</span>
+								<div class="col-sm-4">
+									<input type="text" id="et" onclick="return Calendar('et');" placeholder="申请结束时间" value="{$Think.request.etime}" name="etime" class="form-control" style="width:125px;"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">处理时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="ct" name="ctime" onclick="return Calendar('ct');" value="{$Think.request.ctime}"  placeholder="请选择处理时间" class="form-control" style="width:125px;"/>
+								</div>
+							</div>
+						
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="btn-group pull-right" role="group" aria-label="...">
+								<button type="button" class="btn btn-default batc_audit" data-action="pass"><span class="glyphicon glyphicon-plus"></span> 批量通过</button>
+							</div>
+						</div>
+                    </div>
+                    </form>
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th class="w5 text-center"><input type="checkbox" class="selectAll" /></th>
+									<th class="w10 text-center">#</th>
+									<th class="w10 text-center">跳一跳</th>
+                                    <th class="w5 text-center">用户id</th>
+                                    <th class="w5 text-center">用户姓名</th>
+                                    <th class="w5 text-center">手机号</th>
+                                    <th class="w10 text-center">usdc数量</th>
+                                    <th class="w10 text-center">链通积分数量</th>
+                                    <th class="w10 text-center">状态</th>
+                                    <th class="w10 text-center">兑换时间</th>
+                                    <th class="w10 text-center">处理时间</th>
+									<th class="w10">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center"><input type="checkbox" name="ids[]" value="{$vo.id}" class="selectAll-item" /></td>
+                                        <td class="text-center"><strong>{$vo.id}</strong></td>
+                                        <td class="text-center"><strong>{$vo.sort}</strong>次</td>
+                                        <td class="text-center">{$vo.userid}</td>
+                                        <td class="text-center">{$vo.rname}</td>
+                                        <td class="text-center">{$vo.phone}</td>
+                                        <td class="text-center">{$vo.usdc}</td>
+                                        <td class="text-center">{$vo.chain_score}</td>
+                                        <td class="text-center">
+                                            <switch name="vo['status']" >
+                                            <case value="0"><span class="succ">未处理</span></case>
+                                            <case value="1"><span class="succ">已处理</span></case>
+                                            <case value="-1"><span class="succ">撤回</span></case>
+                                            </switch>
+                                        </td>
+                                        <td class="text-center">
+                                            <empty name="vo['ctime']">
+                                                [--/--/-- --：--]
+                                            <else/>
+                                                {$vo.ctime|date='Y-m-d H:i',###}
+                                            </empty>                                       
+                                        </td>
+                                        <td class="text-center">
+                                            <empty name="vo['ptime']">
+                                                [--/--/-- --：--]
+                                            <else/>
+                                                {$vo.ptime|date='Y-m-d H:i',###}
+                                            </empty>                                       
+                                        </td>
+										<td>
+											<a href="javascript:;" class="audit" data-action="pass" data-id="{$vo.id}">审核通过</a>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="15">
+											<div class="pull-right">
+												<nav>{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="15" class="text-center">
+										没有数据拉！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//搜索
+		$('#searchBtn').click(function(){
+			$('#searchForm').submit();
+		})
+
+        //锁定账号
+        bind_lock('.lock');
+        function bind_lock(selector){
+            $(selector).click(function(){
+                var id = $(this).data('id');
+                confirm('锁定或者开启用户？',function(){
+                    send('{:U("lock")}',{id : id});
+                })
+            })
+        }
+	    //发送数据
+	    function send(url, data){
+	    	var params = {
+                url : url,
+                params : data,
+                callback : function(data){
+                    var msgCallBack;
+                    if(data.status == 1){
+                        msgCallBack = function(){
+                            window.location.reload();
+                        }
+                    }
+                    msg(data.info,msgCallBack);
+                }
+            }
+            ajax(params);
+	    }
+
+		//审核
+		bind_audit('.audit');
+		//批量审核
+		bind_batch_audit('.batc_audit');
+
+		function bind_audit(selector){
+			$(selector).click(function(){
+				var id = $(this).data('id');
+				var action = $(this).data('action');
+				if(action=="pass"){
+					confirm('确认此操作？',function(){
+						send('{:U("confirm")}',{ids : id, action : action});
+					})
+				}else{
+					alert('操作失误');
+				}
+			})
+		}
+
+		function bind_batch_audit(selector){
+			$(selector).click(function(){
+				if(!betch_check()){
+					msg('请选择数据');
+					return false;
+				}
+				var action = $(this).data('action');
+				var ids = checked2string();
+				if(action=="pass"){
+					confirm('确认此操作？',function(){
+						send('{:U("confirm")}',{ids : ids, action : action});
+					})
+				}else{
+				   alert('操作失误');
+				}
+			})
+		}
+
+		//批量操作检查数据
+		function betch_check(){
+			if($('.selectAll-item:checkbox:checked').length > 0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		//获取选中
+		function checked2string(){
+			$ids = '';
+			$('.selectAll-item:checkbox:checked').each(function(){
+				$ids += $(this).val() + ',';
+			})
+			return $ids;
+		}
+
+
+	})
+</script>
+<include file="Public/footer"/>

@@ -1,0 +1,216 @@
+<include file="Public/header"/>
+<js file="__PUBLIC__/js/plugins/Ueditor/ueditor.config.js" />
+<js file="__PUBLIC__/js/plugins/Ueditor/ueditor.all.min.js" />
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+                    <h4>订单详情</h4>            	     
+	            	</div>
+	            </div>
+
+                <div class="clearfix"></div>
+                <div class="content-list">
+                   
+                <!--内容开始-->
+                        <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th colspan="2">订单详情</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th class="text-right w10">订单编号</th>
+                              <td>{$order.order_sn}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">发布类型</th>
+                              <td>
+                                  <switch name="order['type']" >
+                                  <case value="1"><span class="succ">买入</span></case>
+                                  <case value="2"><span class="succ">卖出</span></case>
+                                  </switch>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">出售数量</th>
+                              <td>{:number_format($order['opc'], 2)}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">单价（usd）</th>
+                              <td>{:number_format($order['price'], 2)}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">总价（usd/cny）</th>
+                              <td>{:number_format($order['total_usd'], 2)} / {:number_format($order['total_cny'], 2)}</td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">时间表</th>
+                              <td>
+                                创建时间
+                                <empty name="order['create_time']">
+                                    []
+                                <else/>
+                                    [{$order.create_time|date='Y-m-d H:i',###}]
+                                </empty>  
+                                 -> 匹配成功
+                                <empty name="order['match_time']">
+                                    []
+                                <else/>
+                                    [{$order.match_time|date='Y-m-d H:i',###}]
+                                </empty>  
+                                 -> 标记打款
+                                <empty name="order['pay_time']">
+                                    []
+                                <else/>
+                                    [{$order.pay_time|date='Y-m-d H:i',###}]
+                                </empty>  
+                                 -> 成交时间
+                                <empty name="order['confirm_time']">
+                                    []
+                                <else/>
+                                    [{$order.confirm_time|date='Y-m-d H:i',###}]
+                                </empty>  
+                                 -> 取消时间
+                                <empty name="order['cancel_time']">
+                                    []
+                                <else/>
+                                    [{$order.cancel_time|date='Y-m-d H:i',###}]
+                                </empty>  
+                              </td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">卖家收款方式</th>
+                              <td>
+                                
+                                <notempty name="order['sell_zfb']">
+                                    支付宝[{$order.sell_zfb}]<br/>
+                                </notempty> 
+                                 <notempty name="order['sell_wx']">
+                                    微信[{$order.sell_wx}]<br/>
+                                </notempty> 
+                                 <notempty name="order['sell_bank']">
+                                    银行卡[{$order.sell_bank}]<br/>
+                                </notempty> 
+                                 <notempty name="order['sell_other']">
+                                    其他[{$order.sell_other}]<br/>
+                                </notempty>  
+                              </td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">买家付款凭证</th>
+                              <td><img src="{$order.cert_img}" style="width: 120px;height: 80px"></td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">买家留言</th>
+                              <td>{$order.message}</td>
+                            </tr>
+                             <tr>
+                              <th class="text-right w10">当前状态</th>
+                              <td>
+                                <switch name="order['status']" >
+                                    <case value="1"><span class="succ">买家发布</span></case>
+                                    <case value="2"><span class="succ">卖家发布</span></case>
+                                    <case value="3"><span class="succ">匹配成功</span></case>
+                                    <case value="4"><span class="succ">买家标记付款</span></case>
+                                    <case value="5"><span class="succ">交易成功</span></case>
+                                    <case value="-1"><span class="succ">卖家撤单</span></case>
+                                    <case value="-2"><span class="fail">买家撤单</span></case>
+                                    <case value="101"><span class="fail">强制成交</span></case>
+                                    <case value="102"><span class="fail">强制撤单</span></case>
+                                </switch>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th colspan="2">交易对象</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th class="text-right w10">买方</th>
+                              <td>
+                                <empty name="buy_user">
+                                    无匹配对象
+                                <else/>
+                                  {$buy_user.nickname}[ID:{$buy_user.userid}]({$buy_user.phone})
+                                </empty>  
+                              </td>
+                            </tr>                           
+                            <tr>
+                              <th class="text-right w10">卖方</th>
+                              <td>
+                              <empty name="sell_user">
+                                    无匹配对象
+                                <else/>
+                                  {$sell_user.nickname}[ID:{$sell_user.userid}]({$sell_user.phone})
+                                </empty>  
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th colspan="2">申诉处理</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th class="text-right w10">解决方案</th>
+                              <td><textarea name="solution" dataType="*" nullmsg="请为客户填写解决方案" class="form-control">{$detail.solution}</textarea></td>
+                            </tr>                           
+                            <tr>
+                              <th class="text-right w10">回访备注</th>
+                              <td><textarea name="memo" class="form-control">{$detail.memo}</textarea></td>
+                            </tr>                         
+                            <tr>
+                              <th class="text-right w10">管理员</th>
+                              <td>
+                                <empty name="detail['username']">
+                                    ---
+                                <else/>
+                                    {$detail.username}
+                                </empty> 
+                              </td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">处理时间</th>
+                              <td>
+                                <empty name="detail['answer_time']">
+                                    --/--/-- --：--：--
+                                <else/>
+                                    {$detail.answer_time|date='Y-m-d H:i:s',###}
+                                </empty>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table> -->
+                           
+                           <!--  <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="Jun-TiJiao" type="submit">提交解答</button>
+                                    <a class="btn btn-white" href="javascript:history.go(-1)">取消</a>
+                                </div>
+                            </div> -->
+					
+				<!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<include file="Public/footer"/>

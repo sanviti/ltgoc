@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+<link href="__PUBLIC__/DataAdmin/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/css/body.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/css/style.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/css/dermadefault.css" title="blue" rel="stylesheet" class="bodyskin" />
+<link href="__PUBLIC__/DataAdmin/css/dermagreen.css" title="green" disabled="disabled" rel="stylesheet" class="bodyskin" />
+<link href="__PUBLIC__/DataAdmin/css/dermaorange.css" title="orange" disabled="disabled" rel="stylesheet" class="bodyskin" />
+<link href="__PUBLIC__/DataAdmin/css/templatecss.css" rel="stylesheet"/>
+<link href="__PUBLIC__/DataAdmin/js/plugins/Validform/validform.css" rel="stylesheet"/>
+<js href="__PUBLIC__/DataAdmin/js/jquery-1.11.1.min.js" />
+<js href="__PUBLIC__/DataAdmin/js/plugins/layer/layer.min.js"/>
+<js href="__PUBLIC__/DataAdmin/js/plugins/Validform/Validform_v5.3.1_min.js"/>
+<js href="__PUBLIC__/DataAdmin/js/jquery.cookie.js" />
+<js href="__PUBLIC__/DataAdmin/js/bootstrap.min.js" />
+<js href="__PUBLIC__/DataAdmin/js/style.js" />
+</head>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.all.min.js"></script>
+<body>
+<div class="down-main" style="left:-150px; top:10px !important;">
+  <div class="right-product right-full">
+            <div class="container-fluid">
+              <div class="info-center">
+                <div class="clearfix"></div>
+                <div class="content-list">
+                <!--内容开始-->
+                    <form class="form-horizontal" method="post" action=""  id="signupForm">
+                    		<input name="id" value="{$data.id}" type="hidden" />
+                    		<input name="status" value="{$data.state}" type="hidden" id="status"/>
+                    		<div class="form-group">
+                                <label class="col-sm-2 control-label">账号/手机号：</label>
+                                <div class="col-sm-3">
+									<div class="form-control">{$data.phone}</div>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">姓名/昵称：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.rname}</div>
+								</div>
+								<label class="col-sm-2 control-label">用户身份：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">
+									  <if condition="$data.vip_level eq 1">
+									  普通用户
+									  <elseif condition="$data.vip_level eq 2"/>
+									 小区
+									  <elseif condition="$data.vip_level eq 3"/>
+									大区
+									  </if>
+									</div>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">银行名称：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.bank}</div>
+								</div>
+								<label class="col-sm-2 control-label">开户行：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.subbranch}</div>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">开户名：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.rname}</div>
+								</div>
+								<label class="col-sm-2 control-label">卡号：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.cardid}</div>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">提现金额：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.money}</div>
+								</div>
+								<label class="col-sm-2 control-label">手续费：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">
+									   <notempty name="data.account">
+									   {$data.account}
+									   <else/>
+									   0.0000
+									   </notempty>
+									</div>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">支给金额：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.disburse}</div>
+								</div>
+								<label class="col-sm-2 control-label">申请时间：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">{$data.ctime|date="Y-m-d H:i:s",###}</div>
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">处理进度：</label>
+                                <div class="col-sm-4">
+									<div class="form-control">
+									   <if condition="$data.state eq 0">
+									            未处理
+									   <elseif condition="$data.state eq 1"/>
+									             已打款
+									   <else/>
+									             已拒绝         
+									   </if>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">操作类型：</label>
+                                <div class="col-sm-4" id="style">
+									    <input type="radio" name="state" class="state" value="-1" <if condition="$data.state eq -1">checked</if> />拒绝&nbsp;&nbsp;&nbsp;
+									    <input type="radio" name="state" class="state" value="1" <if condition="$data.state eq 1">checked</if> />标记为打款
+								</div>
+                            </div>
+                            <if condition="$data.state neq '0'">
+	                            <div class="form-group">
+	                                <label class="col-sm-2 control-label">处理时间：</label>
+	                                <div class="col-sm-4">
+										<div class="form-control">
+										   {$data.ptime|date="Y-m-d H:i:s",###}
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">操作人：</label>
+	                                <div class="col-sm-4">
+										<div class="form-control">
+										   {$data.mgrid}
+										</div>
+									</div>
+	                            </div>
+                            </if>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div style="margin-left:40px; display:none;" id="remarks">
+                                <textarea name="remark" cols="90" rows="5" placeholder="请输入拒绝原因">{$data.remark}</textarea>
+                                </div>
+                             </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success confirm" id="btn">提交</button>
+                                    <a class="btn btn-danger" href="">取消</a>
+                                </div>
+                            </div>
+                        </form>
+
+                <!--内容开始-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
+
+<script type="text/javascript">
+$(function(){
+	$("#style input").click(function(){
+		if(this.value == 1) {
+	        $('#remarks').hide();
+	    } else {
+	        $('#remarks').show();
+	    }
+	})
+	
+	var status = $("#status").val();
+	if(status==-1){
+		$('#remarks').show();
+	}
+})
+
+ $(".confirm").click(function(){
+     var type = $('#style input:radio:checked').val();
+     if(type == "undefined"){
+     	layer.msg("请选择操作类型");
+     	return false;
+     }else if(type == '-1') { //拒绝
+         if($('#remarks textarea').val() == '') {
+             layer.msg('请输入拒绝原因');
+             return false;
+         }else{
+             $("#form").submit();
+         }
+     } else if(type == '1') {
+         layer.confirm('确定已给用户打款？', {icon: 3}, function(index){
+             $("#form").submit();
+         });
+     }
+ });
+ var index = parent.layer.getFrameIndex(window.name);
+ $('.closeIframe').click(function(){
+     parent.layer.close(index);
+ });
+</script>
+<include file="Public/footer"/>

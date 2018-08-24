@@ -1,0 +1,400 @@
+<include file="public/header"/>
+<link rel="stylesheet" type="text/css" href="__ROOT__/Public/Wap/js/weui/jquery-weui.min.css"/>
+	<body class="spinner-hide">
+		<div class="login_box">
+			<div class="login_logo">
+				<img src="__ROOT__/Public/Wap/img/logo.png" />
+			</div>
+		  <p class="login_tit">
+				PEC光电链
+			</p>
+			<form action="" method="post" name="register_form" id="register_form">
+			<ul class="login_term">
+				<li class="login_term_one">
+					<img src="__ROOT__/Public/Wap/img/icon/guojia.png" />
+					<span>国籍</span>
+					<select name="country" id="country">
+					  		<option value=''>请选择国籍</option>
+					  		<option value='+86'>China中国+86</option>
+                            <option value='+93'>Afghanistan+93</option>
+                            <option value='+355'>Albania+355</option>
+                            <option value='+376'>Andorra+376</option>
+                            <option value='+244'>Angola+244</option>
+                            <option value='+1264'>Anguilla+1264</option>
+                            <option value='+1268'>Antigua and Barbuda+1268</option>
+                            <option value='+54'>Argentina+54</option>
+                            <option value='+374'>Armenia+374</option>
+                            <option value='+297'>Aruba+297</option>
+                            <option value='+61'>Australia+61</option>
+                            <option value='+43'>Austria+43</option>
+                            <option value='+994'>Azerbaijan+994</option>
+                            <option value='+971'>Arabia+971</option>
+                            <option value='+1242'>Bahamas+1242</option>
+                            <option value='+973'>Bahrain+973</option>
+                            <option value='+880'>Bangladesh+880</option>
+                            <option value='+1246'>Barbados+1246</option>
+                            <option value='+375'>Belarus+375</option>
+                            <option value='+501'>Belize+501</option>
+                            <option value='+32'>Belgium+32</option>
+                            <option value='+229'>Benin+229</option>
+                            <option value='+1441'>BermudaIs.+1441</option>
+                            <option value='+975'>Bhutan+975</option>
+                            <option value='+591'>Bolivia+591</option>
+                            <option value='+267'>Botswana+267</option>
+                            <option value='+55'>Brazil+55</option>
+                            <option value='+673'>Brunei+673</option>
+                            <option value='+359'>Bulgarian+359</option>
+                            <option value='+226'>Buqina-fasuo+226</option>
+                            <option value='+257'>Burundi+257</option>
+                            <option value='+237'>Cameroon+237</option>
+                            <option value='+1'>Canada+1</option>
+                            <option value='+238'>Cape Verde+238</option>
+                            <option value='+56'>Chile+56</option>
+                            <option value='+619164'>Christmas Island+619164</option>
+                            <option value='+619162'>Cocoa Island+619162</option>
+                            <option value='+57'>Columbia+57</option>
+                            <option value='+41'>Switzerland+41</option>
+                            <option value='+242'>Congo+242</option>
+                            <option value='+682'>Cook Is.+682</option>
+                            <option value='+506'>Costa Rica+506</option>
+                            <option value='+225'>Ivory Coast+225</option>
+                            <option value='+53'>Cuba+53</option>
+                            <option value='+357'>Cyprus+357</option>
+                            <option value='+420'>Czech Republic+420</option>
+                            <option value='+45'>Denmark+45</option>
+                            <option value='+253'>Djibouti+253</option>
+                            <option value='+49'>Germany+49</option>
+                            <option value='+1890'>Dominica Rep.+1890</option>
+                            <option value='+213'>Algeria+213</option>
+                            <option value='+593'>Ecuador+593</option>
+                            <option value='+20'>Egypt+20</option>
+                            <option value='+34'>Spain+34</option>
+                            <option value='+372'>Estonia+372</option>
+                            <option value='+251'>Ethiopia+251</option>
+                            <option value='+679'>Fiji+679</option>
+                            <option value='+500'>Falkland Is.+500</option>
+                            <option value='+358'>Finland+358</option>
+                            <option value='+33'>French+33</option>
+                            <option value='+691'>Micronesia+691</option>
+                            <option value="+886">Taiwan+886</option>
+                            <option value='+241'>Gabon+241</option>
+                            <option value='+240'>Equatorial Guinea+240</option>
+                            <option value='+594'>French Guiana+594</option>
+                            <option value='+220'>Gambia+220</option>
+                            <option value='+995'>Georgia+995</option>
+                            <option value='+233'>Ghana+233</option>
+                            <option value='+350'>Gibraltar+350</option>
+                            <option value='+30'>Greece+30</option>
+                            <option value='+299'>Greenland+299</option>
+                            <option value='+44'>United Kiongdom+44</option>
+                            <option value='+1473'>Grenada+1473</option>
+                            <option value='+1671'>Guam+1671</option>
+                            <option value='+502'>Guatemala+502</option>
+                            <option value='+224'>Guinea+224</option>
+                            <option value='+245'>Guinea Bissau+245</option>
+                            <option value='+592'>Guyana+592</option>
+                            <option value='+385'>Croatia+385</option>
+                            <option value='+509'>Haiti+509</option>
+                            <option value='+504'>Honduras+504</option>
+                            <option value='+852'>Hongkong+852</option>
+                            <option value='+36'>Hungary+36</option>
+                            <option value='+354'>Iceland+354</option>
+                            <option value='+91'>India+91</option>
+                            <option value='+62'>Indonesia+62</option>
+                            <option value='+98'>Iran+98</option>
+                            <option value='+964'>Iraq+964</option>
+                            <option value='+353'>Irish+353</option>
+                            <option value='+972'>Israel+972</option>
+                            <option value='+39'>Italy+39</option>
+                            <option value='+1876'>Jamaica+1876</option>
+                            <option value='+81'>Japan+81</option>
+                            <option value='+962'>Jordan+962</option>
+                            <option value='+327'>Kazakhstan+327</option>
+                            <option value='+254'>Kenya+254</option>
+                            <option value='+686'>Kiribati+686</option>
+                            <option value='+850'>North Korea+850</option>
+                            <option value='+82'>Korea+82</option>
+                            <option value='+855'>Kampuchea</option>
+                            <option value='+269'>Comoro+269</option>
+                            <option value='+965'>Kuwait+965</option>
+                            <option value='+331'>Kyrgyzstan+331</option>
+                            <option value='+1345'>Cayman Is.+1345</option>
+                            <option value='+856'>Laos+856</option>
+                            <option value='+94'>Sri Lanka+94</option>
+                            <option value='+371'>Latvia+371</option>
+                            <option value='+961'>Lebanon+961</option>
+                            <option value='+266'>Lesotho+266</option>
+                            <option value='+231'>Liberia+231</option>
+                            <option value='+218'>Libya+218</option>
+                            <option value='+423'>Liechtenstein+423</option>
+                            <option value='+370'>Lithuania+370</option>
+                            <option value='+352'>Luxemburg+352</option>
+                            <option value='+1758'>Lucia+1758</option>
+                            <option value='+853'>Macao+853</option>
+                            <option value='+261'>Madagascar+261</option>
+                            <option value='+265'>Malawi+265</option>
+                            <option value='+60'>Malaysia+60</option>
+                            <option value='+960'>Maldives+960</option>
+                            <option value='+223'>Mali+223</option>
+                            <option value='+356'>Malta+356</option>
+                            <option value='+692'>Marshall Islands+692</option>
+                            <option value='+222'>Mauritania+222</option>
+                            <option value='+230'>Mauritius+230</option>
+                            <option value='+52'>Mexico+52</option>
+                            <option value='+373'>Moldova+373</option>
+                            <option value='+377'>Monaco+377</option>
+                            <option value='+976'>Mongolia+976</option>
+                            <option value='+1664'>Montserrat Is+1664</option>
+                            <option value='+212'>Morocco+212</option>
+                            <option value='+258'>Mozambique+258</option>
+                            <option value='+95'>Burma+95</option>
+                            <option value='+264'>Namibia+264</option>
+                            <option value='+674'>Nauru+674</option>
+                            <option value='+977'>Nepal+977</option>
+                            <option value='+31'>Holland+31</option>
+                            <option value='+64'>New Zealand+64</option>
+                            <option value='+505'>Nicaragua+505</option>
+                            <option value='+227'>Niger+227</option>
+                            <option value='+234'>Nigeria+234</option>
+                            <option value='+683'>Niue+683</option>
+                            <option value='+672'>Norfolk Island+672</option>
+                            <option value='+47'>Norway+47</option>
+                            <option value='+968'>Oman+968</option>
+                            <option value='+92'>Pakistan+92</option>
+                            <option value='+680'>Palau+680</option>
+                            <option value='+507'>Panama507</option>
+                            <option value='+675'>Papua New Guinea+675</option>
+                            <option value='+595'>Paraguay+595</option>
+                            <option value='+51'>Peru+51</option>
+                            <option value='+63'>Philippines+63</option>
+                            <option value='+689'>French Polynesia+689</option>
+                            <option value='+48'>Poland+48</option>
+                            <option value='+351'>Portuguese+351</option>
+                            <option value='+1787'>Puerto Rico+1787</option>
+                            <option value='+974'>Qatar+974</option>
+                            <option value='+40'>Romania+40</option>
+                            <option value='+7'>Russian Federation+7</option>
+                            <option value='+250'>Rwanda+250</option>
+                            <option value='+378'>San Marino+378</option>
+                            <option value='+966'>Saudi Arabia+966</option>
+                            <option value='+221'>Senegal+221</option>
+                            <option value='+248'>Seychelles+248</option>
+                            <option value='+232'>Sierra Leone+232</option>
+                            <option value='+65'>Singapore+65</option>
+                            <option value='+421'>Slovakia+421</option>
+                            <option value='+386'>Slovenia+386</option>
+                            <option value='+677'>Solomon Is+677</option>
+                            <option value='+252'>Somali+252</option>
+                            <option value='+249'>Sudan+249</option>
+                            <option value='+597'>Suriname+597</option>
+                            <option value='+268'>Swaziland+268</option>
+                            <option value='+46'>Sweden+46</option>
+                            <option value='+886'>Taiwan+886</option>
+                            <option value='+992'>Tajikstan+992</option>
+                            <option value='+255'>Tanzania+255</option>
+                            <option value='+66'>Thailand+66</option>
+                            <option value='+228'>Togo+228</option>
+                            <option value='+676'>Tonga+676</option>
+                            <option value='+1809'>Trinidad and Tobago+1809</option>
+                            <option value='+216'>Tunisia+216</option>
+                            <option value='+90'>Turkey+90</option>
+                            <option value='+993'>Turkmenistan+993</option>
+                            <option value='+256'>Uganda+256</option>
+                            <option value='+380'>Ukraine+380</option>
+                            <option value='+971'>United Arab Emirates+971</option>
+                            <option value='+44'>United Kiongdom+44</option>
+                            <option value='+1'>U S A+1</option>
+                            <option value='+598'>Uruguay+598</option>
+                            <option value='+233'>Uzbekistan+233</option>
+                            <option value='+58'>Venezuela+58</option>
+                            <option value='+84'>Vietnam+84</option>
+                            <option value='+967'>Yemen+967</option>
+                            <option value='+381'>Yugoslavia+381</option>
+                            <option value='+27'>South Africa+27</option>
+                            <option value='+263'>Zimbabwe+263</option>
+                            <option value='+243'>Zaire+243</option>
+                            <option value='+260'>Zambia+260</option>
+					</select>
+			  </li>
+				<li class="login_term_one">
+					<img src="__ROOT__/Public/Wap/img/icon/dizhi.png" />
+					<span>所在地</span>
+					<input name="city" type="text" id="city-picker" />
+				</li>
+				<li class="login_term_one">
+					<img src="__ROOT__/Public/Wap/img/icon/tijian.png" />
+					<span>推荐码</span>
+					<input name="lid" type="text" id="invite_code" value="{$lid}" <notempty name="lid">readonly</notempty> />
+				</li>
+				<li class="login_term_one">
+					<img src="__ROOT__/Public/Wap/img/icon/nicheng.png" />
+					<span>昵称</span>
+					<input name="nickname" type="text" id="nickname" />
+				</li>
+				<li class="login_term_one">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji2.png" />
+					<span>手机</span>
+					<input name="mobile" type="text" id="mobile" />
+				</li>
+				<li class="login_term_one" style="position: relative;">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji2.png" />
+					<span>验证码</span>
+					<input name="smscode" type="text" id="smscode" />
+					<button id="send_code" style="display: block;position: absolute; right: 0; top:.2rem; height: 1rem; background: #ffac44; color: #fff; padding:0 .5rem; border:none;">点击发送</button>
+				</li>
+				<li class="login_term_one">
+					<img src="__ROOT__/Public/Wap/img/icon/suo2.png" />
+					<span>登录密码</span>
+					<input name="password" type="password" id="password" />
+				</li>
+				<li class="login_term_one" style="margin-bottom:1.5rem;">
+					<img src="__ROOT__/Public/Wap/img/icon/suo2.png" />
+					<span>交易密码</span>
+					<input name="pay_password" type="password" id="pay_password" style="margin-bottom:.3rem;" placeholder="请牢记交易密码" />
+                    <!-- <P class="help-block">请牢记交易密码</P> -->
+                    <div class="clearfix"></div>
+				</li>
+		  </ul>
+            </form>
+			<button class="login_but" id="register_btn" type="button">注册</button>
+			<div class="login_bot">
+				<span>
+					注册表示同意
+					<a href="javascript:;">《服务协议》</a>
+				</span>
+			</div>
+		</div>
+<include file="public/footer"/>
+<div id="imgcodebox" style="display: none;">
+	<div class="imgcode"><img src="{:U('Api/Vcode/image')}" /></div>
+	<div class="imgcode_input"><input name="vcode" value="" /></div>
+</div>
+<style type="text/css">
+	.layui-m-layercont{
+		padding: 30px 20px;
+	}
+	.imgcode img{
+		width: 50%; float: left;
+	}
+	.imgcode_input input{
+		width:45%; border:1px solid #ccc; height: 1.5rem;
+		/*padding:0 2%;*/
+		text-align: center;
+		outline: none;
+		float: right;
+              -webkit-appearance: none;
+              border-radius: 0;
+              outline: none;
+	}
+
+	.clear{
+		clear:both;
+	}
+</style>
+<script src="__PUBLIC__/Wap/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>	
+<script type="text/javascript" src="__ROOT__/Public/Wap/js/weui/jquery-weui.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Public/Wap/js/weui/weui-city.data.js"></script>
+<script language="javascript" type="text/javascript">
+$(function(){
+	$("#city-picker").cityPicker({
+        title: "选择省市区/县"
+    });
+
+	isWaiting = false;
+	$('#send_code').click(function(){
+		var _this = $(this);
+		if(!isPhoneNo($('input[name="mobile"]').val())){
+			alertMsg('请输入正确的手机号码');
+			return false;
+		}
+		if(isWaiting == true) return;
+		isWaiting = true;
+		layer.open({
+		  anim: 'up'
+		  ,content: $('#imgcodebox').html()
+		  ,btn: ['确认', '取消']
+		  ,yes : function(){
+		  		imgcode = $('.layui-m-layercont .imgcode_input input');
+		  		if(isEmpty(imgcode.val())){
+					$('.layui-m-layercont .imgcode_input input').css('borderColor', 'red');
+					imgcode.focus();
+					return;
+				}
+				var data = {
+					validcode : $('.layui-m-layercont .imgcode_input input').val(),
+					mobile : $('input[name="mobile"]').val()
+				}
+				_this.attr('disabled', true);
+				$.post('{:U("Api/Vcode/reg_sms")}', data, function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							var sms_timer = data.result.out_time;
+							var time = null;
+							timer = setInterval(function(){
+								if(sms_timer > 0){
+									sms_timer--;
+									_this.html(sms_timer);
+								}
+								if(sms_timer <= 0){
+									isWaiting = false;
+									_this.removeAttr('disabled');
+									_this.html('重新发送');
+									clearInterval(timer);
+								}
+							},1000);
+						});
+					} else {
+						isWaiting = false;
+						_this.removeAttr('disabled');
+						alertMsg(data.returnMsg);
+					}
+				},'json');
+		  }
+		});
+		
+		return false;
+	});
+	$('#register_btn').click(function(){
+		if($('select[name="country"]').val() == ''){
+			alertMsg('请选择国籍');
+			return false;
+		}
+		if($('input[name="city"]').val() == ''){
+			alertMsg('请选择所在地区');
+			return false;
+		}
+		if($('input[name="nickname"]').val() == ''){
+			alertMsg('请填写昵称');
+			return false;
+		}
+		if($('input[name="mobile"]').val() == ''){
+			alertMsg('请输入手机号码');
+			return false;
+		}
+		if($('input[name="smscode"]').val() == ''){
+			alertMsg('请输入短信验证码');
+			return false;
+		}
+		if($('input[name="password"]').val() == ''){
+			alertMsg('请填写登录密码');
+			return false;
+		}
+		if($('input[name="pay_password"]').val() == ''){
+			alertMsg('请填写交易密码');
+			return false;
+		}
+		AjaxPost('{:U("Api/Login/reg")}','register_form','#register_btn',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg,'', function(){
+					location.href = "{:U('Wap/Index/download')}";
+				});
+			} else {
+				alertMsg(data.returnMsg);
+				return false;
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

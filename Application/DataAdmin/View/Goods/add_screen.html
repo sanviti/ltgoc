@@ -1,0 +1,130 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/jedate/jedate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                    <h4>添加App闪屏页</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                <!--内容开始-->
+                    <form class="form-horizontal" method="post" action="{:U('addscreen_to')}"  id="signupForm">
+                            <input type="hidden" name="id" value="{$id}"/>
+                    		<div class="form-group">
+                                <label class="col-sm-2 control-label">标题：</label>
+                                <div class="col-sm-2">
+									<input type="text"  name="title"  id="title" dataType="*" placeholder="标题" class="form-control" style="width:560px;" value="{$info.title}">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品链接：</label>
+                                <div class="col-sm-1 one">
+									<input type="text"  name="link" id="link" dataType="*" placeholder="商品链接" class="form-control" style="width:560px;" value="{$info.link}">
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">链接类型</label>
+	                            <div class="col-sm-6" style="width: 250px;">
+	                                <select name="link_type" class="form-control fromtype" id="type">
+										<option value="" >请选择</option>
+										<option value="0" <if condition="$info['link_type'] eq 0">selected</if>>页面加用户信息</option>
+										<option value="1" <if condition="$info['link_type'] eq 1">selected</if>>页面</option>
+										<option value="2" <if condition="$info['link_type'] eq 2">selected</if>>商品</option>
+										<option value="7" <if condition="$info['link_type'] eq 7">selected</if>>源生签到</option>
+									</select>
+	                            </div>
+	                        </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">过期时间：</label>
+								<div class="col-sm-2">
+									<p class="datep" style="display:none;"><input class="datainp" id="indate" type="text" placeholder="只显示年月" value=""  readonly></p>
+									<p class="datep">
+									  <input class="form-control" id="dateinfo" type="text" name="etime" placeholder="请选择"  value="{$info.etime|date='Y-m-d H:i:s',###}" readonly>
+									</p>
+
+								</div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">展示图片</label>
+                                <div class="col-sm-6">
+                                    <img id="upload_img" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+									<input type="hidden" name="pic" id="img" value="{$info.pic}"/>
+									<if condition="!empty($info)">
+									    <span id="picc" style="margin-left:50px;"><img src="{$info.pic}" width="100" height="100"/></span>
+									    <else/>
+									    <span id="picc" style="margin-left:50px;"></span>
+									</if>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success" id="btn" >提交</button>
+                                    <a class="btn btn-danger" href="">取消</a>
+                                </div>
+                            </div>
+                        </form>
+
+                <!--内容开始-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+    	$('.submitButton').click(function(){
+    		$('#signupForm').submit();
+    	})
+      //上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadImg/")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			//console.log(data);
+	   			if(data.status == 1){
+					$('#img').val(data.url);
+					var root= '__ROOT__';
+					var img='<img src="'+root+data.url+'" width="100" height="100">';
+					$("#picc").html("").append(img);
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+	   	/* jeDate({
+			dateCell:"#indate",//isinitVal:true,
+			format:"YYYY-MM",
+			isTime:false, //isClear:false,
+			minDate:"2015-10-19 00:00:00",
+			maxDate:"2016-11-8 00:00:00"
+		}) */
+	    jeDate({
+			dateCell:"#dateinfo",
+			format:"YYYY-MM-DD hh:mm:ss",
+			isinitVal:true,
+			isTime:true, //isClear:false,
+			minDate:"2014-09-19 00:00:00",
+			okfun:function(val){
+				$("#dateinfo").val(val);
+			}
+		})
+    })
+</script>
+<include file="Public/footer"/>

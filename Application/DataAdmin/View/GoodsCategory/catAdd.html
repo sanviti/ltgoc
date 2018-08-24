@@ -1,0 +1,157 @@
+<include file="Public/header"/>
+<js file="__PUBLIC__/js/plugins/Ueditor/ueditor.config.js" />
+<js file="__PUBLIC__/js/plugins/Ueditor/ueditor.all.min.js" />
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+                    <div class="pull-left">
+                    <h4>添加分类</h4>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                <!--内容开始-->
+                    <form class="form-horizontal" method="post" action=""  id="form">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">分类归属</label>
+                            <div class="col-sm-6" style="width: 250px;">
+                                <input type="hidden" value="{$data['cat_id']}" name="cat_id">
+                                <if condition="isset($findInfo)">
+                                        <input type="text"   class="form-control" datatype="*" value="{$findInfo['cat_name']}" readonly>
+                                        <input type="hidden" value="{$findInfo['cat_id']}" name="parent_id">
+                                    <else/>
+                                    <select name="parent_id" class="form-control">
+                                        <option value="0">顶级分类</option>
+                                        <volist name="catinfo" id="vo" key="k">
+                                            <option value="{$vo.cat_id}"  <if condition="isset($data) && $data['parent_id'] eq $vo['cat_id']"> selected</if>  >
+                                                <for start="1" end="$vo.level" name="i">
+                                                    &nbsp;|_
+                                                </for>
+                                                {$vo.cat_name}
+                                            </option>
+                                        </volist>
+                                    </select>
+                                    </if>
+
+                                </div>
+                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">分类名称</label>
+                                <div class="col-sm-6" style="width: 250px;">
+                                    <input type="text" name="cat_name" id="oldpwd" placeholder="分类名称" class="form-control" datatype="*"  <if condition="isset($data)"> value="{$data['cat_name']}"</if> >
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">分类描述</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="cat_des"  placeholder="分类描述"   class="form-control"  <if condition="isset($data)"> value="{$data['cat_des']}"</if>>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">分类图片</label>
+                                <div class="col-sm-6">
+                                    <img id="upload_img" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+									<input type="hidden" name="img" id="img" value="{$data.img}"/>
+									<if condition="isset($data)">
+									     <span><img src="{$data.img}"></span>
+									    <else/>
+									    <span id="picc"></span>
+									</if>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">Q版展示图</label>
+                                <div class="col-sm-6">
+                                    <img id="upload_pic" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+									<input type="hidden" name="pic" id="pic" value="{$data.pic}"/>
+									<if condition="isset($data)">
+									     <span><img src="{$data.pic}"></span>
+									    <else/>
+									    <span id="pics"></span>
+									</if>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-success" id="btn" >提交</button>
+                                    <a class="btn btn-danger" href="javascript:history.go(-1)">取消</a>
+                                </div>
+                            </div>
+                        </form>
+                    
+                <!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $("#btn").submitform = function() {
+            $('#form').submit();
+        }
+        checkForm('#form',{
+            callback: function(d){
+                cb = {};
+                if(d.returnCode == 'SUCCESS') {
+                    cb = function(){
+                        window.location.reload();
+                    }
+                }
+                msg(d.returnMsg,cb);
+            }
+        });
+        
+        //上传图片
+        $("#upload_img").click(function(){
+	   		bind_uploadOne({
+		   		uploadUrl : '{:U("Upload/uploadImg/")}',
+		   		bind : '#upload_img',
+		   		dataType : 'JSON',
+		   		callback : function(data,el){
+		   			console.log(data);
+		   			if(data.status == 1){
+						$('#img').val(data.url);
+						var root= '__ROOT__';
+						var img='<img src="'+root+data.url+'" width="100" height="100">';
+						$("#picc").append(img);
+		   			}else{
+		   				msg(data.info);
+		   			}
+		   		}
+	   		})
+      	})
+	   	$("#upload_pic").click(function(){
+		   	bind_uploadOne({
+		   		uploadUrl : '{:U("Upload/uploadImg/")}',
+		   		bind : '#upload_pic',
+		   		dataType : 'JSON',
+		   		callback : function(data,el){
+		   			console.log(data);
+		   			if(data.status == 1){
+						$('#pic').val(data.url);
+						var root= '__ROOT__';
+						var img='<img src="'+root+data.url+'" width="100" height="100">';
+						$("#pics").append(img);
+		   			}else{
+		   				msg(data.info);
+		   			}
+		   		}
+		   	})
+	   	})
+    })
+</script>
+<include file="Public/footer"/>

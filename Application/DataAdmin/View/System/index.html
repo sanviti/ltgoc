@@ -1,0 +1,151 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>基础设置</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">    
+                <!--内容开始-->
+					<form id="form-wizard" action="" method="post" class="form-horizontal">
+						<div class="main">
+                            <div class="main-left width-100">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a title="base" data-toggle="tab">基础设置</a>
+                                    </li>
+                                    </li>
+                                     <li class=""><a title="seo" data-toggle="tab">SEO设置</a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                                <div class="tab-content margin-top">
+									<!-- 基础设置 -->
+									<div class="tab-pane active" id="base">							
+										<div class="form-group">
+											<label class="col-sm-1 control-label">站点名称</label>
+											<div class="col-sm-6">
+												<input type="text" name="sitename" value="{:C('sitename')}" placeholder="输入网站名称" class="form-control">
+											</div>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="form-group">
+											<label class="col-sm-1 control-label">URL地址</label>
+											<div class="col-sm-6">
+												<input type="text" name="siteurl" value="{:C('siteurl')}" placeholder="输入网站绑定的URL地址" class="form-control">
+											</div>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="form-group">
+											<label class="col-sm-1 control-label">版权信息</label>
+											<div class="col-sm-6">
+												<textarea type="text" name="address"  placeholder="输入版权信息" class="form-control">{:C('address')}</textarea>
+											</div>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="form-group">
+											<label class="col-sm-1 control-label">备案信息</label>
+											<div class="col-sm-6">
+												<textarea type="text" name="copyright" placeholder="输入网址的备案信息" class="form-control">{:C('copyright')}</textarea>
+											</div>
+										</div>
+									</div>
+									<!-- 基础设置 -->
+
+									<!-- 佣金设置 -->
+									<div class="tab-pane" id="seo">							
+										<div class="form-group">
+											<label class="col-sm-1 control-label">网站标题</label>
+											<div class="col-sm-6">
+												<input type="text" name="sitetitle" value="{:C('sitetitle')}" placeholder="输入网站名称" class="form-control">
+											</div>
+										</div>
+
+										<div class="hr-line-dashed"></div>
+										<div class="form-group">
+											<label class="col-sm-1 control-label">SEO关键字</label>
+											<div class="col-sm-6">
+												<input type="text" name="keyword" value="{:C('keyword')}" placeholder="输入SEO关键字" class="form-control">
+											</div>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="form-group">
+											<label class="col-sm-1 control-label">网站描述信息</label>
+											<div class="col-sm-6">
+												<input type="text" name="des" value="{:C('des')}" placeholder="输入网站描述信息" class="form-control">
+											</div>
+										</div>
+										
+									</div>	
+									<!-- 佣金设置 -->
+
+
+									<!-- 商家限额 -->
+									<!-- 	<div class="tab-pane" id="merchant">
+											<div id="pointPack">
+												<div class="form-group">
+													<label class="col-sm-1 control-label">个体户执照</label>
+													<div class="col-sm-6">
+														<div class="form-inline">
+															<div class="input-group">
+																<div class="input-group-addon">每日消费限额</div>
+																<input type="text" class="form-control" name="consume[limit]" value="{:C('CONSUME.limit')}" placeholder="">
+																<div class="input-group-addon">元</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-1 control-label">公司营业执照</label>
+													<div class="col-sm-6">
+														<div class="form-inline">
+															<div class="input-group">
+																<div class="input-group-addon">每日消费限额</div>
+																<input type="text" class="form-control" name="consume[cplimit]" value="{:C('CONSUME.cplimit')}" placeholder="">
+																<div class="input-group-addon">元</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div> -->
+									<div class="hr-line-dashed"></div>
+									<div class="form-group">
+										<div class="col-sm-4 col-sm-offset-2">
+											<button class="btn btn-primary" type="submit">保存信息</button>&nbsp;&nbsp;&nbsp;
+											<a class="btn btn-danger" href="{:U('Index/index')}">取消</a>
+										</div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+					</form>
+					
+				<!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('#form-wizard', {
+	        callback:function(){
+	            // location.reload();
+	        }
+	    });
+	})	
+</script>
+<include file="Public/footer"/>

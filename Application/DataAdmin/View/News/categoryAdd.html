@@ -1,0 +1,83 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent-->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	     
+	                <notempty name="data">
+                    	<h4>编辑分类</h4> 
+                    <else/>
+                    	<h4>添加分类</h4> 
+               		</notempty>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list"> 
+					<!--内容开始-->
+					<form class="form-horizontal" method="post" action="" name="basic_validate" id="signupForm">
+					<notempty name="data">
+                    	<input type="hidden" name="cat_id" value="{$data.cat_id}"/>
+               		</notempty>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">分类名称</label>
+                            <div class="col-sm-4 rightText">
+                                <input type="text" name="cat_name" id="cat_name" placeholder="输入分类名称" class="form-control" value="{$data.cat_name}">
+                            </div>
+                        </div>
+                        <div class="hr"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">上级分类</label>
+                            <div class="col-sm-4 ">
+                                <select name="parent_id" id="parent_id" class="form-control chosen-select">
+                                    <option value="0" <if condition="0 eq $data['parent_id']"> selected="selected"</if>>一级分类</option>
+
+                                    <volist name="baseclass" id="cls">
+                                    <option value="{$cls.cat_id}" <if condition="$cls['cat_id'] eq $data['parent_id']"> selected="selected"</if>>{$cls.cat_name}</option>
+                                    </volist>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="hr"></div>	
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">排序</label>
+                            <div class="col-sm-4 rightText">
+                                <input type="text" name="order" id="order" placeholder="排序" class="form-control" value="{$data.order}">
+                            </div>
+                        </div>
+						<div class=""></div>
+						<div class="form-group">
+							<div class="col-sm-4 col-sm-offset-2">
+								<button class="Jun-TiJiao" type="submit">保存内容</button>
+								<a class="btn btn-white" href="{:U('System/userlist')}">取消</a>
+							</div>
+						</div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('#signupForm', {
+	        msgCallback : function(){
+	            location.reload();
+	        }
+	    });
+	})
+</script>
+<include file="Public/footer"/>

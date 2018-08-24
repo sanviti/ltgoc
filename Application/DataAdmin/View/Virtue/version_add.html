@@ -1,0 +1,99 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+                    <h4>发布版本</h4>
+	            	</div>
+	            </div>
+
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <div class="main">
+
+                <!--内容开始-->
+					<form class="form-horizontal" method="post" action="" name="basic_validate" id="form">
+                        <table class="table table-bordered table-striped data-table">
+                          <thead>
+                            <tr>
+                              <th colspan="2">版本信息</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th class="text-right w10">版本名称</th>
+                              <td><input type="text" name="name" value="{$data.name}"  class="form-control" datatype="*"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-right w10">系统选择</th>
+                                <td>
+                                    <select name="system" id="system" class="form-control">
+                                        <option value="">-选择-</option>
+                                        <option value="android" <if condition="$data.system eq 'android'">selected</if> >安卓</option>
+                                        <option value="ios" <if condition="$data.system eq 'ios'">selected</if> >ios</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">版本号</th>
+                              <td><input type="text" name="version"  value="{$data.version}" class="form-control" datatype="*"></td>
+                            </tr>                        
+                            <tr>
+                              <th class="text-right w10">下载文件</th>
+                              <td><input type="text" name="download" value="{$data.download}" class="form-control" datatype="*"></td>
+                            </tr>
+                            <tr>
+                              <th class="text-right w10">升级内容</th>
+                              <td><textarea name="describe" class="form-control">{$data.describe}</textarea></td>
+                            </tr>
+                             <tr>
+                              <th class="text-right w10">升级方式</th>
+                              <td>
+                                    <div class="checkbox">
+                                      <label>
+                                          <input type="radio" <if condition="$data.force eq '0'">checked="checked"</if> value="0" name="force" id="force"> <i></i> 选择升级
+                                          <input type="radio" <if condition="$data.force eq '1'">checked="checked"</if> value="1" name="force" id="force"> <i></i> 强制升级
+                                      </label>
+                                    </div>
+                              </td>
+                            </tr>                            
+                            <input type="hidden" name="code" value="{$data.code}" />
+                          </tbody>
+                        </table>
+                           
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="Jun-TiJiao" type="submit">确认发布</button>
+                                    <a class="btn btn-white" href="javascript:history.go(-1)">取消</a>
+                                </div>
+                            </div>
+                        </form>
+					
+				<!--内容开始-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('.form-horizontal', {
+            beforeSubmit : function(){
+            },
+	        msgCallback:function(){
+	            location.reload();
+	        }
+	    });
+	})	
+</script>
+<include file="Public/footer"/>

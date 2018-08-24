@@ -1,0 +1,64 @@
+<include file="public/header"/>
+	<body class="spinner-hide" style="background: #f1f1f2;">
+		<?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <include file="public/top"/>
+        <?php
+           }else{
+        ?>
+            <style type="text/css">.c_content{margin-top: 0}</style>
+        <?php
+            }
+        ?>
+		<div class="c_content">
+			<form action="" method="post" name="pass_form" id="pass_form">
+            <ul>
+				<li>
+					<span>原密码</span>
+					<input name="opwd" type="password" id="opwd" />
+				</li>
+				<li>
+					<span>新密码</span>
+					<input name="npwd" type="password" id="npwd" />
+				</li>
+				<li>
+					<span>确认密码</span>
+					<input name="npwd2" type="password" id="npwd2" />
+				</li>
+			</ul>
+            </form>
+			<button id="btn_submit">提交</button>
+		</div>
+		<include file="public/nav"/>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+  	$('#btn_submit').click(function(){
+		if($('input[name="opwd"]').val() == ''){
+			alertMsg('请输入原密码！');
+			return false;
+		}
+		if($('input[name="npwd"]').val() == ''){
+			alertMsg('请填写新密码');
+			return false;
+		}
+		if($('input[name="npwd"]').val() != $('input[name="npwd2"]').val()){
+			alertMsg('新密码与确认密码不一致！');
+			return false;
+		}
+		AjaxPost('{:U("Api/Members/editpwd")}','pass_form','#btn_submit',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg, function(){
+					location.href = "{:U('Wap/Members/index')}";
+				});
+			} else {
+				alertMsg(data.returnMsg);
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

@@ -1,0 +1,66 @@
+<include file="public/header"/>
+<body class="spinner-hide" style="background: #f1f1f2;">
+		
+        <?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <div class="header" style="position:relative;">
+                <div class="goback" onclick="goBack();"></div>
+                <div class="title">{$page_title}</div>
+            </div>
+        <?php
+          }
+        ?>
+        <div class="dropload-box fixed-contb">
+            <div class="mail_main">
+                <!-- <div class="msgitem">
+                    <div class="title">系统消息</div>
+                    <div class="cont">系统消息</div>
+                    <div class="datetime">2012-05-12 12:59:60</div>
+                </div> -->
+            </div>
+        </div>
+		<include file="public/nav"/>
+<include file="public/footer"/>
+<link href="__PUBLIC__/Wap/js/dropload/dropload.css" rel="stylesheet">
+<script src="__PUBLIC__/Wap/js/dropload/dropload.min.js"></script>
+<script language="javascript" type="text/javascript">
+$(function(){
+	var pageStart = 1;
+    // dropload
+    $('.dropload-box').dropload({
+        scrollArea : window,
+		domDown : {
+            domClass   : 'dropload-down',
+            domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+            domLoad    : '<div class="dropload-load"><span class="loading"></span></div>',
+            domNoData  : '<div class="dropload-noData">没有更多数据</div>'
+        },
+        loadDownFn : function(me){
+            PostApi("{:U('Api/Members/myMail')}", {page:pageStart}, function(data){
+				if(data.returnCode == 1) {
+					var html = '';
+					$.each(data.result.mail_list,function(idx,message){
+                        html += '<div class="msgitem">'
+                                    +'<div class="title">'+ message.title +'</div>'
+                                    +'<div class="cont">' + message.describe + '</div>'
+                                    +'<div class="datetime">' + message.add_time + '</div>'
+                                +'</div>';
+					});
+					pageStart = data.result.page;
+					$('.mail_main').append(html);
+				} else {
+					// 无数据
+					me.noData();
+					// 锁定
+					me.lock();
+				}
+				me.resetload();
+			});
+        }
+    });
+});
+</script>
+	</body>
+</html>

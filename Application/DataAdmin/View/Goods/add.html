@@ -1,0 +1,243 @@
+<include file="Public/header"/>
+<body>
+<style>
+	.imgDiv{
+		margin-left:150px;
+	}
+	.imgDiv li{
+		float:left;
+		width:150px;
+		margin-right:10px;
+		position:relative;
+	}
+	.imgDiv li span{
+		position:absolute;
+		padding:10px;
+		font-size:20px;
+		right:0;
+		top:0;
+		background-color:#ccc;
+		opacity:0.5;
+	}
+</style>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent-->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>商品管理</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+					<!--内容开始-->
+					<form class="form-horizontal" method="post" action="{:U('act_do')}" name="basic_validate" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-1 control-label">店铺编号</label>
+								<div class="col-sm-6">
+									<input type="text" id="m_num" name="m_num" dataType="*" placeholder="商家编号" class="form-control" >
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">所属分类</label>
+								<div class="col-sm-6">
+									<select name="category" id="category" class="form-control">
+									<option value="" >请选择</option>
+									<volist name="list" id="vo" >
+									<option value="{$vo.cat_id}" >{$vo.cat_name}</option>
+									</volist>
+									
+									</select>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">商品名称</label>
+								<div class="col-sm-6">
+									<input type="text" id="name" name="name" dataType="*" placeholder="商品名称" class="form-control" >
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">市价</label>
+								<div class="col-sm-6" style="position:relative;">
+									<input type="text" id="price1" name="price1" dataType="*" placeholder="原价" class="form-control" style="width:140px;" onkeyup="value=value.replace(/[^\-?\d.]/g,'')"><span style="position:absolute;left:160px;top:10px;">元</span>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">销售价格</label>
+								<div class="col-sm-6" style="position:relative;">
+									<input type="text" id="price2" name="price2" dataType="*" placeholder="市场价" class="form-control" style="width:140px;"  onkeyup="value=value.replace(/[^\-?\d.]/g,'')"><span style="position:absolute;left:160px;top:10px;">元</span>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">上架</label>
+								<div class="col-sm-6" >
+									<input type="checkbox" id="status" name="status" value="1" checked /> 是
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">库存</label>
+								<div class="col-sm-6" style="position:relative;">
+									<input type="text" id="stock" name="stock" dataType="*" placeholder="库存" class="form-control" style="width:140px;" onkeyup='this.value=this.value.replace(/\D/gi,"")'><span style="position:absolute;left:160px;top:10px;">个</span>
+								</div>
+							</div>
+							<div class=""></div>
+							<!--  <div class="form-group">
+								<label class="col-sm-1 control-label">首页照片 </label>
+								<div class="col-sm-6">
+										<img id="upload_one" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+										<input type="hidden" name="img" id="img"/>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<div class="picDiv">
+								</div>
+							</div>
+							<div class=""></div>-->
+							<div class="form-group">
+								<label class="col-sm-1 control-label">展示照片 </label>
+								<div class="col-sm-6">
+										<img id="upload_img" class="img-circle" src="__ROOT__/Public/DataAdmin/images/upload_img.png" style="width: 80px;height: 80px" />
+										<input type="hidden" name="userimg" id="userimg"/>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<ul class="imgDiv">
+								</ul>
+							</div>
+							<div class=""></div>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label">简介</label>
+								<div class="col-sm-6">
+									<textarea type="text" name="intro"  placeholder="输入简介" class="form-control"></textarea>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">详情</label>
+								<div class="col-sm-6">
+									 <script type="text/plain"   name="content"  id="editor" style="width:100%;height:300px;overflow-y:hidden;"></script>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<div class="col-sm-4 col-sm-offset-2">
+									<button class="Jun-TiJiao submitButton" type="button">保存内容</button>
+									<a class="btn btn-white" href="{:U('index')}">取消</a>
+								</div>
+							</div>
+					</form>
+					<!--内容结束-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/Common/Ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/jquery-1.11.1.min.js"></script>
+<script src="__PUBLIC__/newMerchant/js/layer/layer.js"></script>
+<script type="text/javascript">
+	var ue = UE.getEditor('editor');
+    <notempty name="act">
+            ue.addListener("ready", function () {
+                // editor准备好之后才可以使用
+                ue.setContent('{:htmlspecialchars_decode($act["content"])}');
+            });
+    </notempty>
+
+	$(function(){
+		//上传图片
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadImg/")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			if(data.status == 1){
+					if ($('#userimg').val()=='')
+					{
+						$('#userimg').val(data.url);
+					}else{
+						$('#userimg').val($('#userimg').val()+'||'+data.url);
+					}					
+	   				$('.imgDiv').append('<li><img src="'+data.url+'" width="150" height="150" /><span>X</span></li>');
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+		function getImg(){
+			var pic ='';
+			var comm='';
+			var m = $('.imgDiv li').length;
+			for(var i=0;i<m;i++){
+			
+				pic +=comm+$('.imgDiv li').eq(i).find('img').attr('src');
+				comm='||';
+			}
+			$('#userimg').val(pic);
+		}
+
+		$(document).on("click" ,'.imgDiv li span',function(){
+			//var id = $(this).parent('li').attr('data');
+			$(this).parent('li').remove();
+			getImg();
+		})
+		//提交
+		$('.submitButton').click(function(){
+			if ($('#m_num').val()=='')
+			{
+				layer.msg('店铺编号不能为空');
+				return false;
+			}
+			if ($('#category').val()=='')
+			{
+				layer.msg('请选择商品分类');
+				return false;
+			}
+			if ($('#name').val()=='')
+			{
+				layer.msg('商品名称不能为空');
+				return false;
+			}
+			if ($('#price1').val()=='')
+			{
+				layer.msg('原价不能为空');
+				return false;
+			}
+			if(isNaN($('#price1').val()))
+			{
+				layer.msg('你输入的数据不是数字');
+				$this.select();
+			    return false;
+			}
+			if ($('#price2').val()=='')
+			{
+				layer.msg('市场价不能为空');
+				return false;
+			}
+			if ($('#userimg').val()=='')
+			{
+				layer.msg('图片至少上传一张');
+				return false;
+			}
+			$('#signupForm').submit();
+		})
+	})
+</script>
+<include file="Public/footer"/>

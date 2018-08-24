@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$page_title}</title>
+	<!--Public style sheet-->
+	<link rel="stylesheet" type="text/css" href="__ROOT__/Public/Wap/css/reset.css"/>
+	<link rel="stylesheet" type="text/css" href="__ROOT__/Public/Wap/css/swiper-4.1.0.min.css"/>
+	<!--style file-->
+	<link rel="stylesheet" type="text/css" href="__ROOT__/Public/Wap/css/public.css?v=0.1"/>
+	<!--Plug-in library-->
+	<script type="text/javascript" src="__ROOT__/Public/Wap/js/jquery.js"></script>
+	<script src="__ROOT__/Public/Wap/js/swiper-4.1.0.min.js"></script>
+	<!--Rem Unit processing-->
+	<script src="__ROOT__/Public/Wap/js/Rem.js"></script>
+	<script src="__ROOT__/Public/Wap/js/common.js?v=0.1"></script>
+	<!--script file-->
+	<script type="text/javascript">
+
+		$(function(){
+			var inputNum = $('input').length;
+			if(inputNum > 0){
+				var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+				$(window).on('resize', function () {
+				    var nowClientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+				    if (clientHeight > nowClientHeight){
+				        //键盘弹出的事件处理
+				        $('footer').hide();
+				    }
+				    else {
+				        //键盘收起的事件处理
+				        $('footer').show();
+				    }
+				});
+			}
+		})
+
+
+	</script>
+	</head>

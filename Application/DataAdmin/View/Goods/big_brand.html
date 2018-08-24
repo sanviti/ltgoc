@@ -1,0 +1,97 @@
+<include file="Public/header"/>
+<body>
+<style>
+	.imgDiv{
+		margin-left:150px;
+	}
+	.imgDiv li{
+		float:left;
+		width:150px;
+		margin-right:10px;
+		position:relative;
+	}
+	.imgDiv li span{
+		position:absolute;
+		padding:10px;
+		font-size:20px;
+		right:0;
+		top:0;
+		background-color:#ccc;
+		opacity:0.5;
+	}
+</style>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent-->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>
+	                	      品牌列表&nbsp;&nbsp;<font size="1" color='red'></font> &nbsp;&nbsp;&nbsp;
+	                	  <a href="{:U('addBrand')}"  class="btn btn-info">
+	                	  <span class="glyphicon glyphicon-edit"></span>添加品牌</a>
+	                	</h4> 
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+					<!--搜索结束-->
+					<!--内容开始-->
+					<div class="form-horizontal" method="post" action="" name="basic_validate">
+						<form id="listForm" method="post">
+                        <div class="table-margin">
+                            <table class="table table-bordered table-header table-hover">
+                                <thead>
+                                <tr>
+                                	<th>ID</th>
+                                    <th>品牌名称</th> 
+                                    <th>操作</th> 
+                                </tr>
+                                </thead>
+
+                                <notempty name="list">
+                                    <tbody>
+                                    <volist name="list" id="vo" key="val">
+                                        <tr class="long-td">
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.name}</td>
+                                            <td><a href="{:U('addBrand',array('id'=>$vo['id'],'p'=>$p))}"  class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> 修改</a></td>
+                                        </tr>
+                                    </volist>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="pull-right">
+                                                <nav class="pagination">{$page}</nav>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <else/>
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            没有数据拉！
+                                        </td>
+                                    </tr>
+                                </notempty>
+
+                            </table>
+                        </div>
+                    </form>
+					</div>
+					<!--内容结束-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body><include file="Public/footer"/>
+<script type="text/javascript">
+</script>

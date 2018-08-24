@@ -1,0 +1,162 @@
+<include file="public/header"/>
+	<body class="spinner-hide">
+		<div class="forget_box">
+			<div class="forget_logo">
+				<div class="forget_logo_img">
+				  <img src="__ROOT__/Public/Wap/img/logo.png"/>
+				</div>
+				<h1>PEC光电链</h1>
+				<h2>忘记密码</h2>
+			</div>
+			<form action="" method="post" name="forget_form" id="forget_form">
+			<div class="forget_main">
+				<!-- <div class="frames_box">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji.png"/>
+					<span>手机</span>
+					<input name="mobile" type="text" id="mobile" />
+				</div>
+				<div class="frames_box">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji.png"/>
+					<span>验证码</span>
+					<input name="mobile" type="text" id="mobile"/>
+					<p id="send_code">点击发送</p>
+				</div> -->
+				<div class="password_box">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji.png"/>
+					<span>手机</span>
+					<input name="mobile" type="text" id="mobile" />
+				</div>
+				<div class="password_box" style="position: relative;">
+					<img src="__ROOT__/Public/Wap/img/icon/shouji.png"/>
+					<span>验证码</span>
+					<input name="vcode" type="text" id="vcode" />
+					<botton style="display: block;position: absolute; right: 0; top:0; height: 0.7rem; background: #ffac44; color: #fff; padding: 0 .5rem;" id="sendcode" >点击发送</botton>
+				</div>
+				<div class="password_box">
+					<img src="__ROOT__/Public/Wap/img/icon/suo.png"/>
+					<span>新密码</span>
+					<input name="password" type="password" id="password" />
+				</div>
+				<div class="confirm_pass">
+					<img src="__ROOT__/Public/Wap/img/icon/suo.png"/>
+					<span>确认密码</span>
+					<input name="password2" type="password" id="password2" />
+				</div>
+                </form>
+                <div>
+				<button class="forget_btn">确定修改</button>
+				</div>
+		  </div>
+		</div>
+<include file="public/footer"/>
+<div id="imgcodebox" style="display: none;">
+	<div class="imgcode"><img src="{:U('Api/Vcode/image')}" /></div>
+	<div class="imgcode_input"><input name="vcode" value="" /></div>
+</div>
+<style type="text/css">
+	.layui-m-layercont{
+		padding: 10px;
+	}
+	.imgcode img{
+		width: 100%;
+	}
+	.imgcode_input input{
+		width:96%; border:1px solid #ccc; height: 1.5rem;
+		padding:0 2%;
+		text-align: center;
+		outline: none;
+		-webkit-appearance: none;
+		border-radius: 0;
+	}
+
+</style>
+<script src="__PUBLIC__/Wap/js/layer/layer.js" type="text/javascript" charset="utf-8"></script>	
+<script language="javascript" type="text/javascript">
+$(function(){
+	isWaiting = false;
+	$('#sendcode').click(function(){
+		var _this = $(this);
+		if(!isPhoneNo($('input[name="mobile"]').val())){
+			alertMsg('请输入正确的手机号码');
+			$('input[name="mobile"]').focus();
+			return false;
+		}
+
+		if(isWaiting == true) return;
+		layer.open({
+		  anim: 'up'
+		  ,content: $('#imgcodebox').html()
+		  ,btn: ['确认', '取消']
+		  ,yes : function(){
+		  		imgcode = $('.layui-m-layercont .imgcode_input input');
+		  		if(isEmpty(imgcode.val())){
+					$('.layui-m-layercont .imgcode_input input').css('borderColor', 'red');
+					imgcode.focus();
+					return;
+				}
+				var data = {
+					validcode : $('.layui-m-layercont .imgcode_input input').val(),
+					mobile : $('input[name="mobile"]').val()
+				}
+				_this.attr('disabled', true);
+				$.post('{:U("Api/Vcode/findpwd_sms")}', data, function(data){
+					if(data.returnCode == 1){
+						isWaiting = true;
+						alertMsg(data.returnMsg, function(){
+							var sms_timer = data.result.out_time;
+							var time = null;
+							timer = setInterval(function(){
+								if(sms_timer > 0){
+									sms_timer--;
+									_this.html(sms_timer);
+								}
+								if(sms_timer <= 0){
+									isWaiting = false;
+									_this.removeAttr('disabled');
+									_this.html('重新发送');
+									clearInterval(timer);
+								}
+							},1000);
+						});
+					} else {
+						isWaiting = false;
+						_this.removeAttr('disabled');
+						alertMsg(data.returnMsg);
+					}
+				},'json');
+		  }
+		});
+	});
+	
+	$('.forget_btn').click(function(){
+		if($('input[name="mobile"]').val() == ''){
+			alertMsg('请输入手机号码');
+			return false;
+		}
+		if($('input[name="vcode"]').val() == ''){
+			alertMsg('请输入短信验证码');
+			return false;
+		}
+		if($('input[name="password"]').val() == ''){
+			alertMsg('请填写新密码');
+			return false;
+		}
+		if($('input[name="password"]').val() != $('input[name="password2"]').val()){
+			alertMsg('二次密码不一致');
+			return false;
+		}
+		AjaxPost('{:U("Api/Login/findPwd")}','forget_form','.forget_btn',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg, '', function(){
+					location.href = "{:U('Wap/Login/index')}";
+				});
+			} else {
+				alertMsg(data.returnMsg);
+				return false;
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>

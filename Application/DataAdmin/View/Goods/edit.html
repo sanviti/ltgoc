@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>商品管理</title>
+    <css file='__PUBLIC__/Admin/css/bootstrap.min.css' />
+    <css file='__PUBLIC__/Admin/bootstrap-table/bootstrap-table.min.css' />
+    <css file='__PUBLIC__/Admin/bootstrap-table/bootstrap-editable.css' />
+    <css file='__PUBLIC__/Admin/css/font-awesome.min.css?v=4.4.0' />
+    <css file='__PUBLIC__/Admin/css/plugins/iCheck/custom.css' />
+    <css file='__PUBLIC__/Admin/css/style.min.css?v=4.0.0' />
+    <js file='__PUBLIC__/Admin/js/jquery.min.js' />
+    <js file='__PUBLIC__/Admin/js/bootstrap.min.js?v=3.3.5' />
+    <js file='__PUBLIC__/Admin/js/plugins/layer/layer.min.js' />
+    <js file='__PUBLIC__/Common/Ueditor/ueditor.config.js' />
+    <js file='__PUBLIC__/Common/Ueditor/ueditor.all.min.js' />
+    <!--商品-->
+    <css file='__PUBLIC__/Admin/css/goods/goods.base.css' />
+    <css file='__PUBLIC__/Admin/css/goods/attribute.css' />
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg ">
+<form id="form-wizard" action="{:U('edit')}" method="post" class="form-horizontal goodsForm">
+    <div class="row">
+        <div  class="col-md-8 col-md-offset-2">
+            <div class="goods-box col-md-12">
+                <div class="tabs-container">
+                    <div class="tabs-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab-base">基础信息</a></li>
+                            <li class=""><a data-toggle="tab" href="#tab-info">商品详情</a></li>
+                            <!-- <li class=""><a data-toggle="tab" href="#tab-expressage">商品参数</a></li> -->
+                            <li class=""><a data-toggle="tab" href="#tab-stock">规格库存</a></li>
+                            <!-- <li class=""><a data-toggle="tab" href="#tab-activity">商品促销</a></li> -->
+                        </ul>
+                        <div class="tab-content">
+                            <!--基础信息-->
+                            <div id="tab-base" class="tab-pane active">
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+
+                                        <!-- <div class="form-group">
+                                        <label class="col-sm-2 control-label">审核状态</label>
+                                        <div class="col-sm-4">
+                                        待审核
+                                        <input type="radio"  class="extendedAttr" disabled  <if condition="$data.review eq 0"> checked </if> >
+                                        </div>
+                                        <div class="col-sm-4">
+                                        通过
+                                        <input type="radio"   disabled <if condition="$data.review eq 1"> checked </if>>
+                                        </div>
+                                        <div class="col">
+                                        拒绝
+                                        <input type="radio" disabled <if condition="$data.review eq 2"> checked </if>>
+                                        </div>
+                                        </div> -->
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">商品分类<i style="color:red;">*</i></label>
+                                            <div class="col-sm-4">
+                                                <select name="category1" class="form-control" id="category1">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <select name="category2"  class="form-control" id="category2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">商品名称<i style="color:red;">*</i></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="goods_name" id="goods_name" placeholder="输入商品名称" class="form-control" value="{$data.name}">
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">商家ID</label>
+                                            <div class="col-sm-8" style="line-height: 30px;">
+                                            	{$data.shopid}
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">子标题</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="subtitle" id="subtitle" placeholder="输入商品子标题" class="form-control" value="{$data.subtitle}">
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">销售价格<i style="color:red;">*</i></label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="price"  placeholder="" value="{$data.price2}" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
+                                                    <div class="input-group-addon">元</div>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 control-label">市价</label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="marketprice" id="marketprice" placeholder=""  value="{$data.price1}" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
+                                                    <div class="input-group-addon">元</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="hr"></div>-->
+                                        <!--<div class="form-group">-->
+                                            <!--<label class="col-sm-2 control-label">供货价</label>-->
+                                            <!--<div class="col-sm-3">-->
+                                                <!--<div class="input-group">-->
+                                                    <!--<input type="text" class="form-control" name="supply"  placeholder="" value="{$data.supply}">-->
+                                                    <!--<div class="input-group-addon">元</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+
+                                            <!--<div class="col-sm-3">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <div class="hr"></div>
+                                        <!-- 兑换结束 -->
+                                        <!-- <div class="form-group">
+                                            <label class="col-sm-2 control-label">计量单位</label>
+
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <select name="unit" id="unit" class="form-control m-b chosen-select" id="mid">
+                                                        <option value=''>常用单位</option>
+                                                        <volist name="units" id="c">
+                                                            <option value="{$c.unitname}"
+                                                            <if condition="$c['unitname'] eq $data['unit']"> selected="selected"</if>
+                                                            >{$c.unitname}</option>
+                                                        </volist>
+                                                    </select>
+
+                                                    <a href="javascript:;" class="btn btn-sm pull-rigth" id="addUnit" style="margin-left: 10px;">添加</a>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="hr"></div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">快递费</label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="express_fee" id="express_fee" placeholder="" value="{$data.postage|default=0}">
+                                                    <div class="input-group-addon">元</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2"><div class="text-muted" style="line-height: 35px">包邮填0</div></div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <if condition="$data['status']">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">商品状态</label>
+                                            <div class="col-sm-8" style="line-height: 30px;">
+                                                <if condition="$data['status'] eq 0">
+                                    					下架
+				                                <elseif condition="$data['status'] eq 1"/>
+				                                    	上架
+				                            	<elseif condition="$data['status'] eq 2"/>
+				                                    	待审核
+				                                <elseif condition="$data['status'] eq 3"/>
+				                                    	待发布
+				                                <elseif condition="$data['status'] eq 4"/>
+				                                    	未通过
+				                                    	<span style="color:red;margin-left:10px;">原因：{$data.cause}</span>
+				                                </if>
+                                            </div>
+                                        </div>
+                                        </if>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">是否进口</label>
+                                            <div class="col-sm-8">
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="is_import" class="extendedAttr" value="1"<if condition="$data['is_import'] eq 1"> checked="checked"</if>>是</label>
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="is_import" class="extendedAttr" value="0" <if condition="$data['is_import'] eq 0"> checked="checked"</if>>否</label>
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">商品主图<i style="color:red;">*</i></label>
+                                            <div class="col-sm-10">
+                                                <div class="row" id="GD_IndexImg">
+                                                    <div class="col-sm-10">
+                                                        <img src="{$data.img}" width="120" height="120" style="margin-bottom: 5px;">
+                                                        <input type="hidden" class="form-control" name="goods_img" id="goods_img" value="{$data.img}">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="btns col-sm-10">
+                                                        <div id="uploadOne" class="pull-left">选择文件</div>
+                                                    </div>
+                                                    <div class="btns col-sm-10" style
+                                                    ="color:#999;font-size:12px;">
+                                                    	* 请上传1:1比例的图片，支持jpg，png，jpeg
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">轮播图片<i style="color:red;">*</i> </label>
+                                            <div class="col-sm-10">
+                                                <div class="row">
+                                                    <div class="col-sm-10" id="uploadImgWrap">
+                                                        <volist name="data['goods_pics']" id="pic">
+                                                            <div id="WU_FILES_{$key}" class="uploadImgItem" draggable="false"><img src="{$pic}" realpath="{$pic}" draggable="false"><p class="state succ">已上传</p><i class="fa fa-close delBtn"></i><div class="progress progress-striped active" style="display: none;"><div class="progress-bar" role="progressbar" style="width: 100%;"></div></div></div>
+                                                        </volist>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="btns col-sm-10">
+                                                        <div id="picker" class="pull-left">选择文件</div>
+                                                        <!--  <button id="ctlBtn" class="btn btn-primary">开始上传</button> -->
+                                                        <input type="hidden" class="form-control" name="goods_pics" id="goods_pics">
+                                                    </div>
+                                                    <div class="btns col-sm-10" style="color:#999;font-size:12px;">
+                                                    	* 请上传1:1比例的图片，支持jpg，png，jpeg，上限5张
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="hr"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--基础信息-->
+
+                            <!--产品详情-->
+                            <div id="tab-info" class="tab-pane">
+                                <div class="panel-body">
+                                    <!-- <strong>产品详情</strong> -->
+                                    <p>
+                                        <script type="text/plain" id="editor" name="goods_detail" style="width:100%;height:300px;overflow-y:hidden;"></script>
+                                    </p>
+                                </div>
+                            </div>
+                            <!--产品详情-->
+
+                            <!--运费设置-->
+                            <div id="tab-expressage" class="tab-pane">
+                                <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>商品参数</h5>
+                                                <div class="ibox-tools">
+                                                    <a class="btn btn-xs btn-primary" id="add_goods_arg">添加参数</a>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <table class="table table-bordered" id="argTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th width="20%">参数名称</th><th>参数值</th><th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <if condition='is_array($data["arguments"]) eq true'>
+                                                        <php>$i = 0;</php>
+                                                        <volist name="data['arguments']" id="arg">
+                                                            <tr arg_id="{$i}"><td><input type="text" size="10" name="arguments[{$i}][0]" value="{$arg.0}"></td><td><input type="text" size="20" name="arguments[{$i}][1]" value="{$arg.1}"></td><td><a href="javascript:;" class="del_arg">删除</a></td></tr>
+                                                            <php>$i++;</php>
+                                                        </volist>
+                                                    </if>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--运费设置-->
+
+                            <!--规格库存-->
+                            <div id="tab-stock" class="tab-pane">
+                                <div class="panel-body">
+                                    <div class="col-sm-12 m-b">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">商品库存</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" size="10" name="goods_stock" value="{$data.stock}" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="hr"></div> -->
+                                        <div class="form-group" style="display: none;">
+                                            <label class="col-sm-2 control-label">减库存方式</label>
+                                            <div class="col-sm-8">
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="dec_stock_type" <if condition="($data['dec_stock_type'] eq 1) OR (isset($data['dec_stock_type']) eq false)"> checked="checked"</if> value="1">拍下减库存</label>
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="dec_stock_type" <if condition="$data['dec_stock_type'] eq 2"> checked="checked"</if> value="2">付款减库存</label>
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="dec_stock_type" <if condition="$data['dec_stock_type'] eq 3"> checked="checked"</if>  value="3">不减库存</label>
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">启用规格</label>
+                                            <div class="col-sm-8">
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="extended_attributes" class="extendedAttr" value="1"<if condition="$data['extended_attributes'] eq 1"> checked="checked"</if>>是</label>
+                                                <label class="checkbox-inline i-checks">
+                                                    <input type="radio" name="extended_attributes" class="extendedAttr" value="0" <if condition="$data['extended_attributes'] eq 0"> checked="checked"</if>>否</label>
+                                            </div>
+                                        </div>
+                                        <div class="hr"></div>
+                                    </div>
+                                    <div class="col-sm-12" id="extendAttrWrap"
+                                    <if condition="$data['extended_attributes'] eq 0">
+                                        style="display:none;"
+                                    </if>>
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>商品规格</h5>
+                                            <div class="ibox-tools">
+                                                <a class="btn btn-xs btn-primary" id="addAttr">添加规格</a>
+                                                <a class="btn btn-xs btn-primary addImgAttr" id="addImgAttr">添加图片规格</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="ibox-content">
+                                            <table class="table">
+                                                <tbody id="attribute">
+                                                <php>$i2 = 0;</php>
+                                                <volist name="data['attribute']" id="attr" key="keys">
+                                                    <if condition="$attr['imgAttr'] eq 1">
+                                                        <tr attrid="{$i2}" class="imgAttr"><td style="text-align: left;padding: 5px;">
+                                                            <div class="attname_wrap"><input type="text" size="10" name="attribute[{$i2}][attname]" value="{$attr.attname}" placeholder="属性名称"><a class="btn btn-xs btn-danger pull-right delAttr">删除属性</a><a class="btn btn-xs btn-primary pull-right addAttrVal">添加值</a></div>
+
+                                                            <div class="attrs_wrap">
+                                                                <input type="hidden" size="10" name="attribute[{$i2}][imgAttr]" value="1">
+                                                                <php>$i3 = 0;</php>
+                                                                <volist name="attr['attvalue']" id="attrOpt">
+                                                                    <div class="attrs_item" index="{$i3}">
+                                                                        <img src="{$attrOpt.img}" class="uploadOne">
+                                                                        <input name="attribute[{$i2}][attvalue][{$i3}][img]" value="{$attrOpt.img}" class="optimg">
+                                                                        <input type="file" name="" class="uploadfile"><p>
+                                                                        <input type="text" size="10" name="attribute[{$i2}][attvalue][{$i3}][optval]" value="{$attrOpt.optval}" placeholder="属性值"></p>
+                                                                        <i class="fa fa-close delAttrVal"></i>
+                                                                    </div>
+                                                                    <php>$i3++;</php>
+                                                                </volist>
+                                                            </div>
+                                                        </td></tr>
+                                                        <else/>
+                                                        <tr attrid="{$i2}"><td style="text-align: left;padding: 5px;"><div class="attname_wrap"><input type="text" size="10" name="attribute[{$i2}][attname]" placeholder="属性名称" value="{$attr.attname}"><a class="btn btn-xs btn-danger pull-right delAttr">删除属性</a><a class="btn btn-xs btn-primary pull-right addAttrVal">添加值</a></div>
+                                                            <div class="attrs_wrap">
+                                                                <php>$i3 = 0;</php>
+                                                                <volist name="attr['attvalue']" id="attrOpt">
+                                                                    <div class="attrs_item" index="{$i3}"><p>
+                                                                        <input type="text" size="10" name="attribute[{$i2}][attvalue][{$i3}][optval]" value="{$attrOpt.optval}" placeholder="属性值"></p>
+                                                                        <i class="fa fa-close delAttrVal"></i></div>
+                                                                    <php>$i3++;</php>
+                                                                </volist>
+                                                            </div></td></tr>
+                                                    </if>
+                                                    <php>$i2++;</php>
+                                                </volist>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>库存表格</h5>
+                                            <div class="ibox-tools">
+                                                <a class="btn btn-xs btn-primary" id="create_stock_table">刷新库存表格</a>
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-bordered" id="stockTable">
+                                                <thead>
+                                                <tr>
+                                                    <volist name="data['attribute']" id="attr">
+                                                        <th>{$attr.attname}</th>
+                                                    </volist>
+                                                    <th>价格</th>
+                                                    <th>库存</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <php>
+                                                    $i2 = 0;
+                                                </php>
+                                                <volist name="stock" id="item">
+                                                    <php>
+                                                        $optVal = explode('|',$item['flag']);
+                                                    </php>
+                                                    <tr>
+                                                        <volist name="optVal" id="val">
+                                                            <td>{$val}</td>
+                                                        </volist>
+                                                        <td><input type="hidden" size="32" name="stock[{$i2}][flag]" value="{$item.flag}"><input type="text" size="6" name="stock[{$i2}][price]" value="{$item.price}"></td>
+                                                        <td><input type="text" size="6" name="stock[{$i2}][stock]" value="{$item.stock}" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')"/><input type="hidden" size="6" name="stock[{$i2}][img]" value="{$item.img}"> </td>
+                                                    </tr>
+                                                    <php>
+                                                        $i2++;
+                                                    </php>
+                                                </volist>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--规格库存-->
+
+                        <!--活动管理-->
+                        <div id="tab-activity" class="tab-pane">
+                            <div class="panel-body">
+                                <div class="col-sm-12 m-b">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">第二件半价</label>
+                                        <div class="col-sm-8">
+                                            <label class="checkbox-inline i-checks">
+                                                <input type="radio" name="promote_open" class="extendedAttr" value="1"<if condition="$data['promote_open'] eq 1"> checked="checked"</if>>开启</label>
+                                            <label class="checkbox-inline i-checks">
+                                                <input type="radio" name="promote_open" class="extendedAttr" value="0" <if condition="$data['promote_open'] eq 0"> checked="checked"</if>>关闭</label>
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">开始时间</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control input-sm" id="promote_start_date" placeholder="开始时间" name="promote_start_date"
+                                                   value="<php>
+                                                if(empty($data['promote_start_date'])){
+                                                    echo date('Y-m-d 00:00:00');
+                                                }else{
+                                                    echo date('Y-m-d H:i:s',$data['promote_start_date']);
+                                                }
+                                                </php>" size="10">
+
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">结束时间</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control input-sm" id="promote_end_date" placeholder="结束时间" name="promote_end_date"
+                                                   value="<php>
+                                                if(empty($data['promote_end_date'])){
+                                                    echo date('Y-m-d 00:00:00');
+                                                }else{
+                                                    echo date('Y-m-d H:i:s',$data['promote_end_date']);
+                                                }
+                                                </php>" size="10">
+
+
+                                        </div>
+                                    </div>
+                                    <div class="hr"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--活动管理-->
+
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="GD_footer" style="z-index:3">
+        <div class="Btns">
+        	<input type="hidden" id="id" name="id" value="{$data.id}" />
+            <a href="javascript:;" class="btn btn-lg btn-success" id="submit"> 保存 </a>
+          <!--   <a href="javascript:;" class="btn btn-lg btn-white" id="closePage"> 取消返回 </a>
+ -->        </div>
+    </div>
+</form>
+<div class="zhezhao"></div>
+</body>
+<js file='__PUBLIC__/Admin/js/plugins/switchery/switchery.js' /><!--IOS开关样式-->
+<js file='__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js' />
+<js file='__PUBLIC__/Admin/js/plugins/chosen/chosen.jquery.js' />
+<js file='__PUBLIC__/Admin/js/plugins/Validform/Validform_v5.3.1_min.js' />
+
+<js file='__PUBLIC__/Admin/js/plugins/Sortable/Sortable.min.js' />
+
+<js file='__PUBLIC__/Admin/js/plugins/laydate/laydate.js' />
+<js file='__PUBLIC__/Admin/js/plugins/webuploader/webuploader.min.js' />
+<css file='__PUBLIC__/Admin/css/plugins/webuploader/webuploader.css' />
+<css file='__PUBLIC__/Admin/css/plugins/switchery/switchery.css' />
+<css file='__PUBLIC__/Admin/css/plugins/Validform/validform.css' />
+<css file='/Public/Admin/css/plugins/chosen/chosen.css' />
+
+<!--商品-->
+<js file='__PUBLIC__/Admin/js/jquery.uploadFile.js' />
+<js file='__PUBLIC__/Admin/js/goods/goods.base.js' />
+<js file='__PUBLIC__/Admin/js/goods/goods.category.js' />
+<js file='__PUBLIC__/Admin/js/goods/goods.attrbute.js' />
+
+<input type="hidden" value="<?php echo $_GET['goodsid']?>" id="goods_id">
+<script type="text/javascript">
+
+    var edit_type = '{$pay_type}';
+    if(edit_type==7){
+        $("#pay1").hide();
+        $("#pay2").show();
+        $("#pay3").hide();
+    }else if(edit_type==8){
+        $("#pay1").hide();
+        $("#pay2").hide();
+        $("#pay3").show();
+    }else{
+        $("#pay1").show();
+        $("#pay2").hide();
+        $("#pay3").hide();
+    }
+    function chose_type()
+    {
+        var pay_type = $("#pay_type").val();
+        if(pay_type==7){
+            $("#pay1").hide();
+            $("#pay2").show();
+            $("#pay3").hide();
+        }else if(pay_type==8){
+            $("#pay1").hide();
+            $("#pay2").hide();
+            $("#pay3").show();
+        }else{
+            $("#pay1").show();
+            $("#pay2").hide();
+            $("#pay3").hide();
+        }
+    }
+
+
+
+    var cateData = {:json_encode($category)}; //商品分类Json
+    var uploadUrl = '{:U("Admin/Upload/upload")}'; //图片上传地址
+    <notempty name="category">
+            category.init('category1','category2',cateData).set({$data.category_id});
+    </notempty>
+
+
+    //编辑器
+    var ue = UE.getEditor('editor');
+
+    <notempty name="data">
+            ue.addListener("ready", function () {
+                // editor准备好之后才可以使用
+                ue.setContent('{:htmlspecialchars_decode($data['details'])}');
+            });
+    <if condition="$data['extended_attributes'] eq 1">
+        var goods_stock = {:json_encode($stock)};
+    $("#create_stock_table").click();
+    </if>
+    </notempty>
+
+    // 自定义的编辑器配置项,此处定义的配置项将覆盖editor_config.js中的同名配置
+    // var editor_a = new baidu.editor.ui.Editor();
+    // // var editor_a = new baidu.editor.ui.Editor(editorOption);
+    // editor_a.render('editor');
+    var options = {
+        event:'click',
+        format: 'YYYY-MM-DD hh:mm:ss', //日期格式
+        istime: true, //是否开启时间选择
+        isclear: true, //是否显示清空
+        istoday: true, //是否显示今天
+        issure: true, //是否显示确认
+        festival: false, //是否显示节日
+        choose: function(dates){ //选择好日期的回调
+
+        }
+    }
+    options.elem = '#promote_start_date';
+    laydate(options).skin('molv');
+    options.elem = '#promote_end_date';
+    laydate(options).skin('molv');
+
+</script>
+</html>

@@ -1,0 +1,200 @@
+<include file="Public/header"/>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent-->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>账号管理</h4>
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+					<!--内容开始-->
+					<form class="form-horizontal" method="post" action="" name="basic_validate" id="signupForm">
+					<notempty name="admin">
+                    	<input type="hidden" name="id" value="{$admin.id}"/>
+               		</notempty>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">形象照 </label>
+								<div class="col-sm-6">
+										<img id="upload_img" class="img-circle" src="{$admin.userimg|default='/Public/DataAdmin/images/headimg_default.png'}" style="width: 80px;height: 80px" />
+										<input type="hidden" name="userimg" id="userimg"/>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">姓名</label>
+								<div class="col-sm-6">
+									<input type="text" id="username" name="username" dataType="*" placeholder="输入姓名" class="form-control" value="{$admin.username}">
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">用户名</label>
+								<div class="col-sm-6">
+									<input type="text" name="user" id="user" placeholder="输入用户名" dataType="*" class="form-control" value="{$admin.user}">
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">密码</label>
+								<div class="col-sm-6">
+								<notempty name="admin">
+									<input type="password" id="password" value="{$admin.password}" name="password" placeholder="不修改请留空" class="form-control">
+                    			<else/>
+                    				<input type="password" id="password" dataType="*" name="password" placeholder="输入密码" class="form-control">
+               					</notempty>
+
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">备注信息</label>
+								<div class="col-sm-6">
+									<input type="text" name="note" id="note" value="{$admin.note}" placeholder="输入备注信息" class="form-control">
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">账号状态
+								</label>
+								<div class="col-sm-6">
+								<div class="radio i-checks">
+										<label>
+										<input type="radio" <if condition="$admin.state eq 1">checked="checked"</if> value="1" name="state"> <i></i> 正常</label>
+										<label>
+										<input type="radio" <if condition="$admin.state eq 0">checked="checked"</if> value="0" name="state"> <i></i> 停用</label>
+									</div>
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">权限选择</label>
+								<div class="col-sm-8">
+                                    <style type="text/css">
+                                        .auths{border: 1px solid #ccc;}
+                                        .bigAuth{
+                                            height: 35px;line-height: 35px; font-size: 12px;
+                                            padding:0 20px;
+                                            background: #f0f0f0;
+                                            font-weight: bold;
+                                        }
+                                        .childAuth{
+                                            margin: 10px;
+                                        }
+                                        .childAuth label{
+                                             display: block;float: left; border:1px solid #ddd; padding: 5px 10px;
+                                             margin-right: 10px; font-weight: normal;
+                                             color:#aaa;
+                                        }
+                                        .childAuth label.hover{
+                                            border:1px solid #4da9d6; color:#333; box-shadow: 0 0 5px #dcdcdc;
+                                        }
+                                        .clear{
+                                            clear: both;
+                                        }
+                                    </style>
+                                    <div class="auths">
+                                        <volist name="list" id="menu">
+                                        <div class="authsList">
+
+                                                <if condition="$menu['pid'] eq 1">
+                                                <div class="bigAuth">{$menu.title} <a href="javascript:;" class="checkAll">全选</a></div>
+                                                <div class="childAuth">
+                                                    <volist name="list" id="sons">
+                                                        <if condition="$sons['pid'] eq $menu['id']">
+                                                            <php>
+                                                            $checked = false;
+                                                            if(strpos($group,'#'.$sons['id'].'#')>-1){
+                                                                $checked = true;
+                                                            }
+                                                            </php>
+                                                             <label for="<php> echo $menu['id'] . $sons['id']</php>" <eq name="checked" value="true">class="hover"</eq>>
+                                                                <input type="checkbox" name="rule[]" id="{$menu['id']}{$sons['id']}" value="{$sons.id}" <eq name="checked" value="true">checked</eq>> {$sons.title}
+                                                                <!-- <eq name="sons['menuflag']" value="1">(菜单)<else/>(功能)</eq> -->
+                                                            </label>
+                                                        </if>
+                                                    </volist>
+                                                    <div class="clear"></div>
+                                                </div> 
+                                                </if>
+
+                                        </div>
+                                        </volist>
+
+                                    </div>
+
+
+									
+								</div>
+							</div>
+							<div class=""></div>
+							<div class="form-group">
+								<div class="col-sm-4 col-sm-offset-2">
+									<button class="Jun-TiJiao" type="submit">保存内容</button>
+									<a class="btn btn-white" href="{:U('System/userList')}">取消</a>
+								</div>
+							</div>
+					</form>
+					<!--内容结束-->
+                </div>
+
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//表单验证
+		checkForm('#signupForm', {
+	        msgCallback : function(){
+	            location.reload();
+	        }
+	    });
+
+		//头像上传
+	   	bind_uploadOne({
+	   		uploadUrl : '{:U("Upload/uploadImg")}',
+	   		bind : '#upload_img',
+	   		dataType : 'JSON',
+	   		callback : function(data,el){
+	   			if(data.status == 1){
+	   				$(el).siblings('img').attr('src',data.url);
+	   				$(el).siblings('input').val(data.url);
+	   			}else{
+	   				msg(data.info);
+	   			}
+	   		}
+	   	})
+
+
+	})
+</script>
+<script type="text/javascript">
+    $('.checkAll').click(function(){
+        $(this).parent().siblings('.childAuth').find(':checkbox').each(function(){
+            if($(this).prop('checked')){
+                $(this).prop('checked', false);
+                $(this).parents('label').removeClass('hover');
+            }else{
+                $(this).prop('checked', true);
+                $(this).parents('label').addClass('hover');
+            }
+        })
+    });
+    $('.childAuth label :checkbox').change(function(){
+        if($(this).prop('checked')){
+            $(this).parents('label').addClass('hover');
+        }else{
+            $(this).parents('label').removeClass('hover');
+        }
+    })
+
+</script>
+<include file="Public/footer"/>

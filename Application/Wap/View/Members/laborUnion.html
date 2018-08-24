@@ -1,0 +1,280 @@
+<include file="public/header"/>
+	<body class="spinner-hide" style="background: #f1f1f2;">
+		<div id="info-box">
+        <?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <div class="header" style="position:relative;">
+                <div class="goback" onClick="goBack();"></div>
+                <div class="title">{$page_title}</div>
+            </div>
+        <?php
+            }
+        ?>
+		<div class="labor_banner" style="position:relative; height: 6rem;">
+			<div><img src="__PUBLIC__/Wap/img/group_default.jpg" id="headimg"/></div>
+			<p id="group-name">光电系百万军团</p>
+            <p style="margin-top:.2rem;"><a href="javascript:;" class="but-group" style="color:#fff;font-weight:normal;">点击修改</a></p>
+		</div>
+		<ul class="lobor_information">
+			<li class="but-dec">
+				<p>光电站宣言</p>
+				<span id="declaration">努力前进携手与共</span>
+			</li>
+			<li class="but-qq">
+				<p>光电站QQ群</p>
+				<span id="qq_group"></span>
+			</li>
+			<li>
+				<p>光电站会长</p>
+				<span id="nickname"></span>
+			</li>
+			<li>
+				<p>光电站组员总量</p>
+				<span id="team_people_num"></span>
+			</li>
+			<li>
+				<p>光电站总算力</p>
+				<span id="team_power"></span>
+			</li>
+		</ul>
+        <div class="dropload-box fixed-contb" style="margin-top:.2rem; background: #fff;">
+    		<ul class="labor_message">
+    		</ul>
+        </div>
+		<include file="public/nav"/>
+        </div>
+<!--修改宣言-->
+<div class="swiper-slide" id="dec-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelDecName"></div>
+            <div class="title">修改宣言</div>
+            <div href="javascript:;" class="herder_r submitDecName">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="dec_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <input type="text" name="declaration" class="set-input" />
+                    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<!--修改QQ群-->
+<div class="swiper-slide" id="qq-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelqq"></div>
+            <div class="title">修改QQ群</div>
+            <div href="javascript:;" class="herder_r submitqq">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="qq_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <input type="text" name="qq_group" class="set-input" />
+                    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<!--修改工会名称-->
+<div class="swiper-slide" id="group-box" style="display: none;">
+    <div class="set-up">
+        <div class="header">
+            <div class="goback cancelgroup"></div>
+            <div class="title">修改工会名称</div>
+            <div href="javascript:;" class="herder_r submitgroup">确定</div>
+        </div>
+    </div>
+    <!--菜单栏-->
+    <form action="" id="group_form">
+        <div class="set-up-order" style="margin-top:0.5rem">
+            <ul>
+                <li>
+                    <a href="javascript:;">
+                        <div class="set-up-itme clearfix">
+                            <input type="text" name="group_name" class="set-input" />
+                    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<include file="public/footer"/>
+<link href="__PUBLIC__/Wap/js/dropload/dropload.css" rel="stylesheet">
+<script src="__PUBLIC__/Wap/js/dropload/dropload.min.js"></script>
+<script language="javascript" type="text/javascript">
+$(function(){
+	//修改宣言
+	$('.but-dec').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#dec-box').fadeIn(function(){
+			$('.cancelDecName').on('click',function(){		
+				$('#dec-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitDecName').on('click',function(){		
+				_this = $('#dec-box .set-input').val();
+				if(_this == "")
+				{
+					alertMsg('请填写宣言');
+					return false;
+				}
+				AjaxPost('{:U("Api/Members/editMemberDep")}','dec_form','.submitDecName',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#declaration').html(_this);
+							$('#dec-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	//修改QQ群
+	$('.but-qq').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#qq-box').fadeIn(function(){
+			$('.cancelqq').on('click',function(){		
+				$('#qq-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitqq').on('click',function(){		
+				_this = $('#qq-box .set-input').val();
+				AjaxPost('{:U("Api/Members/editMemberDep")}','qq_form','.submitqq',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#qq_group').html(_this);
+							$('#qq-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	//修改工会名称
+	$('.but-group').on('click',function(){
+		$('#info-box').fadeOut();
+		$('#group-box').fadeIn(function(){
+			$('.cancelgroup').on('click',function(){		
+				$('#group-box').fadeOut();
+				$('#info-box').fadeIn();
+			});
+			$('.submitgroup').on('click',function(){		
+				_this = $('#group-box .set-input').val();
+				AjaxPost('{:U("Api/Members/editMemberDep")}','group_form','.submitgroup',function(data){
+					if(data.returnCode == 1){
+						alertMsg(data.returnMsg, function(){
+							$('#group-name').html(_this);
+							$('#group-box').fadeOut();
+							$('#info-box').fadeIn();
+						});
+					} else {
+						alertMsg(data.returnMsg);
+					}
+				});
+				
+			});
+		});
+	});
+	PostApi("{:U('Api/Members/laborUnion')}", {}, function(data){
+		if(data.returnCode){
+			$('#nickname').html(data.result.nickname);
+			$('#team_people_num').html(data.result.team_people_num);
+			$('#team_power').html(data.result.team_power + 'GH/S');
+			$('#declaration').html(data.result.declaration);
+			$('input[name="declaration"]').val(data.result.declaration);
+			$('#qq_group').html(data.result.qq_group);
+			$('#group-name').html(data.result.group_name);
+			$('input[name="qq_group"]').val(data.result.qq_group);
+			$('#headimg').attr('src', data.result.group_logo);
+		}
+	});
+	//图片上传
+	bind_uploadOne({
+		uploadUrl : '{:U("Api/Upload/groupLogo")}',
+		bind : '#headimg',
+		dataType : 'JSON',
+		callback : function(data,el){
+			if(data.status == 1){
+				$(el).siblings('img').attr('src',data.url);
+				PostApi("{:U('Api/Members/editMemberDep')}", {group_logo:data.url}, function(info){
+					if(info.returnCode == 1){
+						alertMsg('修改成功！');
+					}
+				});
+			}else{
+				alertMsg(data.info);
+			}
+		}
+	});
+
+	var pageStart = 1;
+    // dropload
+    $('.dropload-box').dropload({
+        scrollArea : window,
+		domDown : {
+            domClass   : 'dropload-down',
+            domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+            domLoad    : '<div class="dropload-load"><span class="loading"></span></div>',
+            domNoData  : '<div class="dropload-noData">没有更多数据</div>'
+        },
+        loadDownFn : function(me){
+            PostApi("{:U('Api/Members/myDirect')}", {page:pageStart}, function(data){
+				if(data.returnCode == 1) {
+					var html = '';
+					$.each(data.result.member_list,function(idx,member){
+						html +=   '<li>'
+								+ '<div class="header_img">'
+								+ '<img src="' + member.headimg + '" />'
+								+ '</div>'
+								+ '<div class="right">'
+								+ '<h4>' + member.nickname + '（LV' + member.vip_level + '）</h4>'
+								+ '<div>'
+								+ '<p>机组算力：<span>' + member.power + ' GH/S</span></p>'
+								+ '<p>组成员数：<span>' + member.team_people_num + ' 个</span></p>'
+								+ '<p>组总算力：<span>' + member.team_power + ' GH/S</span></p>'
+								+ '<p>注册时间：<span>' + member.reg_time + '</span></p>'
+								+ '</div></div></li>';
+					});
+					pageStart = data.result.page;
+					$('.labor_message').append(html);
+				} else {
+					// 无数据
+					me.noData();
+					// 锁定
+					me.lock();
+				}
+				me.resetload();
+			});
+        }
+    });
+});
+</script>
+	</body>
+</html>

@@ -1,0 +1,173 @@
+<include file="Public/header"/>
+<script type="text/javascript" src="__PUBLIC__/DataAdmin/js/showdate.js"></script>
+<body>
+<include file="Public/nav"/>
+<div class="down-main">
+  <include file="Public/left"/>
+  <div class="right-product right-full">
+          <!---rightcontent---->
+            <div class="container-fluid">
+              <div class="info-center">
+                <!-- header -->
+                <div class="page-header">
+	              	<div class="pull-left">
+	                	<h4>转账充值链通积分管理</h4>      
+	            	</div>
+	            </div>
+                <div class="clearfix"></div>
+                <div class="content-list">
+                    <!--搜索开始-->
+		             <form name="search" action="__ACTION__" id="searchForm" method="post">
+		             <div class="search-box row">
+						<div class="col-md-13">
+							<div class="form-group">
+								<span class="pull-left form-span">用户ID：</span>
+								<input type="text" name="userid" value="{:I('userid')}" class="form-control" placeholder="">
+							</div>	
+							<div class="form-group">
+								<span class="pull-left form-span">订单号：</span>
+								<input type="text" name="ordersn" value="{:I('ordersn')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">汇款人：</span>
+								<input type="text" name="name" value="{:I('name')}" class="form-control" placeholder="">
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">处理状态：</span>
+								<select name="status" class="form-control">
+								   <option value="">-选择-</option>
+								   <option value="0" <if condition="$Think.request.status heq '0'"> selected="selected"</if>>未处理</option>
+								   <option value="1" <if condition="$Think.request.status heq '1'"> selected="selected"</if>>已处理</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<span class="pull-left form-span">充值时间:</span>
+								<div class="col-sm-4">
+									<input type="text" id="st" name="btime" onclick="return Calendar('st');" value=""  placeholder="充值开始时间" class="form-control" style="width:125px;"/>
+								</div>
+								<span class="pull-left form-span">&nbsp;&nbsp;&nbsp;&nbsp;----</span>
+								<div class="col-sm-4">
+									<input type="text" id="et" onclick="return Calendar('et');" placeholder="充值结束时间" value="" name="etime" class="form-control" style="width:125px;"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="form-control btn btn-default" id="searchBtn"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+							</div>
+							<!-- <div class="form-group">
+								<button class="form-control btn btn-default" id="exportBtn"><span class="glyphicon glyphicon"></span> 导出</button>
+							</div> -->
+						</div>
+                    </div>
+		             </form>   	
+					<!--搜索结束-->
+					<div class="clearfix"></div>
+					<!--内容开始-->
+					<form id="listForm" method="post">
+					<div class="table-margin">
+						<table class="table table-bordered table-header table-hover">
+							<thead>
+								<tr>
+									<th  style="text-align:center;">#</th>
+									<th  style="text-align:center;">汇款人</th>
+									<th  style="text-align:center;">汇款账户</th>
+									<th  style="text-align:center;">汇款银行</th>
+									<th  style="text-align:center;">汇款金额</th>
+									<th  style="text-align:center;">订单号</th>
+									<th  style="text-align:center;">生成时间</th>
+									<th  style="text-align:center;">订单状态</th>
+									<th  style="text-align:center;">处理时间</th>
+									<th  style="text-align:center;">操作</th>
+								</tr>
+							</thead>
+							
+						<notempty name="list">
+							<tbody>
+								<volist name="list" id="vo" key="val">
+									<tr class="long-td">
+										<td class="text-center">{$vo.id}</td>	
+										<td class="text-center">
+											{$vo.username}
+										</td>
+										<td class="text-center">
+											{$vo.cardid}
+										</td>
+										<td class="text-center">
+										    {$vo.bankname}
+										</td>
+										<td class="text-center">
+											{$vo.num}
+										</td>
+										<td class="text-center">
+											{$vo.ordersn}
+										</td>
+										<td class="text-center">
+											{$vo.ctime|date="Y-m-d H:i:s",###}
+										</td>
+										<td class="text-center">
+											<if condition="$vo.status eq 0">未处理
+											  <elseif condition="$vo.status eq 1"/>
+											  	已充值
+											</if>
+										</td>
+										<td class="text-center">
+											<if condition="$vo.ptime eq ''">-----<else/>{$vo.ptime|date="Y-m-d H:i:s",###}</if>
+										</td>
+										<td class="text-center">
+											<a data-id="{$vo.id}" class="btn btn-primary openWindow recharge"><i class="fa fa-pencil"></i>确认充值</a>
+										</td>
+									</tr>
+								</volist>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="13">
+											<div class="pull-right">
+												<nav class="pagination">{$page}</nav>
+											</div>
+										</td>
+									</tr>
+								</tfoot>
+						<else/>
+
+								<tr>
+									<td colspan="13" class="text-center">
+										没有数据啦！
+									</td>
+								</tr>
+						</notempty>
+							
+						</table>
+                    </div>
+					</form>
+					<!--内容结束-->
+                </div>
+                
+              </div>
+            </div>
+  </div>
+</div>
+</body>
+<script src="__PUBLIC__/DataAdmin/js/layer/layer.js"></script>
+<script type="text/javascript">
+$(function(){
+	 $('#exportBtn').click(function(){
+	     $('#searchForm').attr('action','{:U('DataAdmin/Export/chain_export')}');
+	     $('#searchForm').submit();
+	 });
+	 
+	 $(".recharge").click(function(){
+		 var orderid = $(this).data("id");
+		 layer.confirm('确认要充值吗？', {
+	            btn : [ '确定', '取消' ]//按钮
+	        }, function(index) {
+	            layer.close(index);
+		   		 $.post("{:U('add_chainscore')}",{"orderid":orderid},function(d){
+		   			 layer.msg(d.returnMsg);
+		   			 setTimeout("location.href = '__ACTION__'",2000);
+		   		 },"json");
+	        }); 
+		 
+	 })
+})
+</script>
+<include file="Public/footer"/>

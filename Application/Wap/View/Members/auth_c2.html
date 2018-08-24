@@ -1,0 +1,96 @@
+<include file="public/header"/>
+	<body style="background: #f1f1f2;">
+		<?php
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            if(strpos($agent,"Html5Plus") === false){
+        ?>
+            <include file="public/top"/>
+        <?php
+           }else{
+        ?>
+            <style type="text/css">.c_content{margin-top: 0}</style>
+        <?php
+            }
+        ?>
+		<div class="c_content mt22" style="display:none;" id="form">
+			<form action="" method="post" name="c2_form" id="c2_form">
+            <ul>
+				<li>
+					<span>姓名</span>
+					<input name="rname" type="text" id="rname" />
+				</li>
+				<li>
+					<span>身份证号码</span>
+					<input name="idcard" type="text" id="idcard" />
+				</li>
+			</ul>
+            <div class="uploading_img">
+				<div>
+                <img src="__PUBLIC__/Wap/img/sfz03.jpg" class="uploadOne" id="upload_img" style="max-height: 8rem; width: auto;">
+                <input type="hidden" name="photo" id="photo">
+                </div>
+				<p>上传与基本信息一致的手持照片，照片文字清晰可见</p>
+			</div>
+            </form>
+			<button id="btn_submit">提交</button>
+		</div>
+        <div class="c_content mt22" style="display:none;" id="auth-tip">
+        	<h4 class="auth_title" style="text-align: center;"></h4>
+        </div>
+		<include file="public/nav"/>
+<include file="public/footer"/>
+<script language="javascript" type="text/javascript">
+$(function(){
+	PostApi("{:U('Api/Members/query_auth')}", {type:2}, function(data){
+		if(data.returnCode == 1){
+			if(data.result.status == 0){
+				$('.auth_title').html('您的认证信息已提交，请等待审核');
+				$('#auth-tip').show();
+			} else if(data.result.status == 1){
+				$('.auth_title').html('恭喜，您的认证信息已通过审核');
+				$('#auth-tip').show();
+			} else {
+				$('#form').show();
+			}
+		} else {
+			$('#form').show();
+		}
+		$('.spinner').remove();
+	});
+	//图片上传
+	bind_uploadOne({
+		uploadUrl : '{:U("Api/Upload/uploadImg")}',
+		bind : '#upload_img',
+		dataType : 'JSON',
+		callback : function(data,el){
+			if(data.status == 1){
+				$(el).siblings('img').attr('src',data.url);
+				$(el).siblings('input').val(data.url);
+			}else{
+				alertMsg(data.info);
+			}
+		}
+	});
+  	$('#btn_submit').click(function(){
+		if($('input[name="rname"]').val() == ''){
+			alertMsg('请填写姓名');
+			return false;
+		}
+		if($('input[name="idcard"]').val() == ''){
+			alertMsg('请填写身份证号码');
+			return false;
+		}
+		AjaxPost('{:U("Api/Members/auth_c2")}','c2_form','#btn_submit',function(data){
+			if(data.returnCode == 1){
+				alertMsg(data.returnMsg, function(){
+					location.href = "{:U('Wap/Members/memberInfo')}";
+				});
+			} else {
+				alertMsg(data.returnMsg);
+			}
+		});
+	});
+});
+</script>
+	</body>
+</html>
